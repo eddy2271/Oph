@@ -7,8 +7,8 @@
 <!-- <meta http-equiv="refresh" content="0; url=landing.do"/> -->
 </head>
 <body> 
-testtest11113333aaaaaabcbbbbbccccc
-33445566778899000ㅔ0978096789
-543543543
+testtest11113333
+eddy
+321321321312321
 </body>
 </html>
