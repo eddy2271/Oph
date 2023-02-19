@@ -7,8 +7,6 @@
 <!-- <meta http-equiv="refresh" content="0; url=landing.do"/> -->
 </head>
 <body> 
-hello word
-by peter_test ttt
-hello word123321321dd
+이것은 머지 테스트
 </body>
 </html>
