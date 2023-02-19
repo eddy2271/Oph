@@ -7,6 +7,6 @@
 <!-- <meta http-equiv="refresh" content="0; url=landing.do"/> -->
 </head>
 <body> 
-이것은 머지 테스트
+testtest
 </body>
 </html>
