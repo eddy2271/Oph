@@ -7,7 +7,7 @@
 <!-- <meta http-equiv="refresh" content="0; url=landing.do"/> -->
 </head>
 <body> 
-hello word111223344321321321312
+hello word111
 </body>
 </html>
   
