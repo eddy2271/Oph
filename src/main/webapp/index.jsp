@@ -4,11 +4,8 @@
 <meta http-equiv="p3p" content='CP="CAO DSP AND SO " policyref="/w3c/p3p.xml"' >
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
-<!-- <meta http-equiv="refresh" content="0; url=landing.do"/> -->
+<meta http-equiv="refresh" content="0; url=login.do"/>
 </head>
 <body> 
-testtest11113333
-eddykltrejtkrlejtklrejtklrejtklrejtklrejtklrejtklrjkltrke
-321321321312321 good!!!
 </body>
 </html>
