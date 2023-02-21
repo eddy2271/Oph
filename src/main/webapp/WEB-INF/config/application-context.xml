@@ -16,7 +16,9 @@
 	http://www.springframework.org/schema/jee 
 	http://www.springframework.org/schema/jee/spring-jee-4.0.xsd">
 
-	<jndi:jndi-lookup jndi-name="jdbc/morris" resource-ref="true" id="dataSourceSpied" />
+	<context:annotation-config/>
+	<context:component-scan base-package="com.*" />
+	<jndi:jndi-lookup jndi-name="jdbc/oph" resource-ref="true" id="dataSourceSpied" />
 	
 	<bean id="dataSourceNm" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
 	    <constructor-arg ref="dataSourceSpied" />
@@ -31,7 +33,7 @@
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
     	<property name="dataSource" ref="dataSourceNm" />
-    	<property name="configLocation" value="WEB-INF/config/mybatisConfig.xml" />
+    	<property name="configLocation" value="/WEB-INF/config/mybatisConfig.xml" />
      	<property name="mapperLocations" value="classpath:sql/mysql/*.xml"/>
  	</bean>  
 	
@@ -39,7 +41,5 @@
 	  	<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>
 	
-	<context:annotation-config/>
-	<context:component-scan base-package="com.oph" />
 	
 </beans>
