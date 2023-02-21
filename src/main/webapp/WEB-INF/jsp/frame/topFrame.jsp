@@ -68,7 +68,7 @@
 			selectSubMenuId = $(this).attr("id");
 		});
 		
-		parent.mainFrame.location = "${pageContext.request.contextPath}/userManage.do";
+		parent.mainFrame.location = "${pageContext.request.contextPath}/evtFrame.do";
 	});
 	
 	function setLogOut() 
@@ -76,58 +76,68 @@
 		if(confirm('로그아웃 하시겠습니까?')){
 			parent.mainFrame.location = '${pageContext.request.contextPath}/logout.do?';
 		}
-	}
+	} 
 </script>
 
 </head>
+<style>
+	div#header{
+	    position:fixed;
+	    width:100%;
+	    top:0;
+	    left:0;
+	}
 
+	div#logo{
+
+		float:left;
+
+		width:50%;
+
+		padding:10px 0 0 20px;
+
+	}
+
+	ul.nav{
+
+		float:left;
+
+		list-style:none;
+
+		width:45%;
+
+	}
+
+	ul.nav li{
+
+		float:left;
+
+	}
+
+	ul.nav a{
+
+		line-height:40px;
+
+		color:#FFFFFF;
+
+		padding:0 15px;
+
+		text-decoration: none;
+
+	}
+
+</style>
 <body>
-	<div id="left_all">
-		<div class="left">
-			<div id="left_menu">
-				<ul class="left_space">
-						<li>
-								<div id="left_contents">
-									<table class="table01">
-										<tr style="display: block;">
-										<td class="td01" style="font-size: 15px;">회원 관리</td>
-										</tr>
-									</table>
-								</div>
-								<ul>
-									<li><a id="accountManage" href="${pageContext.request.contextPath}/userManage.do" target="mainFrame">사용자 관리</a></li>
-								</ul>	
-						</li>	
-						<li>
-								<div id="left_contents1">
-									<table class="table01">
-										<tr style="display: block;">
-										<td class="td01" style="font-size: 15px;">그림정보 관리</td>
-										</tr>
-									</table>
-								</div>
-								<ul>
-									<li><a id="accountManage" href="${pageContext.request.contextPath}/picture/pictureManage.do" target="mainFrame">그림리스트 조회</a></li>
-									<li><a id="accountManage" href="${pageContext.request.contextPath}/picture/pictureDetailManage.do" target="mainFrame">그림리스트 세부조회</a></li>
-								</ul>	
-						</li>
-						<li>
-								<div id="left_contents2">
-									<table class="table01">
-										<tr style="display: block;">
-										<td class="td01" style="font-size: 15px;">환경 설정</td>
-										</tr>
-									</table>
-								</div>
-								<ul>
-									<li><a id="settingManage" href="${pageContext.request.contextPath}/settingManage.do" target="mainFrame">환경 설정</a></li>
-								</ul>	
-						</li>						
-					
-					
-				</ul>						
-			</div>
-		</div>
-	</div>
+
+    <div class="header-menu" id="divHeader">201Company</div>
+	<div id="header">
+     <div>
+        <ul class="nav">
+           <li><a href="#">이벤트관</a></li>
+        </ul>
+
+     </div> 
+
+</div>
 </body>
 </html>
