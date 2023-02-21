@@ -32,8 +32,6 @@
 
 	
 	
-<!-- 	<beans:bean id="mySchedule" class="com.morris.admin.schedule.SampleScheduler" /> -->
-	
 	<task:scheduler id="pScheduler" pool-size="10" />
 	<task:executor id="pTaskExecutor" pool-size="10" />
 	<task:annotation-driven executor="pTaskExecutor" scheduler="pScheduler" /> 
