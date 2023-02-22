@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.oph.service.CodeServiceI;
 import com.oph.vo.CodeVo;
@@ -21,6 +22,17 @@ public class CodeController {
 	
 	@Autowired
 	CodeServiceI codeService;
+	
+	/**
+	 * 코드관리 화면
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/code.do")
+	public ModelAndView codeManageView(HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("/code/code");
+		return mv;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value="/codeList")
