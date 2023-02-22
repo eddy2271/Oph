@@ -1,66 +1,73 @@
 .wrap {
-    width: 100%;
-    padding: 0 30px;
-    box-sizing: border-box;
+	width: 100%;
+	padding: 0 30px;
+	box-sizing: border-box;
 }
 
 .title_box {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #ddd;
+	margin-top: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid #ddd;
 }
 
 .search_box {
-    display: flex;
-    padding: 20px 0 50px;
+	display: flex;
+	padding: 20px 0 50px;
 }
 
 .search_box p {
-    font-size: 14px;
-    font-weight: 800;
-    margin-right: 80px;
+	font-size: 22px;
+	font-weight: 800;
+	margin-right: 80px;
 }
 
 .search_box ul{
-    display: flex;
-    flex-wrap: wrap;
-    width: 850px;
-    list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	width: 850px;
+	list-style: none;
 }
 
 .search_box ul li{
-    margin-top: 10px;
+	margin-top: 10px;
 }
 
 .search_box ul li input {
-    border: 1px solid #ddd;
-    width: 270px;
-    height: 30px;
-    padding: 0 20px;
-    box-sizing: border-box;
-    margin-right: 10px;
+	border: 1px solid #ddd;
+	width: 270px;
+	height: 30px;
+	padding: 0 20px;
+	box-sizing: border-box;
+	margin-right: 10px;
 }
 
 .search_box ul li input.search_text{
-    width: 550px;
+	width: 550px;
 }
 
 .search_box ul li select {
-    border: 1px solid #ddd;
-    width: 270px;
-    height: 30px;
-    padding: 0 20px;
-    box-sizing: border-box;
-    margin-right: 10px;
+	border: 1px solid #ddd;
+	width: 270px;
+	height: 30px;
+	padding: 0 20px;
+	box-sizing: border-box;
+	margin-right: 10px;
+}
+
+.totalLine {
+	width: 540px;
+}
+
+.chkCenter {
+	vertical-align: middle !important;
 }
 
 .search_box button {
-    margin-top: auto;
-    margin-bottom: 17px;
-    width: 270px;
-    height: 30px;
-    background: #553c7d;
-    color: #fff;
+	margin-top: auto;
+	width: 270px;
+	height: 30px;
+	background: #553c7d;
+	color: #fff;
 }
