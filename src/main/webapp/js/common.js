@@ -17,6 +17,8 @@ function request(url, params, callback, error) {
 			callback(response, status);
 		},
 		error:function(request, status) {
+			console.log(request);
+			console.log(status);
 			loge("error:"+request);
 			error(request, status);
 		}
