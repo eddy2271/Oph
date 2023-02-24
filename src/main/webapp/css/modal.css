@@ -1,0 +1,120 @@
+#modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1050;
+	display: none;
+	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
+	outline: 0;
+}
+
+.modal_content {
+	width: 1000px;
+  	margin: 100px auto;
+  	padding: 20px 10px;
+  	background: #fff;
+  	border: 2px solid #666;
+  	overflow-y: initial !important
+}
+
+.modal-header {
+    padding: 15px;
+    margin-top: -20px;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+.modal-body {
+    position: relative;
+    padding: 15px;
+    margin-bottom: 25px;
+    height: 540px;
+    overflow-y: auto;  
+}
+
+.modal-last {
+    padding-top: 15px;
+    border-top: 2px solid #e5e5e5;
+    text-align: center;
+}
+
+.modal_layer {
+  	position: fixed;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	height: 100%;
+  	background: rgba(0, 0, 0, 0.5);
+  	z-index: -1;
+}
+
+.headerName {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.close-area {
+	display: inline;
+	float: right;
+	margin-top: 6px;
+	cursor: pointer;
+	text-shadow: 1px 1px 2px gray;
+	color: black;
+}
+
+.body_header {
+	width: 16%;
+	text-align: center;
+	border: 1px solid black;
+}
+
+.modal_tbl {
+	text-align: center;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.modal_tbl th {
+	padding: 10px;
+	border: 1px solid #ddd;
+	background: rgb(213, 253, 251);
+	width: 13%;
+	font-size: 14px;
+}
+
+.modal_tbl td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	background:rgb(242, 242, 242);
+	width: 37%;
+}
+
+.top {
+	margin-top: 30px;
+}
+
+.inputFull {
+	width: 100%;
+}
+
+.saveBtn {
+	background-color: #9b37ff;
+    color: #ffffff;
+    font-size: 15px;
+    float: center;
+}
+
+.addSurvey {
+	display: none;
+}
+
+.divLeft {
+	float: left;
+	margin-bottom: 10px;
+}
+
+.ctrlBtn {
+	margin-left: 10px;
+}
