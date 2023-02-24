@@ -15,6 +15,16 @@ public class CodeDaoImpl implements CodeDaoI{
 	private SqlSession sqlSession;
 	
 	@Override
+	public List<Map<String, Object>> selectCodeDivList() {
+		return sqlSession.selectList("code.selectCodeDivList");
+	}
+	
+	@Override
+	public List<Map<String, Object>> selectCodeValList(CodeVo codeVo) {
+		return sqlSession.selectList("code.selectCodeValList", codeVo);
+	}
+	
+	@Override
 	public List<Map<String, Object>> selectCodeList(CodeVo codeVo) {
 		return sqlSession.selectList("code.selectCodeList", codeVo);
 	}

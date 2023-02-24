@@ -2,6 +2,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
 <title>MORRIS</title>
+
+<!-- tag lib -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!-- CSS Style Sheet import -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dataTable_1.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dataTable_2.css" />
