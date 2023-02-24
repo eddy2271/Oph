@@ -40,7 +40,7 @@
 				AND CODE_VAL = #{codeVal}			
 			</if>
     		<if test='codeValDesc != null and codeValDesc != ""'>
-				AND CODE_VAL_DESC LIKE '%${codeValDesc}%'			
+				AND CODE_VAL_DESC LIKE CONCAT('%',#{codeValDesc},'%')			
 			</if>
     </select>
      

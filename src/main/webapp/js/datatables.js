@@ -24182,27 +24182,32 @@ $jscomp.polyfill("Array.prototype.find", function (l) {
         iDisplayStart      : 0,
         iTabIndex          : 0,
         oClasses           : {},
-        oLanguage          : {
-            oAria             : {
-                sSortAscending : ": activate to sort column ascending",
-                sSortDescending: ": activate to sort column descending"
+        oLanguage: {
+                oAria: {
+                    sSortAscending: ": 오름차순 정렬",
+                    sSortDescending: ": 내림차순 정렬"
+                },
+                oPaginate: {
+                    sFirst: "첫 페이지",
+                    sLast: "마지막 페이지",
+                    sNext: "다음",
+                    sPrevious: "이전"
+                },
+                sEmptyTable: "조회된 데이터가 없습니다.",
+                sInfo: "_START_ - _END_ (총 _TOTAL_ 개)",
+                sInfoEmpty: "0개",
+                sInfoFiltered: "(전체 _MAX_ 개 중 검색결과)",
+                sInfoPostFix: "",
+                sDecimal: "",
+                sThousands: ",",
+                sLengthMenu: "_MENU_ 개씩 보기",
+                sLoadingRecords: "로딩중...",
+                sProcessing: "처리중...",
+                sSearch: "검색 :",
+                sSearchPlaceholder: "",
+                sUrl: "",  
+                sZeroRecords: "검색된 데이터가 없습니다."
             },
-            oPaginate         : {sFirst: "First", sLast: "Last", sNext: "Next", sPrevious: "Previous"},
-            sEmptyTable       : "No data available in table",
-            sInfo             : "Showing _START_ to _END_ of _TOTAL_ entries",
-            sInfoEmpty        : "Showing 0 to 0 of 0 entries",
-            sInfoFiltered     : "(filtered from _MAX_ total entries)",
-            sInfoPostFix      : "",
-            sDecimal          : "",
-            sThousands        : ",",
-            sLengthMenu       : "Show _MENU_ entries",
-            sLoadingRecords   : "Loading...",
-            sProcessing       : "",
-            sSearch           : "Search:",
-            sSearchPlaceholder: "",
-            sUrl              : "",
-            sZeroRecords      : "No matching records found"
-        },
         oSearch            : l.extend({}, u.models.oSearch),
         sAjaxDataProp      : "data",
         sAjaxSource        : null,
