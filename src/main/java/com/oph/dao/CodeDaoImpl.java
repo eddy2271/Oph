@@ -28,4 +28,18 @@ public class CodeDaoImpl implements CodeDaoI{
 	public List<Map<String, Object>> selectCodeList(CodeVo codeVo) {
 		return sqlSession.selectList("code.selectCodeList", codeVo);
 	}
+	
+	@Override
+	public int codeChange(CodeVo codeVo) {
+		int cnt = 0;
+		if("C".equals(codeVo.getMode())) {
+			cnt = sqlSession.insert("code.codeInsert", codeVo);
+		} else if("M".equals(codeVo.getMode())) {
+			cnt = sqlSession.update("code.codeUpdate", codeVo);
+		} else if("D".equals(codeVo.getMode())) {
+			cnt = sqlSession.delete("code.codeDelete", codeVo);
+		}
+		
+		return cnt;
+	}
 }

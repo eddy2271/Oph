@@ -65,10 +65,42 @@ public class CodeController {
 		try {
 			List<Map<String, Object>> codeList = new ArrayList<Map<String,Object>>();
 			
-			System.out.println("codeVo :: " + codeVo);
 			codeList = codeService.selectCodeList(codeVo);
 			map.put("codeList", codeList);
 			map.put("result", 1); // 성공
+		} catch(Exception e) {
+			map.put("reulst", -1); // 실패
+			map.put("message", "코드목록 조회에 실패했습니다."); // 실패
+		}
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/codeChange.do")
+	public Object codeChange(HttpServletRequest request, HttpServletResponse response, @RequestBody CodeVo codeVo) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+			int codeChange = 0;
+			String url = "";
+			codeChange = codeService.codeChange(codeVo);
+			
+			if(codeChange > 0) {
+				String msg = "";
+				
+				if("C".equals(codeVo.getMode())) {
+					msg = "코드를 정상적으로 등록하였습니다.";
+				} else if("M".equals(codeVo.getMode())) {
+					msg = "코드를 정상적으로 수정하였습니다.";
+				} else if("D".equals(codeVo.getMode())) {
+					msg = "코드를 정상적으로 삭제하였습니다.";
+				}
+				map.put("message", msg); // 성공
+				map.put("result", 1); // 성공
+			} else {
+				throw new Exception();
+			}
 		} catch(Exception e) {
 			map.put("reulst", -1); // 실패
 			map.put("message", "코드목록 조회에 실패했습니다."); // 실패
