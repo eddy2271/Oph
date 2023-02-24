@@ -8,9 +8,27 @@
 <!-- <meta http-equiv="refresh" content="0; url=landing.do"/> -->
 </head>
 	<script type="text/javascript">
+		var tb = "";
+	
 		// 화면 진입 호출부
 		$(function(){
 			init();
+			
+			$('#codeTable tbody').on('click', 'tr', function () {
+		        if ($(this).hasClass('selected')) {
+		            $(this).removeClass('selected');
+		        } else {
+					tb.$('tr.selected').removeClass('selected');
+					$(this).addClass('selected');
+					var row_data = $.map(tb.row('.selected').data(), function(item){
+						return item;
+					});
+					alert(row_data[0] +", " +row_data[1]);
+		            
+// 		            modal("M");
+		        }
+		    });
+			
 		});
    		
 		function init() {
@@ -40,9 +58,7 @@
 		}
 		
 		function setDataTable(data) {
-			var tb = $('#codeTable').DataTable();
-			
-			tb.destroy();
+			$('#codeTable').DataTable().destroy();
 			
 			tb = $("#codeTable").DataTable({
 				dom: 'Bfrtip',
@@ -66,12 +82,31 @@
 					text: '등록하기',
 					className: 'w-btn w-btn-blue',
 					action: function(e, dt, node, config) {
-// 						modalCtrl("C");
+						modal("C");
 					}
 				}]
 			});
 			// 조회된 count 세팅			
 			$("#rowCount").text(tb.page.info().recordsTotal);
+			
+			tb.rows({selected:true}).data();
+		}
+		
+		function modal(type) {
+			if(type == "C") {
+				$("#headerName").text("코드 등록");
+				$("#modal").show();
+			} else if(type == "D") { // 닫기
+				$("#headerName").text("");
+				$("#modal").hide();
+				
+				// modal 안의 모든 input 값 초기화
+				$("#modal").find('input[type=text]').each(function() {
+					$(this).val("");
+				});
+				
+				search();
+			}
 		}
 		
 		// 선택된 코브구분에 따른 코드 값 세팅
@@ -94,6 +129,10 @@
 			function error(request,status) {
 				alert(status);
 			});
+		}
+		
+		function modalClose() {
+			modal("D");
 		}
     </script>
     
@@ -141,5 +180,38 @@
 		<tbody>
 		</tbody>
 	</table>
+	
+	
+	<!-- modal Layer -->
+	<div id="modal">
+	    <div class="modal_content">
+	    	<div class="modal-header">
+	    		<span id="headerName" class="headerName"></span>
+	    		<button type="button" onclick="modalClose()" class="close-area">X</button>
+	    	</div>
+	    	<div class="modal-body">
+	    		<div class="body_header">기본 정보</div>
+	    		<table class="modal_tbl">
+	    			<tr>
+	    				<th>코드 구분</th>
+	    				<td><input type="text" id="codeDiv" name="codeDiv" class="inputFull"/></td>
+	    				<th>코드 구분 설명</th>
+	    				<td><input type="text" id="codeDivDesc" name="codeDivDesc" class="inputFull"/></td>
+	    			</tr>
+	    			<tr>
+	    				<th>코드 값</th>
+	    				<td><input type="text" id="codeVal" name="codeVal" class="inputFull"/></td>
+	    				<th>코드 값 설명</th>
+	    				<td><input type="text" id="codeValDesc" name="codeValDesc" class="inputFull"/></td>
+	    			</tr>
+	    		</table>
+	    	</div>
+	    	<div class="modal-last">
+		    	<button type="button" onclick="dataAdd()" class="w-btn saveBtn">코드 등록</button>
+		    </div>
+	    </div>
+	    <div class="modal_layer"></div>
+	</div>
+	
 </body>
 </html>
