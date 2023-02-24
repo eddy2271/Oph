@@ -1,13 +1,27 @@
 package com.oph.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.oph.service.LoginServiceI;
+import com.oph.vo.LoginVo;
 
 @Controller
 public class LoginConteroller {
+	
+	@Autowired
+	LoginServiceI loginService;
 
 	/**
 	 * 로그인 화면
@@ -18,6 +32,38 @@ public class LoginConteroller {
 	public ModelAndView viewLoginView(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("/login/login");
 		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/loginUser.do")
+	public Object loginUser(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String,Object> param) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("#@!#@!#@!#@!#@!#@!" +param.toString());
+		try { 
+			HttpSession session = request.getSession();
+			LoginVo valList = new LoginVo();
+			valList = loginService.selectUserInfo(param);
+			
+			if(valList != null){
+			
+				session.setAttribute("userInfo", valList);
+				map.put("result", 1); // 실패
+			}else {
+				map.put("result", 2); // 실패
+				map.put("message", "아이디 또는 패스워드가 일치하지 않습니다."); // 실패
+			}
+			
+			
+			LoginVo login = (LoginVo)session.getAttribute("userInfo");
+			System.out.println("session :: " + login.toString());
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			map.put("result", -1); // 실패
+			map.put("message", "아이디 또는 패스워드가 일치하지 않습니다."); // 실패
+		}
+		
+		return map;
 	}
 	
 	

@@ -6,13 +6,20 @@
     <param-value>oph</param-value>
   </context-param>
   <context-param>
-    <param-name>log4jConfigLocation</param-name>
-    <param-value>/WEB-INF/config/log4j.properties</param-value>
+    <param-name>log4jConfiguration</param-name>
+    <param-value>/WEB-INF/config/log4j.xml</param-value>
   </context-param>
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/config/application-**.xml</param-value>
   </context-param>
+  
+  
+ <listener>
+    <listener-class>
+    org.apache.logging.log4j.web.Log4jServletContextListener
+    </listener-class>
+</listener>
   
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

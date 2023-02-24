@@ -8,6 +8,7 @@
 		<typeAlias alias="codeVo" type="com.oph.vo.CodeVo" />
 		<typeAlias alias="eventVo" type="com.oph.vo.EventVo" />
 		<typeAlias alias="userVo" type="com.oph.vo.UserVo" />
+		<typeAlias alias="loginVo" type="com.oph.vo.LoginVo" />
 	</typeAliases>
 	
 </configuration>
