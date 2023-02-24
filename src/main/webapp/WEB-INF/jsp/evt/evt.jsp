@@ -125,7 +125,11 @@
 		    				<td><input type="text" class="inputFull"/></td>
 		    			</tr>
 		    		</table>
-		    		<div class="body_header top">상담 정보</div>
+		    		<div class="top">
+		    			<div class="body_header divLeft">상담 정보</div>
+			    		<button class="divLeft ctrlBtn" id="addSurvey">add</button>
+			    		<button class="divLeft ctrlBtn" id="delSurvey">delete</button>
+		    		</div>
 		    		<table class="modal_tbl">
 		    			<tr>
 		    				<th>예약현황</th>
@@ -134,10 +138,30 @@
 		    				<td><input type="text" class="inputFull"/></td>
 		    			</tr>
 		    			<tr>
+		    				<th>지면명</th>
+		    				<td><input type="text" class="inputFull"/></td>
 		    				<th>설문1</th>
 		    				<td><input type="text" class="inputFull"/></td>
-		    				<th>설문2</th>
-		    				<td><input type="text" class="inputFull"/></td>
+		    			</tr>
+		    			<tr class="as1 addSurvey">
+		    				<th class="as1_1 addSurvey">설문2</th>
+		    				<td class="as1_1 addSurvey"><input type="text" class="inputFull input1_1"/></td>
+		    				<th class="as1_2 addSurvey">설문3</th>
+		    				<td class="as1_2 addSurvey"><input type="text" class="inputFull input1_2"/></td>
+		    			</tr>
+		    			<tr class="as2 addSurvey">
+		    				<th class="as2_1 addSurvey">설문4</th>
+		    				<td class="as2_1 addSurvey"><input type="text" class="inputFull input2_1"/></td>
+		    				<th class="as2_2 addSurvey">설문5</th>
+		    				<td class="as2_2 addSurvey"><input type="text" class="inputFull input2_2"/></td>
+		    			</tr>
+		    			<tr class="as3 addSurvey">
+		    				<th class="as3_1 addSurvey">설문6</th>
+		    				<td class="as3_1 addSurvey"><input type="text" class="inputFull input3_1"/></td>
+		    			</tr>
+		    			<tr>
+		    				<th>설명</th>
+		    				<td colspan="3"><textarea class="inputFull" maxlength="4000"></textarea></td>
 		    			</tr>
 		    		</table>
 		    	</div>
@@ -150,6 +174,7 @@
 	</body>
 	<script>
 		var evtTable = ""; // 데이터 테이블 변수
+		var surveyCnt = [0, 2]; // 추가 설문 항목
 		
 		$(document).ready(function() {
 			var param = {};
@@ -239,12 +264,62 @@
 			} else if(state == "D") { // 닫기
 				$("#headerName").text("");
 				$("#modal").hide();
+				
+				// 설문 영역 초기화
+				$(".addSurvey").hide();
+				surveyCnt = [0, 2];
+				
+				// modal 안의 모든 input 값 초기화
+				$("#modal").find('input[type=text]').each(function() {
+					$(this).val("");
+				});
+				
+				// 데이터 리로드
 				evtTable.ajax.reload();
 			}
 		}
 		
+		// modal 닫기
 		$("#modalClose").on("click", function() {
 			modalCtrl("D");
+		});
+		
+		// 설문 항목 추가
+		$("#addSurvey").on("click", function() {
+			if(surveyCnt[0] == 3 && surveyCnt[1] == 1) {
+				alert("더 이상 설문을 추가할 수 없습니다.");
+				return;
+			} else {
+				surveyCnt[1]++;
+				
+				if(surveyCnt[1] == 3) {
+					surveyCnt[0]++;
+					surveyCnt[1] = 1;
+					$(".as" + surveyCnt[0]).show();
+				}
+				
+				$(".as" + surveyCnt[0] + "_" + surveyCnt[1]).show();
+				$(".input" + surveyCnt[0] + "_" + surveyCnt[1]).val("");
+			}
+		});
+		
+		// 설문 항목 제거
+		$("#delSurvey").on("click", function() {
+			if(surveyCnt[0] == 0 && surveyCnt[1] == 2) {
+				alert("하나 이상의 설문이 필요합니다.");
+				return;
+			} else {
+				$(".as" + surveyCnt[0] + "_" + surveyCnt[1]).hide();
+				$(".input" + surveyCnt[0] + "_" + surveyCnt[1]).val("");
+				
+				surveyCnt[1]--;
+				
+				if(surveyCnt[1] == 0) {
+					$(".as" + surveyCnt[0]).hide();
+					surveyCnt[1] = 2;
+					surveyCnt[0]--;
+				}
+			}
 		});
 	</script>
 </html>
