@@ -43,5 +43,36 @@
 				AND CODE_VAL_DESC LIKE CONCAT('%',#{codeValDesc},'%')			
 			</if>
     </select>
-     
+    
+    <insert id="codeInsert" parameterType="codeVo">
+    	INSERT INTO TMB_CODE (
+			CODE_DIV,
+			CODE_VAL,
+			CODE_DIV_DESC,
+			CODE_VAL_DESC
+		) VALUES (
+			#{codeDiv},
+			#{codeVal},
+			#{codeDivDesc},
+			#{codeValDesc}
+		)
+    </insert>
+    
+    <update id="codeUpdate" parameterType="codeVo">
+    	UPDATE TMB_CODE 
+    	SET 
+    		CODE_DIV_DESC = #{codeDivDesc},
+    		CODE_VAL_DESC = #{codeValDesc}
+    	WHERE 1=1
+    		AND CODE_DIV = #{codeDiv}
+    		AND CODE_VAL = #{codeVal}
+    </update>
+    
+    <delete id="codeDelete" parameterType="codeVo">
+    	DELETE FROM TMB_CODE 
+    	WHERE 1=1
+    		AND CODE_DIV = #{codeDiv}
+    		AND CODE_VAL = #{codeVal}
+    </delete>
+    
 </mapper>

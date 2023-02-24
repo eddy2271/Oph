@@ -9,6 +9,7 @@
 </head>
 	<script type="text/javascript">
 		var tb = "";
+		var mode = "";
 	
 		// 화면 진입 호출부
 		$(function(){
@@ -20,17 +21,31 @@
 		        } else {
 					tb.$('tr.selected').removeClass('selected');
 					$(this).addClass('selected');
-					var row_data = $.map(tb.row('.selected').data(), function(item){
+					var item = $.map(tb.row('.selected').data(), function(item){
 						return item;
 					});
-					alert(row_data[0] +", " +row_data[1]);
+			        // 상세수정 버튼 클릭 시 이벤트
+			    	$("#modalCodeDiv").val(item[0]);
+					$("#modalCodeDiv").attr("disabled",true); 
+					$("#modalCodeVal").val(item[1]);
+					$("#modalCodeVal").attr("disabled",true);
+					$("#modalCodeValDesc").val(item[2]);
+					$("#modalCodeDivDesc").val(item[3]);
+					
 		            
-// 		            modal("M");
+					$(".modal-last").append('<button type="button" onclick="del()" id="btnDel" class="w-btn saveBtn">코드 삭제</button>');
+					
+		            modal("M");
 		        }
 		    });
 			
 		});
    		
+		function del() {
+			mode = "D";
+			dataAdd();
+		}
+		
 		function init() {
 			// 선택된 구분에 대한 값 세팅
 			selectValList();
@@ -59,7 +74,6 @@
 		
 		function setDataTable(data) {
 			$('#codeTable').DataTable().destroy();
-			
 			tb = $("#codeTable").DataTable({
 				dom: 'Bfrtip',
 				destroy: true,
@@ -69,12 +83,16 @@
 				columnDefs: [ { // 요건 컬럼 정의 
 					'searchable' : false,
 					'orderable' : false,
-					'className' : 'dt-body-center chkCenter'
+					'className' : 'dt-body-center chkCenter',
+					'render' : function(data, type, full, meta) {
+						return '<input type="checkbox">';
+					}
 				} ],
 				order: [ [ 1, 'asc' ] ],
 				data: data,
 				columns: [
                     {data: 'CODE_DIV', render: $.fn.dataTable.render.text()}, //코드구분
+                    {data: 'CODE_DIV_DESC', render: $.fn.dataTable.render.text()}, //코드구분
                     {data: 'CODE_VAL', render: $.fn.dataTable.render.text()}, //코드값
                     {data: 'CODE_VAL_DESC', render: $.fn.dataTable.render.text()}, //코드설명
 			  	],
@@ -95,7 +113,14 @@
 		function modal(type) {
 			if(type == "C") {
 				$("#headerName").text("코드 등록");
+				$("#btnTxt").text("코드 등록");
 				$("#modal").show();
+				mode = "C";
+			} else if(type == "M") {
+				$("#headerName").text("코드 상세/수정");
+				$("#btnTxt").text("코드 수정");
+				$("#modal").show();
+				mode = "M";
 			} else if(type == "D") { // 닫기
 				$("#headerName").text("");
 				$("#modal").hide();
@@ -104,6 +129,10 @@
 				$("#modal").find('input[type=text]').each(function() {
 					$(this).val("");
 				});
+				$("#modalCodeDiv").removeAttr("disabled"); 
+				$("#modalCodeVal").removeAttr("disabled"); 
+				
+				$("#btnDel").remove();
 				
 				search();
 			}
@@ -131,8 +160,31 @@
 			});
 		}
 		
+		// 모달 닫기
 		function modalClose() {
 			modal("D");
+		}
+		
+		function dataAdd() {
+			var params = {
+				mode : mode,
+				codeDiv : $("#modalCodeDiv").val(),
+				codeVal : $("#modalCodeVal").val(),
+				codeDivDesc : $("#modalCodeDivDesc").val(),
+				codeValDesc : $("#modalCodeValDesc").val()
+			}
+			
+			request("./codeChange.do", params, function callback(res) {
+				if(res.result > 0) {
+					alert(res.message);
+					location.reload();
+				} else {
+					alert(res.message);
+				}
+			},
+			function error(request,status) {
+				alert(status);
+			});		
 		}
     </script>
     
@@ -170,6 +222,9 @@
 					<div>코드 구분</div>
 				</th>
 				<th>
+					<div>코드 구분 설명</div>
+				</th>
+				<th>
 					<div>코드 값</div>
 				</th>
 				<th>
@@ -181,7 +236,6 @@
 		</tbody>
 	</table>
 	
-	
 	<!-- modal Layer -->
 	<div id="modal">
 	    <div class="modal_content">
@@ -189,25 +243,29 @@
 	    		<span id="headerName" class="headerName"></span>
 	    		<button type="button" onclick="modalClose()" class="close-area">X</button>
 	    	</div>
-	    	<div class="modal-body">
+	    	<div class="modal-body" style="height:18%">
 	    		<div class="body_header">기본 정보</div>
 	    		<table class="modal_tbl">
 	    			<tr>
 	    				<th>코드 구분</th>
-	    				<td><input type="text" id="codeDiv" name="codeDiv" class="inputFull"/></td>
+	    				<td>
+	    					<input type="text" id="modalCodeDiv" name="modalCodeDiv" class="inputFull"/>
+	    				</td>
 	    				<th>코드 구분 설명</th>
-	    				<td><input type="text" id="codeDivDesc" name="codeDivDesc" class="inputFull"/></td>
+	    				<td>
+	    					<input type="text" id="modalCodeDivDesc" name="modalCodeDivDesc" class="inputFull"/>
+	    				</td>
 	    			</tr>
 	    			<tr>
 	    				<th>코드 값</th>
-	    				<td><input type="text" id="codeVal" name="codeVal" class="inputFull"/></td>
+	    				<td><input type="text" id="modalCodeVal" name="modalCodeVal" class="inputFull"/></td>
 	    				<th>코드 값 설명</th>
-	    				<td><input type="text" id="codeValDesc" name="codeValDesc" class="inputFull"/></td>
+	    				<td><input type="text" id="modalCodeValDesc" name="modalCodeValDesc" class="inputFull"/></td>
 	    			</tr>
 	    		</table>
 	    	</div>
 	    	<div class="modal-last">
-		    	<button type="button" onclick="dataAdd()" class="w-btn saveBtn">코드 등록</button>
+		    	<button type="button" onclick="dataAdd()" id="btnTxt" class="w-btn saveBtn"></button>
 		    </div>
 	    </div>
 	    <div class="modal_layer"></div>
