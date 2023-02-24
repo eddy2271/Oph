@@ -7,5 +7,8 @@ public interface EventServiceI {
 	
 	// 파트너 리스트 가져오기
 	List<Map<String, Object>> getPartnerList(String userCodeVal);
-
+	
+	// 이벤트 리스트 가져오기
+	List<Map<String, Object>> getEvtList(Map<String, Object> param);
+	
 }
