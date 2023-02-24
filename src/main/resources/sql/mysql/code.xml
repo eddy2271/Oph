@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="code">
+    
+    <select id="selectCodeDivList" resultType="map">
+    	SELECT 
+			CODE_DIV,
+			CODE_DIV_DESC
+		FROM tmb_code
+		WHERE 1=1
+		GROUP BY CODE_DIV, CODE_DIV_DESC
+    </select>
+    
+    <select id="selectCodeValList" parameterType="codeVo" resultType="map">
+    	SELECT 
+			CODE_VAL,
+			CODE_VAL_DESC
+		FROM tmb_code
+		WHERE 1=1
+		<if test='codeDiv != null and codeDiv != ""'>
+			AND CODE_DIV = #{codeDiv}
+		</if>
+    </select>
+    
+    <select id="selectCodeList" parameterType="codeVo" resultType="map">
+    	SELECT 
+			CODE_DIV,
+			CODE_VAL,
+			CODE_DIV_DESC,
+			CODE_VAL_DESC
+		FROM tmb_code
+		WHERE 1=1
+			<if test='codeDiv != null and codeDiv != ""'>
+				AND CODE_DIV = #{codeDiv}
+			</if>
+			<if test='codeVal != null and codeVal != ""'>
+				AND CODE_VAL = #{codeVal}			
+			</if>
+    		<if test='codeValDesc != null and codeValDesc != ""'>
+				AND CODE_VAL_DESC LIKE '%${codeValDesc}%'			
+			</if>
+    </select>
+     
+</mapper>
