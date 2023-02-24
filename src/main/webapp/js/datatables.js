@@ -24187,8 +24187,11 @@ $jscomp.polyfill("Array.prototype.find", function (l) {
                 sSortAscending : ": activate to sort column ascending",
                 sSortDescending: ": activate to sort column descending"
             },
-            oPaginate         : {sFirst: "First", sLast: "Last", sNext: "Next", sPrevious: "Previous"},
-            sEmptyTable       : "No data available in table",
+            oPaginate         : {sFirst: "처음",
+                    sLast: "마지막",
+                    sNext: "다음",
+                    sPrevious: "이전"},
+            sEmptyTable       : "조회된 데이터가 없습니다.",
             sInfo             : "Showing _START_ to _END_ of _TOTAL_ entries",
             sInfoEmpty        : "Showing 0 to 0 of 0 entries",
             sInfoFiltered     : "(filtered from _MAX_ total entries)",

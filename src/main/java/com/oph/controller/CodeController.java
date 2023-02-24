@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,7 +41,7 @@ public class CodeController {
 	
 	@ResponseBody
 	@RequestMapping(value="/codeValList.do")
-	public Object codeValList(HttpServletRequest request, HttpServletResponse response, CodeVo codeVo) {
+	public Object codeValList(HttpServletRequest request, HttpServletResponse response, @RequestBody CodeVo codeVo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
@@ -58,11 +59,13 @@ public class CodeController {
 	
 	@ResponseBody
 	@RequestMapping(value="/codeList.do")
-	public Object codeList(HttpServletRequest request, HttpServletResponse response, CodeVo codeVo) {
+	public Object codeList(HttpServletRequest request, HttpServletResponse response, @RequestBody CodeVo codeVo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
 			List<Map<String, Object>> codeList = new ArrayList<Map<String,Object>>();
+			
+			System.out.println("codeVo :: " + codeVo);
 			codeList = codeService.selectCodeList(codeVo);
 			map.put("codeList", codeList);
 			map.put("result", 1); // 성공

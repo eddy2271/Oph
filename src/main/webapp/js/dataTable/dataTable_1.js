@@ -2372,12 +2372,12 @@
                     sSortDescending: ": activate to sort column descending"
                 },
                 oPaginate: {
-                    sFirst: "First",
-                    sLast: "Last",
-                    sNext: "Next",
-                    sPrevious: "Previous"
+                    sFirst: "처음",
+                    sLast: "마지막",
+                    sNext: "다음",
+                    sPrevious: "이전"
                 },
-                sEmptyTable: "No data available in table",
+                sEmptyTable: "조회된 데이터가 없습니다.",
                 sInfo: "Showing _START_ to _END_ of _TOTAL_ entries",
                 sInfoEmpty: "Showing 0 to 0 of 0 entries",
                 sInfoFiltered: "(filtered from _MAX_ total entries)",
