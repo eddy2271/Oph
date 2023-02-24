@@ -24205,7 +24205,7 @@ $jscomp.polyfill("Array.prototype.find", function (l) {
                 sProcessing: "처리중...",
                 sSearch: "검색 :",
                 sSearchPlaceholder: "",
-                sUrl: "",
+                sUrl: "",  
                 sZeroRecords: "검색된 데이터가 없습니다."
             },
         oSearch            : l.extend({}, u.models.oSearch),
