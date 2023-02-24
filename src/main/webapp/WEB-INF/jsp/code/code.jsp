@@ -21,15 +21,11 @@
 		}
 		
 		function search() {
-			console.log("111111111");
-			
 			var params = {
 				codeDiv : $("#codeDiv").val(),
 				codeVal : $("#codeVal").val(),
 				codeValDesc : $("#codeValDesc").val()
 			}	
-			
-			console.log("params : " + JSON.stringify(params));
 			
 			request("./codeList.do",params, function callback(res) {
 				if(res.result > 0) {
@@ -44,9 +40,11 @@
 		}
 		
 		function setDataTable(data) {
-			$('#codeTable').DataTable().destroy();
+			var tb = $('#codeTable').DataTable();
 			
-			$("#codeTable").DataTable({
+			tb.destroy();
+			
+			tb = $("#codeTable").DataTable({
 				dom: 'Bfrtip',
 				destroy: true,
 				bFilter: false, // 검색란 제어
@@ -72,6 +70,8 @@
 					}
 				}]
 			});
+			// 조회된 count 세팅			
+			$("#rowCount").text(tb.page.info().recordsTotal);
 		}
 		
 		// 선택된 코브구분에 따른 코드 값 세팅
@@ -104,7 +104,7 @@
 			<p>홈 > 공통코드관리</p>
 		</div>
 		<div class="search_box">
-			<p>검색조건 총 (11개)</p>
+			<p>검색조건 총 (<span id="rowCount">0</span>개)</p>
 			<ul>
 				<li>
 					<select name="codeDiv" id="codeDiv" onchange="selectValList()">
