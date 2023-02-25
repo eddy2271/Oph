@@ -20,20 +20,13 @@ public class UserServiceImpl implements UserServiceI{
 		return userDao.selectUserList(userVo);
 	}
 	
-//	@Override
-//	public List<Map<String, Object>> selectCodeDivList() {
-//		return userDao.selectCodeDivList();
-//	}
-//	
-//	@Override
-//	public List<Map<String, Object>> selectCodeValList(CodeVo codeVo) {
-//		return userDao.selectCodeValList(codeVo);
-//	}
-//	
+	@Override
+	public Map<String, Object> selectUserId(UserVo userVo) {
+		return userDao.selectUserId(userVo);
+	}
 	
-//	
-//	@Override
-//	public int codeChange(CodeVo codeVo) {
-//		return userDao.codeChange(codeVo);
-//	}
+	@Override
+	public int userChange(UserVo userVo) {
+		return userDao.userChange(userVo);
+	}
 }

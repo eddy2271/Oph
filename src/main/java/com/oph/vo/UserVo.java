@@ -1,6 +1,6 @@
 package com.oph.vo;
 
-public class UserVo {
+public class UserVo extends CommonVo {
 	String userId;			//회원ID
 	String userPw;			//회원 비밀번호
 	String userNm;			//회원 명

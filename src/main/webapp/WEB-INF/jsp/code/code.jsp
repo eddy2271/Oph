@@ -10,6 +10,7 @@
 	<script type="text/javascript">
 		var tb = "";
 		var mode = "";
+		var dupcheck = false;
 	
 		// 화면 진입 호출부
 		$(function(){
@@ -145,7 +146,7 @@
 			request("./codeValList.do",{codeDiv : $("#codeDiv").val()}, function callback(res) {
 				if(res.result > 0) {
 					if(res.valList.length > 0) {
-						var option = '<option value="">코드 값 선택</option>';
+						var option = '<option value="">코드 값 선택(전체)</option>';
 						for(var i=0; i<res.valList.length; i++) {
 							option += '<option value="'+res.valList[i].CODE_VAL+'">'+res.valList[i].CODE_VAL_DESC+'</option>'
 						}
@@ -165,20 +166,95 @@
 			modal("D");
 		}
 		
+		function valCheck() {
+			var codeDiv = $("#modalCodeDiv").val();
+			var codeVal = $("#modalCodeVal").val();
+			
+			if(codeDiv == "") {
+				alert("구분코드를 입력해주세요.");
+				return $("#modalCodeDiv").focus();
+			}
+			if(codeVal == "") {
+				alert("구분코드값을 입력해주세요.");
+				return $("#modalCodeVal").focus();
+			}
+			
+			var params = {
+				codeDiv : codeDiv,
+				codeVal : codeVal
+			}
+			
+			request("./valCheck.do", params, function callback(res) {
+				if(res.result > 0) {
+					alert(res.message);
+					$("#modalCodeDiv").val('');
+					$("#modalCodeVal").val('');
+					
+					$("#modalCodeVal").focus();
+					dupcheck = false;
+					return;
+				}  else {
+					dupcheck = true;
+				}
+			},
+			function error(request,status) {
+				alert(status);
+			});		
+		}
+		
 		function dataAdd() {
+			
+			var codeDiv = $("#modalCodeDiv").val();
+			var codeVal = $("#modalCodeVal").val();
+			var codeDivDesc = $("#modalCodeDivDesc").val();
+			var codeValDesc = $("#modalCodeValDesc").val();
+			
+			if(mode == "C") {
+				if(codeDiv == "") {
+					alert("구분코드를 입력해주세요.");
+					return $("#modalCodeDiv").focus();
+				}
+				if(codeVal == "") {
+					alert("구분코드값을 입력해주세요.");
+					return $("#modalCodeVal").focus();
+				}
+				if(codeDivDesc == "") {
+					alert("구분코드에 대한 설명을 입력해주세요.");
+					return $("#modalCodeDivDesc").focus();
+				}
+				if(codeValDesc == "") {
+					alert("구분코드값에 대한 설명을 입력해주세요.");
+					return $("#modalCodeValDesc").focus();
+				}
+				if(!dupcheck) {
+					alert("중복체크를 진행해주세요.");
+					return;
+				}
+				
+			} else if(mode == "M") {
+				if(codeDivDesc == "") {
+					alert("구분코드에 대한 설명을 입력해주세요.");
+					return $("#modalCodeDivDesc").focus();
+				}
+				if(codeValDesc == "") {
+					alert("구분코드값에 대한 설명을 입력해주세요.");
+					return $("#modalCodeValDesc").focus();
+				}
+			}
+			
 			var params = {
 				mode : mode,
-				codeDiv : $("#modalCodeDiv").val(),
-				codeVal : $("#modalCodeVal").val(),
-				codeDivDesc : $("#modalCodeDivDesc").val(),
-				codeValDesc : $("#modalCodeValDesc").val()
+				codeDiv : codeDiv,
+				codeVal : codeVal,
+				codeDivDesc : codeDivDesc,
+				codeValDesc : codeValDesc
 			}
 			
 			request("./codeChange.do", params, function callback(res) {
 				if(res.result > 0) {
 					alert(res.message);
 					location.reload();
-				} else {
+				}  else {
 					alert(res.message);
 				}
 			},
@@ -258,7 +334,10 @@
 	    			</tr>
 	    			<tr>
 	    				<th>코드 값</th>
-	    				<td><input type="text" id="modalCodeVal" name="modalCodeVal" class="inputFull"/></td>
+	    				<td>
+		    				<input type="text" id="modalCodeVal" name="modalCodeVal" class="inputHalf"/>
+		    				<button type="button" onclick="valCheck()" class="w-btn-1 checkBtn">중복체크</button>
+	    				</td>
 	    				<th>코드 값 설명</th>
 	    				<td><input type="text" id="modalCodeValDesc" name="modalCodeValDesc" class="inputFull"/></td>
 	    			</tr>

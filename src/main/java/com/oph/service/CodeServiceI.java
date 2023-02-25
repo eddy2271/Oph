@@ -29,6 +29,13 @@ public interface CodeServiceI {
 	public List<Map<String, Object>> selectCodeList(CodeVo codeVo);
 	
 	/**
+	 * code 중복 확인
+	 * @param codeVo
+	 * @return
+	 */
+	public Map<String, Object> selectCodeData(CodeVo codeVo);
+	
+	/**
 	 * code 등록/수정
 	 * @param codeVo
 	 * @return

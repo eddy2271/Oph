@@ -30,8 +30,14 @@ public class CodeDaoImpl implements CodeDaoI{
 	}
 	
 	@Override
+	public Map<String, Object> selectCodeData(CodeVo codeVo) {
+		return sqlSession.selectOne("code.selectCodeData", codeVo);
+	}
+	
+	@Override
 	public int codeChange(CodeVo codeVo) {
 		int cnt = 0;
+		
 		if("C".equals(codeVo.getMode())) {
 			cnt = sqlSession.insert("code.codeInsert", codeVo);
 		} else if("M".equals(codeVo.getMode())) {
