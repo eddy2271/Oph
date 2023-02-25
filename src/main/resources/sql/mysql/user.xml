@@ -4,6 +4,38 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="user">
-    
+    <select id="selectUserList" parameterType="userVo" resultType="map">
+    	SELECT 
+			USER_ID,
+			USER_PW,
+			USER_NM,
+			USER_DIV,
+			(
+				SELECT A.CODE_VAL_DESC
+				FROM tmb_code A
+				WHERE A.CODE_VAL = B.USER_DIV
+			) AS USER_DIV_DESC,
+			USER_CODE_VAL,
+			USER_PH_NUM,
+			USER_EVT_CODE,
+			USER_STS,
+			(
+				SELECT A.CODE_VAL_DESC
+				FROM tmb_code A
+				WHERE A.CODE_VAL = B.USER_STS
+			) AS USER_STS_DESC,
+			DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+		FROM tmb_user B   
+		WHERE 1=1
+			<if test='userId != null and userId != ""'>
+				AND USER_ID = #{userId}
+			</if>
+			<if test='userDiv != null and userDiv != ""'>
+				AND USER_DIV = #{userDiv}			
+			</if>
+    		<if test='userSts != null and userSts != ""'>
+				AND USER_STS = #{userSts}			
+			</if>
+    </select>
      
 </mapper>
