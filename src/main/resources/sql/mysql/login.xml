@@ -12,10 +12,7 @@
 		<where>
 		USER_ID = #{userId}
 		AND USER_PW = #{userPw}
-   		<if test='userDiv != null and !userDiv.equals("")'>
-   			AND	USER_DIV  = #{userDiv}
-   		</if>
-   		</where> 
+		</where>
     </select>
     
      
