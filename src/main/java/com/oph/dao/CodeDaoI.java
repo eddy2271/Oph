@@ -28,6 +28,13 @@ public interface CodeDaoI {
 	public List<Map<String, Object>> selectCodeList(CodeVo codeVo);
 	
 	/**
+	 * code 중복 조회
+	 * @param codeVo
+	 * @return
+	 */
+	public Map<String, Object> selectCodeData(CodeVo codeVo);
+	
+	/**
 	 * code 등록 수정
 	 * @param codeVo
 	 * @return

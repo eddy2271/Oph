@@ -9,7 +9,7 @@
     	SELECT 
 			CODE_DIV,
 			CODE_DIV_DESC
-		FROM tmb_code
+		FROM TMB_CODE
 		WHERE 1=1
 		GROUP BY CODE_DIV, CODE_DIV_DESC
     </select>
@@ -18,7 +18,7 @@
     	SELECT 
 			CODE_VAL,
 			CODE_VAL_DESC
-		FROM tmb_code
+		FROM TMB_CODE
 		WHERE 1=1
 		<if test='codeDiv != null and codeDiv != ""'>
 			AND CODE_DIV = #{codeDiv}
@@ -31,7 +31,7 @@
 			CODE_VAL,
 			CODE_DIV_DESC,
 			CODE_VAL_DESC
-		FROM tmb_code
+		FROM TMB_CODE
 		WHERE 1=1
 			<if test='codeDiv != null and codeDiv != ""'>
 				AND CODE_DIV = #{codeDiv}
@@ -42,6 +42,18 @@
     		<if test='codeValDesc != null and codeValDesc != ""'>
 				AND CODE_VAL_DESC LIKE CONCAT('%',#{codeValDesc},'%')			
 			</if>
+    </select>
+    
+    <select id="selectCodeData" parameterType="codeVo" resultType="map">
+    	SELECT 
+			CODE_DIV,
+			CODE_VAL,
+			CODE_DIV_DESC,
+			CODE_VAL_DESC
+		FROM TMB_CODE
+		WHERE 1=1
+			AND CODE_DIV = #{codeDiv}
+			AND CODE_VAL = #{codeVal}	
     </select>
     
     <insert id="codeInsert" parameterType="codeVo">

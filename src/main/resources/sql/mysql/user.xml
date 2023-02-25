@@ -16,6 +16,11 @@
 				WHERE A.CODE_VAL = B.USER_DIV
 			) AS USER_DIV_DESC,
 			USER_CODE_VAL,
+			(
+				SELECT A.CODE_VAL_DESC
+				FROM tmb_code A
+				WHERE A.CODE_VAL = B.USER_CODE_VAL
+			) AS USER_CODE_VAL_DESC,
 			USER_PH_NUM,
 			USER_EVT_CODE,
 			USER_STS,
@@ -25,7 +30,7 @@
 				WHERE A.CODE_VAL = B.USER_STS
 			) AS USER_STS_DESC,
 			DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
-		FROM tmb_user B   
+		FROM TMB_USER B   
 		WHERE 1=1
 			<if test='userId != null and userId != ""'>
 				AND USER_ID = #{userId}
@@ -38,4 +43,55 @@
 			</if>
     </select>
      
+     
+	<select id="selectUserId" parameterType="userVo" resultType="map">
+    	SELECT 
+			USER_ID
+		FROM TMB_USER
+		WHERE 1=1
+			AND USER_ID = #{userId}
+    </select>
+    
+    <insert id="userInsert" parameterType="userVo">
+    	INSERT INTO TMB_USER (
+			USER_ID,
+			USER_PW,
+			USER_NM,
+			USER_DIV,
+			USER_CODE_VAL,
+			USER_PH_NUM,
+			USER_EVT_CODE,
+			USER_STS,
+			REG_DT
+		) VALUES (
+			#{userId},
+			#{userPw},
+			#{userNm},
+			#{userDiv},
+			#{userCodeVal},
+			#{userPhNum},
+			CONCAT(#{userCodeVal},DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')),
+			${userSts},
+			NOW()
+		)
+    </insert>
+    
+    <update id="userUpdate" parameterType="userVo">
+    	UPDATE TMB_USER 
+    	SET 
+    		USER_NM = #{userNm},
+    		USER_PW = #{userPw},
+    		USER_PH_NUM = #{userPhNum},
+    		USER_STS = #{userSts}
+    	WHERE 1=1
+    		AND USER_ID = #{userId}
+    		AND USER_EVT_CODE = #{userEvtCode}
+    </update>
+    
+    <delete id="userDelete" parameterType="userVo">
+    	DELETE FROM TMB_USER 
+    	WHERE 1=1
+    		AND USER_ID = #{userId}
+    		AND USER_EVT_CODE = #{userEvtCode}
+    </delete>
 </mapper>

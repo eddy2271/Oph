@@ -13,26 +13,18 @@ public interface UserDaoI {
 	 * @return
 	 */
 	public List<Map<String, Object>> selectUserList(UserVo userVo);
+
+	/**
+	 * 회원 ID 조회
+	 * @param userVo
+	 * @return
+	 */
+	public Map<String, Object> selectUserId(UserVo userVo);
 	
-//	/**
-//	 * code 구분 조회
-//	 * @param codeVo
-//	 * @return
-//	 */
-//	public List<Map<String, Object>> selectCodeDivList();
-//	
-//	/**
-//	 * code 값 조회
-//	 * @param codeVo
-//	 * @return
-//	 */
-//	public List<Map<String, Object>> selectCodeValList(CodeVo codeVo);
-//	
-//	/**
-//	 * code 등록 수정
-//	 * @param codeVo
-//	 * @return
-//	 */
-//	public int codeChange(CodeVo codeVo);
-	
+	/**
+	 * 회원정보 등록 수정
+	 * @param codeVo
+	 * @return
+	 */
+	public int userChange(UserVo userVo);
 }
