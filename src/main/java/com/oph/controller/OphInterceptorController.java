@@ -19,9 +19,9 @@ public class OphInterceptorController  implements HandlerInterceptor{
             throws Exception {
 			HttpSession session = request.getSession();
 	        LoginVo userInfo = (LoginVo)session.getAttribute("userInfo");
-	        if(request.getRequestURI().toString().equals("/login.do") || 
-	        		request.getRequestURI().toString().equals("/loginUser.do") ||
-	        		request.getRequestURI().toString().equals("/logout.do") ) {
+	        if(request.getRequestURI().toString().contains("/login.do") || 
+	        		request.getRequestURI().toString().contains("/loginUser.do") ||
+	        		request.getRequestURI().toString().contains("/logout.do") ) {
 	        	return true;
 	        }else {
 	        	if(userInfo == null) {

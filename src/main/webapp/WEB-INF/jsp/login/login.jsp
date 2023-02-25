@@ -21,12 +21,12 @@
         	return;
     	}
 
-    	var userDiv = document.querySelector('input[name="userDiv"]:checked').value;
+//     	var userDiv = document.querySelector('input[name="userDiv"]:checked').value;
     	
     	var params = {
     			userId : $("#inputId").val(),
-    			userPw : $("#inputPassword").val(),
-    			userDiv : userDiv
+    			userPw : $("#inputPassword").val()
+//     			userDiv : userDiv
     	}
 
 		request("./loginUser.do",params,
@@ -88,8 +88,8 @@
     <div class="login-content">
       <form>
         <h2 class="title">로그인</h2>
-       		  <input type="radio" id="userDiv" name="userDiv" value="ATH002" checked> 클라이언트 회원</input>
-               <input type="radio" id="userDiv" name="userDiv" value="ATH001"> 파트너사 회원</input>
+<!--        		  <input type="radio" id="userDiv" name="userDiv" value="ATH002" checked> 클라이언트 회원</input> -->
+<!--                <input type="radio" id="userDiv" name="userDiv" value="ATH001"> 파트너사 회원</input> -->
               <div class="input-div one">
                  <div class="i">
                     <i class="fas fa-user"></i>
