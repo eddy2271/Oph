@@ -81,56 +81,42 @@
 
 </head>
 <style>
-	div#header{
-	    position:fixed;
-	    width:100%;
-	    top:0;
-	    left:0;
-	}
-
-	div#logo{
-
-		float:left;
-
-		width:50%;
-
-		padding:10px 0 0 20px;
-
-	}
-
-	ul.nav{
-
-		float:left;
-
-		list-style:none;
-
-		width:45%;
-
-	}
-
-	ul.nav li{
-
-		float:left;
-
-	}
-
-	ul.nav a{
-
-		line-height:40px;
-
-		color:#FFFFFF;
-
-		padding:0 15px;
-
+	*{
+		list-style: none;
 		text-decoration: none;
-
+		color: inherit;
+		margin: 0;
+		padding: 0;
 	}
-
+	.wrap{
+		width: 100%;
+		height: 500px;
+		margin: 0 auto;
+		text-align: center; 
+	}
+	.fixed_menu {
+		width: 100%;
+		height: 60px;
+		background-color: #fff;
+		opacity: 0.8;
+	}
+	.fixed_menu li{
+		display: inline-block;
+		margin: 20px;
+	}
+	.content{
+		width: 100%;
+		height: 800px;
+		background-image: url('img1.png');
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+	p {color: #fff; font-size: 14px; padding-top: 100px;}
 </style>
 <body>
 
     <div class="header-menu" id="divHeader">201Company</div>
-	<div id="header">
+	<div id="header" >
      <div>
         <ul class="nav">
            <li><a href="#">이벤트관</a></li>
