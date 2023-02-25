@@ -1,11 +1,11 @@
 package com.oph.vo;
 
-public class CodeVo {
+public class CodeVo extends CommonVo{
 	String codeDiv; // 코드 구분
 	String codeVal; // 코드 값
 	String codeDivDesc; // 코드 설명
 	String codeValDesc; // 코드 설명
-	
+
 	public String getCodeDiv() {
 		return codeDiv;
 	}
@@ -32,8 +32,7 @@ public class CodeVo {
 	}
 	@Override
 	public String toString() {
-		return "CodeVo [codeDiv=" + codeDiv + ", codeVal=" + codeVal + ", codeDivDesc=" + codeDivDesc + ", codeValDesc="
-				+ codeValDesc + "]";
+		return "CodeVo [codeDiv=" + codeDiv + ", codeVal=" + codeVal + ", codeDivDesc=" + codeDivDesc
+				+ ", codeValDesc=" + codeValDesc + "]";
 	}
-	
 }

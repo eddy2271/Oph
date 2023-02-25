@@ -30,4 +30,13 @@ public class CodeServiceImpl implements CodeServiceI{
 		return codeDao.selectCodeList(codeVo);
 	}
 	
+	@Override
+	public Map<String, Object> selectCodeData(CodeVo codeVo) {
+		return codeDao.selectCodeData(codeVo);
+	}
+	
+	@Override
+	public int codeChange(CodeVo codeVo) {
+		return codeDao.codeChange(codeVo);
+	}
 }

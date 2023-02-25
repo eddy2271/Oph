@@ -4,16 +4,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
 <%@ include file="/WEB-INF/jsp/common.jsp"%>
-<!-- <meta http-equiv="refresh" content="0; url=landing.do"/> -->
 </head>
   
    <script type="text/javascript">
     
     function login() {
-    	if ($("#inputEmail").val() == '') {
+    	if ($("#inputId").val() == '') {
         	alert('로그인할 사용자 아이디를 입력하지 않으셨습니다.\n\n사용자 아이디를 입력하여 주십시요.');
-        	$("#inputEmail").focus();
-        	return;
+        	$("#inputId").focus();
+        	return; 
     	}
 
     	if ($("#inputPassword").val() == '') {
@@ -22,15 +21,22 @@
         	return;
     	}
 
+//     	var userDiv = document.querySelector('input[name="userDiv"]:checked').value;
+    	
+    	var params = {
+    			userId : $("#inputId").val(),
+    			userPw : $("#inputPassword").val()
+//     			userDiv : userDiv
+    	}
 
-		request("./userLogin.do",params,
+		request("./loginUser.do",params,
 				function callback(response,status) {
-					if ("000" == response.RES_CD) {
-						alert("저장 되었습니다.");
+				console.log(response);
+					if ("1" == response.result) {
 						//저장 후 아래 로직 수행
-						location.reload();
+						location.href = "./indexFrame.do";
 					} else {
-						alert(response.RES_MSG + "(" + response.RES_CD + ")");
+						alert(response.message);
 					}
 				},
 				function error(request,status) {
@@ -43,21 +49,24 @@
     </script>
     
 <body> 
-<div class="intro-wrap">
+<!-- <div class="intro-wrap">
     <div class="wrap-inner">
         <h1 class="logo"></h1>
         <h2 class="title">
-            <strong>테스트11321321321M</strong>
+            <strong></strong>
         </h2>
-        <!-- intro-menu-wrap -->
+        intro-menu-wrap
         <div class="intro-menu-wrap" >
             <div class="left">
                 <div class="box">
                     <h3 class="box-tit">LOGIN</h3>
+                    
                     <div class="login-wrap">
+                    <input type="radio" id="userDiv" name="userDiv">클라이언트 회원</input>
+                    <input type="radio" id="userDiv" name="userDiv">파트너사 회원</input>
                         <ul>
                             <li><input id="inputEmail" placeholder="ID" type="text"></li>
-                            <li><input id="inputPassword" placeholder="PASSWORD" type="password"></li>
+                            <li><input id="inputPassword" placeholder="비밀번호" type="password"></li>
                         </ul>
                       
                         <div class="btn">
@@ -68,9 +77,39 @@
             </div>
             
         </div>
-        <!-- // intro-menu-wrap -->
+        // intro-menu-wrap
 
     </div>
-</div>
+</div> -->
+  <div class="container">
+    <div class="img">
+      <img src="${pageContext.request.contextPath}/image/bg.svg">
+    </div>
+    <div class="login-content">
+      <form>
+        <h2 class="title">로그인</h2>
+<!--        		  <input type="radio" id="userDiv" name="userDiv" value="ATH002" checked> 클라이언트 회원</input> -->
+<!--                <input type="radio" id="userDiv" name="userDiv" value="ATH001"> 파트너사 회원</input> -->
+              <div class="input-div one">
+                 <div class="i">
+                    <i class="fas fa-user"></i>
+                 </div>
+                 <div class="div">
+                    <input type="text" placeholder="아이디를 입력하세요." class="input" id="inputId">
+                 </div>
+              </div>
+              <div class="input-div pass">
+                 <div class="i"> 
+                    <i class="fas fa-lock"></i>
+                 </div>
+                 <div class="div">
+                   
+                    <input type="password" placeholder="패스워드를 입력하세요." class="input" id="inputPassword">
+                 </div>
+              </div>
+              <div onclick="login();" style="padding-top:3.5%;" class="btn">로그인</div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

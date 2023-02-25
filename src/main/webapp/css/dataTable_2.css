@@ -1,3 +1,7 @@
+body {
+	padding: 0.5em !important;
+}
+
 :root{
     --dt-row-selected: 0, 209, 178;
     --dt-row-selected-text: 255, 255, 255;
@@ -184,7 +188,8 @@ table.dataTable{
     margin-bottom:6px !important;
     max-width:none !important;
     border-collapse:separate !important;
-    border-spacing:0
+    border-spacing:0;
+    cursor:pointer;
 }
 table.dataTable td,table.dataTable th{
     -webkit-box-sizing:content-box;
@@ -253,6 +258,7 @@ div.dataTables_wrapper div.dataTables_filter input{
     vertical-align:middle
 }
 div.dataTables_wrapper div.dataTables_info{
+    padding-left: 0.5em;
     padding-top:.5em
 }
 div.dataTables_wrapper div.dataTables_paginate ul{
