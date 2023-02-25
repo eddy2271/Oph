@@ -23,4 +23,11 @@ public class FrameController  {
 		
 		return mv;
 	}
+	
+	@RequestMapping(value="/menuFrame.do")
+	public ModelAndView menuFrame(HttpServletRequest request,HttpServletResponse response) {
+		ModelAndView mv = new ModelAndView("/frame/menuFrame");
+		
+		return mv;
+	}
 }

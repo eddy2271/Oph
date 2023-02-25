@@ -29,7 +29,6 @@
     			userDiv : userDiv
     	}
 
-    	console.log(params);
 		request("./loginUser.do",params,
 				function callback(response,status) {
 				console.log(response);
@@ -84,7 +83,7 @@
 </div> -->
   <div class="container">
     <div class="img">
-      <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/bg.svg">
+      <img src="${pageContext.request.contextPath}/image/bg.svg">
     </div>
     <div class="login-content">
       <form>
@@ -108,7 +107,7 @@
                     <input type="password" placeholder="패스워드를 입력하세요." class="input" id="inputPassword">
                  </div>
               </div>
-              <div onclick="login();" class="btn">로그인</div>
+              <div onclick="login();" style="padding-top:3.5%;" class="btn">로그인</div>
             </form>
         </div>
     </div>
