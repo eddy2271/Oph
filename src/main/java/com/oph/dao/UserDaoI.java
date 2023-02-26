@@ -15,6 +15,13 @@ public interface UserDaoI {
 	public List<Map<String, Object>> selectUserList(UserVo userVo);
 
 	/**
+	 * 등록회원 코드목록 조회
+	 * @param userVo
+	 * @return
+	 */
+	public List<Map<String, Object>> selectUserCodeList(UserVo userVo);
+	
+	/**
 	 * 회원 ID 조회
 	 * @param userVo
 	 * @return

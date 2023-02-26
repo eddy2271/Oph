@@ -41,6 +41,7 @@
 					console.log("11"+item[11]);
 					// 회원 ID세팅
 					$("#modalUserId").val(item[7]);
+					$("#modalUserId").attr("disabled",true); 
 					// 회원 명세팅
 					$("#modalUserNm").val(item[3]);
 					// 구분 세팅
@@ -48,23 +49,14 @@
 					// 코드세팅
 					$("#modalUserCodeValInput").val(item[5]);
 					// 휴대폰번호 세팅
-					var regExp = /[^0-9]\s/g;
-					var regExp1 = /^(\d{0,3})(\d{0,4})(\d{0,4})$/g;
-					var regExp2 = /\-{1,2}$/g;
-					$("#modalUserPhNum").val(item[2].replace(regExp, "").replace(regExp1, "$1-$2-$3").replace(regExp2, ""))
+					var regExp = /[^0-9]/g;
+					var regExp1 = /(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})/;
+					$("#modalUserPhNum").val(item[2].replace(regExp, "").replace(regExp1, "$1-$2-$3").replace("--", "-"));
 					// 회원상태 세팅
 					$("#modalUserSts").val(item[8]).prop("selected", true);
 					// 이벤트(광고)코드 세팅
 					$("#modalUserEvtCode").val(item[11]);
 					
-			        // 상세수정 버튼 클릭 시 이벤트
-// 			    	$("#modalCodeDiv").val(item[0]);
-// 					$("#modalCodeDiv").attr("disabled",true); 
-// 					$("#modalCodeVal").val(item[1]);
-// 					$("#modalCodeVal").attr("disabled",true); 
-// 					$("#modalCodeDivDesc").val(item[2]);
-// 					$("#modalCodeValDesc").val(item[3]);
-		            
 					$(".modal-last").append('<button type="button" onclick="del()" id="btnDel" class="w-btn saveBtn">회원 삭제</button>');
 					
 		            modal("M");
@@ -154,6 +146,8 @@
 				$("#evtCodeTr").hide(); // 이벤트(광고) 코드 영역 숨기기
 				$("#modalUserDivInput").hide(); // 회원 구분 선택 input영역 숨기기
 				$("#modalUserCodeValInput").hide(); // 회원 코드 선택 input영역 숨기기
+				$("#modalUserId").attr('class','inputHalf');
+				$("#idDupCheck").show();
 				mode = "C";
 				selectValList();
 			} else if(type == "M") {
@@ -165,18 +159,21 @@
 				$("#evtCodeTr").show(); // 이벤트(광고) 코드 영역 보이기
 				$("#modalUserDivInput").show(); // 회원 구분 선택 input영역 보이기
 				$("#modalUserCodeValInput").show(); // 회원 코드 선택 input영역 숨기기
-				
+				$("#idDupCheck").hide();
+				$("#modalUserId").attr('class','inputFull');
 				mode = "M";
 			} else if(type == "D") { // 닫기
 				$("#headerName").text("");
 				$("#modal").hide();
 				
 				// modal 안의 모든 input 값 초기화
-				$("#modal").find('input[type=text]').each(function() {
+				$("#modal").find('input').each(function() {
 					$(this).val("");
 				});
-				$("#modalCodeDiv").removeAttr("disabled"); 
-				$("#modalCodeVal").removeAttr("disabled"); 
+				
+				$("#pwdChkTxt").hide(); 
+				
+				$("#modalUserId").removeAttr("disabled"); 
 				
 				$("#btnDel").remove();
 				
@@ -189,16 +186,10 @@
 			$("#modalUserCodeVal").empty();
 			
 			var modalUserDiv = $("#modalUserDiv").val();
-			var params = {};
-			if(modalUserDiv == "ATH001") { // 파트너등급
-				params = {codeDiv : "PAT"};
-			} else if(modalUserDiv == "ATH002") { // 클라이언트등급
-				params = {codeDiv : "CLT"};
-			}
-			request("./userValList.do",params, function callback(res) {
+			
+			request("./userValList.do",{userDiv : modalUserDiv}, function callback(res) {
 				if(res.result > 0) {
 					if(res.valList.length > 0) {
-						console.log(JSON.stringify(res.valList));
 						var option = "";
 						for(var i=0; i<res.valList.length; i++) {
 							option += '<option value="'+res.valList[i].CODE_VAL+'">'+res.valList[i].CODE_VAL_DESC+'</option>'
@@ -223,11 +214,16 @@
 			});
 		}
 		// ID 중복체크
-		function idCheck() {
+		function idDupCheck() {
 			var userId = $("#modalUserId").val();
 			
 			if(userId == "") {
 				alert("회원ID를 입력해주세요.");
+				return $("#modalUserId").focus();
+			}
+			
+			if(userId.length < 4) {
+				alert("최소4자리 이상 입력해주세요.");
 				return $("#modalUserId").focus();
 			}
 			
@@ -240,6 +236,8 @@
 					dupCheck = false;
 					return;
 				}  else {
+					alert(res.message);
+					$("#modalUserNm").focus();
 					dupCheck = true;
 				}
 			},
@@ -277,12 +275,9 @@
 		
 		// 휴대폰번호 '-' 넣기
 		function phNumSet(v) {
-			var regExp = /[^0-9]\s/g;
-			var regExp1 = /^(\d{0,3})(\d{0,4})(\d{0,4})$/g;
-			var regExp2 = /\-{1,2}$/g;
-			if(v.value.length == 11) {
-				$("#modalUserPhNum").val(v.value.replace(regExp, "").replace(regExp1, "$1-$2-$3").replace(regExp2, ""))
-			} 
+			var regExp = /[^0-9]/g;
+			var regExp1 = /(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})/;
+			$("#modalUserPhNum").val(v.value.replace(regExp, "").replace(regExp1, "$1-$2-$3").replace("--", "-"));
 		}
 		
 		// 모달 닫기
@@ -305,6 +300,10 @@
 					alert("회원ID 입력해주세요.");
 					return $("#modalUserId").focus();
 				}
+				if(userId.length < 4) {
+					alert("최소4자리 이상 입력해주세요.");
+					return $("#modalUserId").focus();
+				}
 				if(!dupCheck){
 					alert("ID 중복체크를 진행해주세요.");
 					return;
@@ -318,8 +317,8 @@
 					return $("#modalUserPw").focus();
 				}
 				if(userPwChk == "") {
-					alert("비밀번호 확인을 입력해주세요.");
-					return $("#userPwChk").focus();
+					alert("비밀번호 확인 입력을 해주세요.");
+					return $("#modalUserPwChk").focus();
 				}
 				if(!pwdCompare) {
 					alert("패스워드가 일치하지 않습니다.");
@@ -356,8 +355,8 @@
 					return $("#modalUserPw").focus();
 				}
 				if(userPwChk == "") {
-					alert("비밀번호 확인을 입력해주세요.");
-					return $("#userPwChk").focus();
+					alert("비밀번호 확인 입력을 해주세요.");
+					return $("#modalUserPwChk").focus();
 				}
 				if(!pwdCompare) {
 					alert("패스워드가 일치하지 않습니다.");
@@ -382,7 +381,8 @@
 				userDiv : userDiv,
 				userCodeVal : userCodeVal,
 				userPhNum : userPhNum,
-				userSts : userSts
+				userSts : userSts,
+				userEvtCode : $("#modalUserEvtCode").val()
 			}
 			
 			request("./userChange.do", params, function callback(res) {
@@ -476,7 +476,7 @@
 	    				<th>회원 ID</th>
 	    				<td>
 	    					<input type="text" id="modalUserId" name="modalUserId" maxlength="12" class="inputHalf" onkeyup="idCheck(this)" placeholder="영문,영숫자혼합 (4~12자 이내) 특수문자 금지"/>
-		    				<button type="button" onclick="idCheck()" class="w-btn-1 checkBtn">중복체크</button>
+		    				<button type="button" onclick="idDupCheck()" id="idDupCheck" class="w-btn-1 checkBtn">중복체크</button>
 	    				</td>
 	    				<th>회원 명</th>
 	    				<td>
@@ -504,13 +504,13 @@
 									</c:forEach>
 								</c:if>
 							</select>
-							<input id="modalUserDivInput" class="inputFull"/>
+							<input id="modalUserDivInput" class="inputFull" disabled="disabled"/>
 						</td>
 	    				<th>코드</th>
 	    				<td>
 							<select name="modalUserCodeVal" id="modalUserCodeVal" class="inputFull">
 							</select>
-							<input id="modalUserCodeValInput" class="inputFull"/>
+							<input id="modalUserCodeValInput" class="inputFull" disabled="disabled"/>
 	    				</td>
 	    			</tr>
 	    			<tr>

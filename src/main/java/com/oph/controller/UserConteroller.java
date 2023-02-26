@@ -57,24 +57,35 @@ public class UserConteroller {
 	
 	@ResponseBody
 	@RequestMapping(value="/userValList.do")
-	public Object userValList(HttpServletRequest request, HttpServletResponse response, @RequestBody CodeVo codeVo) {
+	public Object userValList(HttpServletRequest request, HttpServletResponse response, @RequestBody UserVo userVo) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			List<Map<String, Object>> userList = new ArrayList<Map<String,Object>>();
-			codeVo.setCodeDiv("ATH");
+			CodeVo codeVo = new CodeVo();
 			
+			if(userVo.getUserDiv().equals("ATH001")) { // 파트너등급
+				codeVo.setCodeDiv("PAT");
+			} else if(userVo.getUserDiv().equals("ATH002")) { // 클라이언트등급
+				codeVo.setCodeDiv("CLT");
+			}
+			
+			List<Map<String, Object>> userList = userService.selectUserCodeList(userVo);
+			List<Map<String, Object>> codeList = codeService.selectCodeValList(codeVo);
 			List<Map<String, Object>> valList = new ArrayList<Map<String, Object>>(); 
 			for(Map<String, Object> user : userList) {
 				String userCodeVal = (String) user.get("USER_CODE_VAL");
-				for(Map<String, Object> code : codeService.selectCodeValList(codeVo)) {
+				for(Map<String, Object> code : codeList) {
 					String codeVal = (String) code.get("CODE_VAL");
-					// 회원조회시 관리자등급은 제외
-					if(codeVal.equals("ATH999")) continue;
-					else if(userCodeVal.equals(codeVal)) continue;// 회원조회시 등록되어있는 회원코드는 제외
-					valList.add(map);
+//					// 회원조회시 관리자등급은 제외
+					if(userCodeVal.equals(codeVal)) {
+						continue;// 회원조회시 등록되어있는 회원코드는 제외
+					}
+					valList.add(code);
 				}
 			}
+			
+			System.out.println("valList : " + valList);
+			
 			map.put("valList", valList);
 			map.put("result", 1); // 성공
 		} catch(Exception e) {
@@ -111,16 +122,18 @@ public class UserConteroller {
 		
 		try {
 			Map<String, Object> chkMap = userService.selectUserId(userVo);
-			
-			if(chkMap.size() > 0) {
-				map.put("message", "이미 등록되어있는 ID 입니다."); // 메시지
-				map.put("result", 1); // 이미등록되어있음
+			if (chkMap != null && !chkMap.isEmpty()) {
+				if(chkMap.size() > 0) {
+					map.put("message", "이미 등록되어있는 ID입니다."); // 메시지
+					map.put("result", 1); // 이미등록되어있음
+				}
 			} else {
+				map.put("message", "사용 가능한 ID입니다."); // 메시지
 				map.put("result", 0); // 등록되어있지않음
 			}
 		} catch(Exception e) {
 			map.put("reulst", -1); // 실패
-			map.put("message", "코드 조회에 실패했습니다."); // 실패
+			map.put("message", "아이디 조회에 실패했습니다."); // 실패
 		}
 		
 		return map;
@@ -152,7 +165,7 @@ public class UserConteroller {
 			}
 		} catch(Exception e) {
 			map.put("reulst", -1); // 실패
-			map.put("message", "코드 등록/수정에 실패했습니다."); // 실패
+			map.put("message", "회원 등록/수정에 실패했습니다."); // 실패
 		}
 		
 		return map;

@@ -21,6 +21,11 @@ public class UserDaoImpl implements UserDaoI{
 	}
 	
 	@Override
+	public List<Map<String, Object>> selectUserCodeList(UserVo userVo) {
+		return sqlSession.selectList("user.selectUserCodeList", userVo);
+	}
+	
+	@Override
 	public Map<String, Object> selectUserId(UserVo userVo) {
 		return sqlSession.selectOne("user.selectUserId", userVo);
 	}

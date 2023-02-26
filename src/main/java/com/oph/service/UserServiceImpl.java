@@ -21,6 +21,11 @@ public class UserServiceImpl implements UserServiceI{
 	}
 	
 	@Override
+	public List<Map<String, Object>> selectUserCodeList(UserVo userVo) {
+		return userDao.selectUserCodeList(userVo);
+	}
+	
+	@Override
 	public Map<String, Object> selectUserId(UserVo userVo) {
 		return userDao.selectUserId(userVo);
 	}
