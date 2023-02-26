@@ -17,11 +17,12 @@
 
 .modal_content {
 	width: 1000px;
-  	margin: 80px auto;
+  	margin: 37px auto;
   	padding: 20px 10px;
   	background: #fff;
   	border: 2px solid #666;
-  	overflow-y: initial !important
+  	overflow-y: initial !important;
+  	border-radius: 15px;
 }
 
 .modal-header {
@@ -34,7 +35,7 @@
     position: relative;
     padding: 15px;
     margin-bottom: 25px;
-    height: 540px;
+    height: 60%;
     overflow-y: auto;  
 }
 
@@ -91,17 +92,17 @@
 }
 
 .modal_tbl th {
-	padding: 10px;
-	border: 1px solid #ddd;
+	padding: 20px;
+	border: 2px solid #ddd;
 	background: #428bca;
 	width: 16%;
-	font-size: 14px;
+	font-size: 12px;
 	color: white;
 }
 
 .modal_tbl td {
-	padding: 10px;
-	border: 1px solid #ddd;
+	padding: 15px;
+	border: 2px solid #ddd;
 	background:rgb(242, 242, 242);
 	width: 37%;
 }
@@ -112,10 +113,20 @@
 
 .inputFull {
 	width: 100%;
+	border-radius: 0.5em;
+    border: 1px solid #ddd;
+    padding: 4px;
+    height: 30px;
+    font-size: 15px;
 }
 
 .inputHalf {
 	width: 76%;
+	border-radius: 0.5em;
+    border: 1px solid #ddd;
+    padding: 4px;
+    height: 30px;
+    font-size: 15px;
 }
 
 .wrapper {
