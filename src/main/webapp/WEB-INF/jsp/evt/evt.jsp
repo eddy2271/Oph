@@ -22,7 +22,7 @@
 		<div class="wrap">
 			<div class="title_box">
 				<h1>이벤트관리</h1>
-				<p>홈 > 이벤트관리 > 이벤트관리</p>
+				<p>홈 > 이벤트관리</p>
 			</div>
 			<div class="search_box">
 				<p>검색조건 총 (<span id="listCnt"></span>개)</p>
@@ -343,7 +343,15 @@
 		
 		$(document).ready(function() {
 			$("#startDate, #endDate").datepicker({
-				dateFormat:'yy-mm-dd'
+				dateFormat: 'yy-mm-dd',
+				changeYear: true,
+				changeMonth: true,
+				showMonthAfterYear: true,
+				yearSuffix: "년",
+				nextText: '>',
+				prevText: '<',
+				dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], // 요일의 한글 형식.
+				monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] // 월의 한글 형식.
 				/*showOn: "button",
 				buttonImage: "/image/calImg.png"*/
 			});
