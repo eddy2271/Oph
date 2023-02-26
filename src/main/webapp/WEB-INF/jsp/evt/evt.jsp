@@ -4,7 +4,6 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/datapicker.css" />
 		<link rel="stylesheet" type="text/css" href="css/evt.css" />
-		
 		<%@ include file="/WEB-INF/jsp/common.jsp"%>
 	</head>
 	<body>
@@ -472,18 +471,22 @@
 		
 		// 삭제하기 버튼 클릭
 		function fnRemove() {
-			request("./removeEvt.do", {"delList": delList}, function callback(res) {
-				if(res.rsCd != 0) {
-					alert(res.rsCd + "건 삭제 완료되었습니다.");
-					evtTable.ajax.reload();
-				} else {
-					alert(res.rsMsg);
-				}
-			},
-			function error(request, status) {
-				console.log(status);
-				alert("처리 중 문제가 발생하였습니다.");
-			});
+			if(delList.length == 0) {
+				alert("선택된 이벤트가 없습니다.");
+			} else {
+				request("./removeEvt.do", {"delList": delList}, function callback(res) {
+					if(res.rsCd != 0) {
+						alert(res.rsCd + "건 삭제 완료되었습니다.");
+						evtTable.ajax.reload();
+					} else {
+						alert(res.rsMsg);
+					}
+				},
+				function error(request, status) {
+					console.log(status);
+					alert("처리 중 문제가 발생하였습니다.");
+				});
+			}
 		}
 		
 		// 엑셀 다운로드 버튼 클릭
