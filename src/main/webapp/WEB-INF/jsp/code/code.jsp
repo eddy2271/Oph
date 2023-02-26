@@ -34,7 +34,7 @@
 					$("#modalCodeDivDesc").val(item[3]);
 					
 		            
-					$(".modal-last").append('<button type="button" onclick="del()" id="btnDel" class="w-btn saveBtn">코드 삭제</button>');
+					$(".modal-last").append('<button type="button" onclick="del()" id="btnDel" class="w-btn delBtn">코드 삭제</button>');
 					
 		            modal("M");
 		        }
@@ -290,7 +290,7 @@
 					<input class="search_text" name="codeValDesc" id="codeValDesc" type="text" placeholder="코드 설명">
 				</li>
 			</ul>
-			<button onclick="search()">검색</button>
+			<button class="search_btn" onclick="search()">검색</button>
 		</div>
 	</div>
 	<table id="codeTable" class="table is-striped" style="width: 100%">
@@ -321,7 +321,7 @@
 	    		<span id="headerName" class="headerName"></span>
 	    		<button type="button" onclick="modalClose()" class="close-area">X</button>
 	    	</div>
-	    	<div class="modal-body" style="height:18%">
+	    	<div class="modal-body" style="height:30%">
 	    		<div class="body_header">기본 정보</div>
 	    		<table class="modal_tbl">
 	    			<tr>

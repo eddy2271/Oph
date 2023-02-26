@@ -1,3 +1,7 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+
+* {font-family: 'Open Sans', sans-serif;}
+
 #modal {
 	position: fixed;
 	top: 0;
@@ -13,7 +17,7 @@
 
 .modal_content {
 	width: 1000px;
-  	margin: 100px auto;
+  	margin: 80px auto;
   	padding: 20px 10px;
   	background: #fff;
   	border: 2px solid #666;
@@ -62,26 +66,37 @@
 	cursor: pointer;
 	text-shadow: 1px 1px 2px gray;
 	color: black;
+	width: 22px;
+    height: 22px;
+    padding-bottom: 1px;
 }
 
 .body_header {
 	width: 16%;
 	text-align: center;
-	border: 1px solid black;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .modal_tbl {
 	text-align: center;
-	width: 100%;
-	margin-top: 10px;
+	margin-top: 8px;
+	border: 1px #a39485 solid;
+    font-size: .9em;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 25%);
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .modal_tbl th {
 	padding: 10px;
 	border: 1px solid #ddd;
-	background: rgb(213, 253, 251);
+	background: #428bca;
 	width: 16%;
 	font-size: 14px;
+	color: white;
 }
 
 .modal_tbl td {
@@ -117,8 +132,16 @@
 }
 
 .saveBtn {
-	background-color: #9b37ff;
+	background-color: #6aafe6;
     color: #ffffff;
+    font-size: 15px;
+    float: center;
+    cursor: pointer;
+}
+
+.delBtn {
+	background-color: #a3a1a1;
+    color: #e3dede;
     font-size: 15px;
     float: center;
     cursor: pointer;
