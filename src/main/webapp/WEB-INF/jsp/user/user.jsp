@@ -44,6 +44,10 @@
 					$("#modalUserId").attr("disabled",true); 
 					// 회원 명세팅
 					$("#modalUserNm").val(item[3]);
+					// 비밀번호 세팅
+					$("#modalUserPw").val(item[10]);
+					// 비밀번호 확인 세팅
+					$("#modalUserPwChk").val(item[10]);
 					// 구분 세팅
 					$("#modalUserDivInput").val(item[6]);
 					// 코드세팅
@@ -57,8 +61,9 @@
 					// 이벤트(광고)코드 세팅
 					$("#modalUserEvtCode").val(item[11]);
 					
-					$(".modal-last").append('<button type="button" onclick="del()" id="btnDel" class="w-btn saveBtn">회원 삭제</button>');
-					
+					$(".modal-last").append('<button type="button" onclick="del()" id="btnDel" class="w-btn delBtn">회원 삭제</button>');
+					// 처음 수정화면 진입시 비밀번호 확인한 것으로 판단
+					pwdCompare = true;
 		            modal("M");
 		        }
 		    });
@@ -247,6 +252,21 @@
 		}
 		
 		// 비밀번호 체크
+		function pwdCheckOri(v) {
+			var modalUserPwChk = $("#modalUserPwChk").val();
+			
+			if(modalUserPwChk.length > 0) {
+				if(modalUserPwChk != v.value) {
+					pwdCompare = false;
+					$("#pwdChkTxt").text("비밀번호가 일치하지 않습니다.");
+				} else {
+					pwdCompare = true;
+					$("#pwdChkTxt").text("");
+				}
+			}
+		}
+		
+		// 비밀번호 체크
 		function pwdCheck(v) {
 			var modalUserPw = $("#modalUserPw").val();
 			if(modalUserPw == "") {
@@ -432,7 +452,7 @@
 					</select>
 				</li>
 			</ul>
-			<button onclick="search()">검색</button>
+			<button class="search_btn" onclick="search()">검색</button>
 		</div>
 	</div>
 	<table id="userTable" class="table is-striped" style="width: 100%">
@@ -469,7 +489,7 @@
 	    		<span id="headerName" class="headerName"></span>
 	    		<button type="button" onclick="modalClose()" class="close-area">X</button>
 	    	</div>
-	    	<div class="modal-body" style="height:30%">
+	    	<div class="modal-body" style="height:50%">
 	    		<div class="body_header">기본 정보</div>
 	    		<table class="modal_tbl">
 	    			<tr>
@@ -486,7 +506,7 @@
 	    			<tr>
 	    				<th>비밀번호</th>
 	    				<td>
-	    					<input type="password" id="modalUserPw" name="modalUserPw" maxlength="20" class="inputFull"/>
+	    					<input type="password" id="modalUserPw" name="modalUserPw" maxlength="20" onkeyup="pwdCheckOri(this)" class="inputFull"/>
 	    				</td>
 	    				<th>비밀번호 확인</th>
 	    				<td class="wrapper">

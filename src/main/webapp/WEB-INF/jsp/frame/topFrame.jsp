@@ -47,13 +47,13 @@
 			</div>
 		</div>
 		<div style="float: right; padding-right : 4%;">
-			<span style="font-weight :900; font-size : 13pt;">${userInfo.user_id }</span>
+			<span style="font-weight :900; font-size : 13pt; cursor:pointer;">${userInfo.user_id }</span>
 			<c:if test='${userInfo.user_div == "ATH999"}'>
 				<span>&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;</span>
-				<span style="font-size :13pt;">관리</span>
+				<span style="font-size :13pt; cursor:pointer;">관리</span>
 			</c:if>
 			<span>&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;</span>
-			<span style="font-size : 13pt;" onClick="javascript:setLogOut()">로그아웃</span> 
+			<span style="font-size : 13pt; cursor:pointer;" onClick="javascript:setLogOut()">로그아웃</span> 
 		</div>
 	</div>
 </body>
