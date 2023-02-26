@@ -614,7 +614,6 @@
 						$("#evtUserAge").val(row.EVT_USER_AGE);
 						$("#evtUserPhNum").val(row.EVT_USER_PH_NUM);
 						$("#evtArNm").val(row.EVT_AR_NM);
-						$("#evtDesc").val(row.EVT_DESC);
 						
 						// 설문항목 데이터 넣기
 						$("#evtSurvey1").val(row.EVT_SURVEY1);
@@ -641,6 +640,7 @@
 						$("#evtSurvey6").text(row.EVT_SURVEY6);
 					</c:otherwise>
 				</c:choose>
+				$("#evtDesc").val(row.EVT_DESC);
 				
 				surveyCnt = row.SURVEY_CNT;
 				
