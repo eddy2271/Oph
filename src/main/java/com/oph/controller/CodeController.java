@@ -83,15 +83,17 @@ public class CodeController {
 		
 		try {
 			Map<String, Object> chkMap = codeService.selectCodeData(codeVo);
-			
-			if(chkMap.size() > 0) {
-				String codeDiv = (String) chkMap.get("CODE_DIV");
-				String codeVal = (String) chkMap.get("CODE_VAL");
-				String codeDivDesc = (String) chkMap.get("CODE_DIV_DESC");
-				String codeValDesc = (String) chkMap.get("CODE_VAL_DESC");
-				map.put("message", "이미 등록되어있는 코드 입니다. \n 구분 : "+codeDiv+", 구분 설명 : "+codeDivDesc+", 값 : " + codeVal + ", 값 설명 : " + codeValDesc + ""); // 메시지
-				map.put("result", 1); // 이미등록되어있음
+			if (chkMap != null && !chkMap.isEmpty()) {
+				if(chkMap.size() > 0) {
+					String codeDiv = (String) chkMap.get("CODE_DIV");
+					String codeVal = (String) chkMap.get("CODE_VAL");
+					String codeDivDesc = (String) chkMap.get("CODE_DIV_DESC");
+					String codeValDesc = (String) chkMap.get("CODE_VAL_DESC");
+					map.put("message", "이미 등록되어있는 코드입니다. \n 구분 : "+codeDiv+", 구분 설명 : "+codeDivDesc+", 값 : " + codeVal + ", 값 설명 : " + codeValDesc + ""); // 메시지
+					map.put("result", 1); // 이미등록되어있음
+				}
 			} else {
+				map.put("message", "사용 가능한 코드입니다."); 
 				map.put("result", 0); // 등록되어있지않음
 			}
 		} catch(Exception e) {

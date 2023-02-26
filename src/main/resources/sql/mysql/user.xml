@@ -42,7 +42,15 @@
 				AND USER_STS = #{userSts}			
 			</if>
     </select>
-     
+    
+    <select id="selectUserCodeList" parameterType="userVo" resultType="map">
+    	SELECT 
+			USER_CODE_VAL
+		FROM TMB_USER  
+		WHERE 1=1
+		AND USER_DIV = #{userDiv}
+		AND USER_STS = 'STS001'
+    </select> 
      
 	<select id="selectUserId" parameterType="userVo" resultType="map">
     	SELECT 
@@ -71,7 +79,7 @@
 			#{userCodeVal},
 			#{userPhNum},
 			CONCAT(#{userCodeVal},DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')),
-			${userSts},
+			#{userSts},
 			NOW()
 		)
     </insert>

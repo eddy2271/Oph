@@ -194,6 +194,8 @@
 					dupcheck = false;
 					return;
 				}  else {
+					alert(res.message);
+					$("#modalCodeValDesc").focus();
 					dupcheck = true;
 				}
 			},
