@@ -83,6 +83,19 @@
 	transition: 0.25s;
 }
 
+.w-btn-2 {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 5px 13px;
+	border-radius: 10px;
+	font-family: "paybooc-Light", sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
 .w-btn-blue {
     background-color: #6aafe6;
     color: #d4dfe6;
@@ -99,6 +112,16 @@
     background-color: #77af9c;
     color: #d7fff1;
     cursor:pointer;
+}
+
+.w-btn-red {
+    background-color: #ff0080;
+    color: #e3dede;
+    cursor:pointer;
+}
+
+.marginLeft {
+	margin-left: 5px;
 }
 
 .totalLine1 {
