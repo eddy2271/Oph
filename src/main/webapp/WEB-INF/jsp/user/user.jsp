@@ -489,7 +489,7 @@
 	    		<span id="headerName" class="headerName"></span>
 	    		<button type="button" onclick="modalClose()" class="close-area">X</button>
 	    	</div>
-	    	<div class="modal-body" style="height:50%">
+	    	<div class="modal-body">
 	    		<div class="body_header">기본 정보</div>
 	    		<table class="modal_tbl">
 	    			<tr>
