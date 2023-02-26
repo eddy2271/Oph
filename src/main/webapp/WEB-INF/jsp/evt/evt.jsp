@@ -469,7 +469,7 @@
 			evtTable.ajax.reload();
 		});
 		
-		// 삭제하기 버튼 클릭
+		// 삭제하기 버튼 클릭 
 		function fnRemove() {
 			if(delList.length == 0) {
 				alert("선택된 이벤트가 없습니다.");
