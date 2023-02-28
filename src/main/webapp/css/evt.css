@@ -2,6 +2,11 @@
 	width: 100%;
 	padding: 0 30px;
 	box-sizing: border-box;
+	 -ms-overflow-style: none;
+}
+
+.wrap::-webkit-scrollbar{
+  display:none;
 }
 
 .title_box {

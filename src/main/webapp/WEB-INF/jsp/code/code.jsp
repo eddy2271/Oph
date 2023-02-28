@@ -115,6 +115,9 @@
 			if(type == "C") {
 				$("#headerName").text("코드 등록");
 				$("#btnTxt").text("코드 등록");
+				$("#modalCodeDiv").val($("#codeDiv").val());
+				$("#modalCodeDivDesc").val($("#codeDiv option:checked").text());
+				$("#modalCodeVal").val($("#codeDiv").val());
 				$("#modal").show();
 				mode = "C";
 			} else if(type == "M") {
@@ -187,7 +190,6 @@
 			request("./valCheck.do", params, function callback(res) {
 				if(res.result > 0) {
 					alert(res.message);
-					$("#modalCodeDiv").val('');
 					$("#modalCodeVal").val('');
 					
 					$("#modalCodeVal").focus();
@@ -316,7 +318,7 @@
 	
 	<!-- modal Layer -->
 	<div id="modal">
-	    <div class="modal_content">
+	    <div class="modal_content" style="margin: 160px auto !important; height: auto !important;">
 	    	<div class="modal-header">
 	    		<span id="headerName" class="headerName"></span>
 	    		<button type="button" onclick="modalClose()" class="close-area">X</button>
@@ -327,7 +329,7 @@
 	    			<tr>
 	    				<th>코드 구분</th>
 	    				<td>
-	    					<input type="text" id="modalCodeDiv" name="modalCodeDiv" class="inputFull"/>
+	    					<input type="text" id="modalCodeDiv" maxLength="3" name="modalCodeDiv" class="inputFull"/>
 	    				</td>
 	    				<th>코드 구분 설명</th>
 	    				<td>
@@ -337,7 +339,7 @@
 	    			<tr>
 	    				<th>코드 값</th>
 	    				<td>
-		    				<input type="text" id="modalCodeVal" name="modalCodeVal" class="inputHalf"/>
+		    				<input type="text" id="modalCodeVal" maxLength="6" name="modalCodeVal" class="inputHalf" onKeypress="javascript:if(event.keyCode==13) {valCheck()}"/>
 		    				<button type="button" onclick="valCheck()" class="w-btn-1 checkBtn">중복체크</button>
 	    				</td>
 	    				<th>코드 값 설명</th>
