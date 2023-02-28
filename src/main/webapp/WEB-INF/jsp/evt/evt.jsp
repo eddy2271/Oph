@@ -211,8 +211,8 @@
 		    		<div class="top">
 		    			<div class="body_header divLeft">상담 정보</div>
 		    			<c:if test="${userInfo.user_div eq 'ATH999'}">
-		    				<button class="divLeft w-btn-2 w-btn-blue" id="addSurvey">add</button>
-			    			<button class="divLeft w-btn-2 w-btn-red marginLeft" id="delSurvey">delete</button>
+		    				<button class="divLeft w-btn-2 w-btn-blue" id="addSurvey">설문 추가</button>
+			    			<button class="divLeft w-btn-2 w-btn-red marginLeft" id="delSurvey">설문 제거</button>
 		    			</c:if>
 		    		</div>
 		    		<table class="modal_tbl">
