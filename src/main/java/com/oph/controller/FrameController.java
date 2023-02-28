@@ -30,4 +30,12 @@ public class FrameController  {
 		
 		return mv;
 	}
+	
+	@RequestMapping(value="/empty.do")
+	public ModelAndView empty(HttpServletRequest request,HttpServletResponse response) {
+		ModelAndView mv = new ModelAndView("/frame/empty");
+		
+		return mv;
+	}
+	
 }
