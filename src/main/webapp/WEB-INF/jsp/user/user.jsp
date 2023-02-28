@@ -419,8 +419,8 @@
 		}
     </script>
     
-<body> 
-	<div class="wrap">
+<body class="wrap scrollDiv"> 
+	<div>
 		<div class="title_box">
 			<h1>회원관리</h1>
 			<p>홈 > 회원관리</p>

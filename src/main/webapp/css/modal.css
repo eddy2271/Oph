@@ -2,6 +2,11 @@
 
 * {font-family: 'Open Sans', sans-serif;}
 
+.scrollDiv {
+	overflow: auto;
+	height: 100%;
+}
+
 #modal {
 	position: fixed;
 	top: 0;
