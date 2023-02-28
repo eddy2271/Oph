@@ -71,22 +71,23 @@ public class UserConteroller {
 			
 			List<Map<String, Object>> userList = userService.selectUserCodeList(userVo);
 			List<Map<String, Object>> codeList = codeService.selectCodeValList(codeVo);
-			List<Map<String, Object>> valList = new ArrayList<Map<String, Object>>(); 
-			for(Map<String, Object> user : userList) {
-				String userCodeVal = (String) user.get("USER_CODE_VAL");
-				for(Map<String, Object> code : codeList) {
-					String codeVal = (String) code.get("CODE_VAL");
-//					// 회원조회시 관리자등급은 제외
-					if(userCodeVal.equals(codeVal)) {
-						continue;// 회원조회시 등록되어있는 회원코드는 제외
+			if(userList != null && !userList.isEmpty()) {
+				for(Map<String, Object> user : userList) {
+					String userCodeVal = (String) user.get("USER_CODE_VAL");
+					if(codeList != null && !codeList.isEmpty()) {
+						for(int i=0; i < codeList.size(); i++) {
+							String codeVal = (String)codeList.get(i).get("CODE_VAL");
+							if(userCodeVal.equals(codeVal)) {
+								System.out.println("userCodeVal : " + userCodeVal);
+								System.out.println("codeVal : " + codeVal);
+								codeList.remove(i);
+							}
+						}
 					}
-					valList.add(code);
 				}
 			}
 			
-			System.out.println("valList : " + valList);
-			
-			map.put("valList", valList);
+			map.put("codeList", codeList);
 			map.put("result", 1); // 성공
 		} catch(Exception e) {
 			map.put("reulst", -1); // 실패
