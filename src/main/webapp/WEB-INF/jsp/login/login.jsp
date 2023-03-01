@@ -102,7 +102,7 @@
                     <i class="fas fa-user"></i>
                  </div>
                  <div class="div">
-                    <input type="text" placeholder="아이디를 입력하세요." onkeyup="enterkey()" class="input" id="inputId">
+                    <input type="text" placeholder="아이디를 입력하세요." style="font-weight:600" onkeyup="enterkey()" class="input" id="inputId">
                  </div>
               </div>
               <div class="input-div pass">
@@ -111,7 +111,7 @@
                  </div>
                  <div class="div">
                    
-                    <input type="password" placeholder="패스워드를 입력하세요." class="input"  onkeyup="enterkey()" id="inputPassword">
+                    <input type="password" placeholder="패스워드를 입력하세요." style="font-weight:600" class="input"  onkeyup="enterkey()" id="inputPassword">
                  </div>
               </div>
               <div onclick="login();" style="padding-top:3.5%;" class="btn">로그인</div>

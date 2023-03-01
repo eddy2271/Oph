@@ -27,18 +27,6 @@
 						return item;
 					});
 					
-					console.log("0"+item[0]);
-					console.log("1"+item[1]);
-					console.log("2"+item[2]);
-					console.log("3"+item[3]);
-					console.log("4"+item[4]);
-					console.log("5"+item[5]);
-					console.log("6"+item[6]);
-					console.log("7"+item[7]);
-					console.log("8"+item[8]);
-					console.log("9"+item[9]);
-					console.log("10"+item[10]);
-					console.log("11"+item[11]);
 					// 회원 ID세팅
 					$("#modalUserId").val(item[7]);
 					$("#modalUserId").attr("disabled",true); 
