@@ -12,13 +12,13 @@
 
  <!-- Logger 설정 -->
  <Loggers>
-  <Logger name="logger" level="DEBUG" additivity="false">
+  <Logger name="logger" level="INFO" additivity="false">
    <AppenderRef ref="console"/>
    <AppenderRef ref="file"/>
   </Logger>
   
   
-  <Root level="DEBUG">
+  <Root level="INFO">
    <AppenderRef ref="console"/>
   </Root>
  </Loggers>
