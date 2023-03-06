@@ -134,14 +134,14 @@
 		    				<td colspan="3"><span id="today"></span></td>
 		    			</tr>
 		    			<tr>
-		    				<th>클라이언트</th>
+		    				<th>파트너</th>
 		    				<td>
 		    					<c:choose>
 		    						<c:when test="${userInfo.user_div eq 'ATH999'}">
 		    							<select name="partnerModal" id="partnerModal" class="inputFull">
 											<option value="0">파트너 선택</option>
 											<c:forEach items="${partnerList}" var="partner">
-												<option value="${partner.CODE_VAL }">${partner.CODE_VAL_DESC}</option>
+												<option value="${partner.CODE_VAL }">${partner.CODE_VAL_DESC }</option>
 											</c:forEach>
 										</select>
 		    						</c:when>
@@ -150,7 +150,7 @@
 		    						</c:otherwise>
 		    					</c:choose>
 		    				</td>
-		    				<th>파트너</th>
+		    				<th>클라이언트</th>
 		    				<td>
 		    					<c:choose>
 		    						<c:when test="${userInfo.user_div eq 'ATH999'}">
@@ -606,8 +606,8 @@
 				// 데이터 넣기
 				<c:choose>
 					<c:when test="${userInfo.user_div eq 'ATH999'}">
-						$("#partnerModal").val(row.EVT_PARTNER_CODE).prop("selected", true);
-						$("#clientModal").val(row.EVT_CLNT_CODE).prop("selected", true);
+						$("#partnerModal").val(row.EVT_PARTNER_CODE.substr(0,6)).prop("selected", true);
+						$("#clientModal").val(row.EVT_CLNT_CODE.substr(0,6)).prop("selected", true);
 						$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
 						
 						$("#evtUserNm").val(row.EVT_USER_NM);
