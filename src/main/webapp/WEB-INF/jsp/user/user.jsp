@@ -27,18 +27,6 @@
 						return item;
 					});
 					
-					console.log("0"+item[0]);
-					console.log("1"+item[1]);
-					console.log("2"+item[2]);
-					console.log("3"+item[3]);
-					console.log("4"+item[4]);
-					console.log("5"+item[5]);
-					console.log("6"+item[6]);
-					console.log("7"+item[7]);
-					console.log("8"+item[8]);
-					console.log("9"+item[9]);
-					console.log("10"+item[10]);
-					console.log("11"+item[11]);
 					// 회원 ID세팅
 					$("#modalUserId").val(item[7]);
 					$("#modalUserId").attr("disabled",true); 
@@ -194,21 +182,14 @@
 			
 			request("./userValList.do",{userDiv : modalUserDiv}, function callback(res) {
 				if(res.result > 0) {
-					if(res.valList.length > 0) {
+					if(res.codeList.length > 0) {
 						var option = "";
-						for(var i=0; i<res.valList.length; i++) {
-							option += '<option value="'+res.valList[i].CODE_VAL+'">'+res.valList[i].CODE_VAL_DESC+'</option>'
+						for(var i=0; i<res.codeList.length; i++) {
+							option += '<option value="'+res.codeList[i].CODE_VAL+'">'+res.codeList[i].CODE_VAL_DESC+'</option>'
 						}
 						$("#modalUserCodeVal").append(option);
 					} else {
-						var option = "";
-						if(modalUserDiv == "ATH001") { // 파트너등급
-							option = '<option value="">등록가능 파트너 코드가 없습니다.</option>';
-						} else if(modalUserDiv == "ATH002") { // 클라이언트등급
-							option = '<option value="">등록가능 클라이언트 코드가 없습니다.</option>';
-						}
-						
-						$("#modalUserCodeVal").append(option);
+						$("#modalUserCodeVal").append('<option value="">등록가능 코드가 없습니다.</option>');
 					}
 				} else {
 					alert(res.message);
@@ -495,7 +476,8 @@
 	    			<tr>
 	    				<th>회원 ID</th>
 	    				<td>
-	    					<input type="text" id="modalUserId" name="modalUserId" maxlength="12" class="inputHalf" onkeyup="idCheck(this)" placeholder="영문,영숫자혼합 (4~12자 이내) 특수문자 금지"/>
+	    					<input type="text" id="modalUserId" name="modalUserId" maxlength="12" class="inputHalf"
+	    					 onkeyup="idCheck(this)" placeholder="영문,영숫자혼합 (4~12자 이내) 특수문자 금지" onKeypress="javascript:if(event.keyCode==13) {idDupCheck()}"/>
 		    				<button type="button" onclick="idDupCheck()" id="idDupCheck" class="w-btn-1 checkBtn">중복체크</button>
 	    				</td>
 	    				<th>회원 명</th>

@@ -40,9 +40,9 @@
    
    <!-- 이벤트 리스트 가져오기 -->
    <select id="getEvtList" resultType="map" parameterType="hashMap">
-      SELECT ROW_NUMBER() OVER(ORDER BY EVT_SEQ ASC) NUM, EVT_SEQ, EVT_CLNT_CODE, EVT_USER_NM, EVT_USER_AGE, EVT_USER_PH_NUM, EVT_AR_NM, EVT_STS_CD, EVT_PARTNER_CODE
-          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_CLNT_CODE) EVT_CLNT_NM
-          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_PARTNER_CODE) EVT_PARTNER_NM
+      SELECT @ROWNUM:=@ROWNUM+1 AS NUM, EVT_SEQ, EVT_CLNT_CODE, EVT_USER_NM, EVT_USER_AGE, EVT_USER_PH_NUM, EVT_AR_NM, EVT_STS_CD, EVT_PARTNER_CODE
+          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_CLNT_CODE,1,6)) EVT_CLNT_NM
+          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_PARTNER_CODE,1,6)) EVT_PARTNER_NM
           , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_STS_CD) EVT_STS_NM
            , EVT_SURVEY1, EVT_SURVEY2, EVT_SURVEY3, EVT_SURVEY4, EVT_SURVEY5, EVT_SURVEY6, EVT_DESC, EVT_IP
            , DATE_FORMAT(REG_DT, '%Y년 %m월 %d일') REG_DT
@@ -53,13 +53,13 @@
                     WHEN EVT_SURVEY5 = '' THEN '4'
                     WHEN EVT_SURVEY6 = '' THEN '5'
               ELSE '6' END SURVEY_CNT
-        FROM TMB_EVENT
+        FROM TMB_EVENT ,  (SELECT @ROWNUM:=0) AS R
        WHERE 1=1
       <if test='client != null and client != ""'>
-         AND EVT_CLNT_CODE = #{client}
+         AND SUBSTRING(EVT_CLNT_CODE,1,6) = #{client}
       </if>
       <if test='partner != null and partner != ""'>
-         AND EVT_PARTNER_CODE = #{partner}
+         AND SUBSTRING(EVT_PARTNER_CODE,1,6) = #{partner}
       </if>
       <if test='rev != null and rev != ""'>
          AND EVT_STS_CD = #{rev}
@@ -80,6 +80,7 @@
       <if test='startDate != null and startDate != "" and endDate != null and endDate != ""'>
          AND DATE_FORMAT(REG_DT, '%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
       </if>
+       ORDER BY EVT_SEQ
    </select>
    
    <!-- 데이터 저장하기 -->
