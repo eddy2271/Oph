@@ -133,40 +133,28 @@
 		    				<th>신청일</th>
 		    				<td colspan="3"><span id="today"></span></td>
 		    			</tr>
-		    			<tr>
-		    				<th>파트너</th>
-		    				<td>
-		    					<c:choose>
-		    						<c:when test="${userInfo.user_div eq 'ATH999'}">
-		    							<select name="partnerModal" id="partnerModal" class="inputFull">
-											<option value="0">파트너 선택</option>
-											<c:forEach items="${partnerList}" var="partner">
-												<option value="${partner.CODE_VAL }">${partner.CODE_VAL_DESC }</option>
-											</c:forEach>
-										</select>
-		    						</c:when>
-		    						<c:otherwise>
-		    							<span id="partnerModal"></span>
-		    						</c:otherwise>
-		    					</c:choose>
-		    				</td>
-		    				<th>클라이언트</th>
-		    				<td>
-		    					<c:choose>
-		    						<c:when test="${userInfo.user_div eq 'ATH999'}">
-		    							<select name="clientModal" id="clientModal" class="inputFull">
-											<option value="0">클라이언트 선택</option>
-											<c:forEach items="${clientList}" var="client">
-												<option value="${client.CODE_VAL }">${client.CODE_VAL_DESC}</option>
-											</c:forEach>
-										</select>
-		    						</c:when>
-		    						<c:otherwise>
-		    							<span id="clientModal"></span>
-		    						</c:otherwise>
-		    					</c:choose>
-		    				</td>
-		    			</tr>
+		    			<c:if test="${userInfo.user_div eq 'ATH999'}">
+		    				<tr>
+			    				<th>클라이언트</th>
+			    				<td>
+			    					<select name="partnerModal" id="partnerModal" class="inputFull">
+										<option value="0">파트너 선택</option>
+										<c:forEach items="${partnerList}" var="partner">
+											<option value="${partner.CODE_VAL }">${partner.USER_ID}</option>
+										</c:forEach>
+									</select>
+			    				</td>
+			    				<th>파트너</th>
+			    				<td>
+			    					<select name="clientModal" id="clientModal" class="inputFull">
+										<option value="0">클라이언트 선택</option>
+										<c:forEach items="${clientList}" var="client">
+											<option value="${client.CODE_VAL }">${client.USER_ID}</option>
+										</c:forEach>
+									</select>
+			    				</td>
+			    			</tr>
+		    			</c:if>
 		    		</table>
 		    		<div class="body_header top">개인 정보</div>
 		    		<table class="modal_tbl">
@@ -606,8 +594,8 @@
 				// 데이터 넣기
 				<c:choose>
 					<c:when test="${userInfo.user_div eq 'ATH999'}">
-						$("#partnerModal").val(row.EVT_PARTNER_CODE.substr(0,6)).prop("selected", true);
-						$("#clientModal").val(row.EVT_CLNT_CODE.substr(0,6)).prop("selected", true);
+						$("#partnerModal").val(row.EVT_PARTNER_CODE).prop("selected", true);
+						$("#clientModal").val(row.EVT_CLNT_CODE).prop("selected", true);
 						$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
 						
 						$("#evtUserNm").val(row.EVT_USER_NM);
@@ -624,8 +612,6 @@
 						$("#evtSurvey6").val(row.EVT_SURVEY6);
 					</c:when>
 					<c:otherwise>
-						$("#partnerModal").text(row.EVT_PARTNER_NM);
-						$("#clientModal").text(row.EVT_CLNT_NM);
 						$("#revModal").text(row.EVT_STS_NM);
 						$("#evtUserNm").text(row.EVT_USER_NM);
 						$("#evtUserAge").text(row.EVT_USER_AGE);

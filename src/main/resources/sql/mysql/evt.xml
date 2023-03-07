@@ -6,7 +6,7 @@
 <mapper namespace="evt">
    <!-- 파트너/클라이언트 리스트 가져오기 -->
    <select id="getAthList" resultType="map" parameterType="hashMap">
-      SELECT CODE.CODE_VAL, CODE.CODE_VAL_DESC
+      SELECT CODE.CODE_VAL, CODE.CODE_VAL_DESC, USER.USER_ID, USER.USER_NM
         FROM TMB_USER USER
         LEFT OUTER JOIN TMB_CODE CODE
           ON USER.USER_CODE_VAL = CODE.CODE_VAL
@@ -40,10 +40,13 @@
    
    <!-- 이벤트 리스트 가져오기 -->
    <select id="getEvtList" resultType="map" parameterType="hashMap">
-      SELECT @ROWNUM:=@ROWNUM+1 AS NUM, EVT_SEQ, EVT_CLNT_CODE, EVT_USER_NM, EVT_USER_AGE, EVT_USER_PH_NUM, EVT_AR_NM, EVT_STS_CD, EVT_PARTNER_CODE
-          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_CLNT_CODE,1,6)) EVT_CLNT_NM
-          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_PARTNER_CODE,1,6)) EVT_PARTNER_NM
-          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_STS_CD) EVT_STS_NM
+      SELECT @ROWNUM:=@ROWNUM+1 AS NUM, EVT_SEQ
+      	   , SUBSTRING(EVT_PARTNER_CODE, 1, 6) EVT_PARTNER_CODE
+      	   , SUBSTRING(EVT_CLNT_CODE, 1, 6) EVT_CLNT_CODE
+      	   , EVT_USER_NM, EVT_USER_AGE, EVT_USER_PH_NUM, EVT_AR_NM, EVT_STS_CD
+           , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_CLNT_CODE, 1, 6)) EVT_CLNT_NM
+           , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_PARTNER_CODE, 1, 6)) EVT_PARTNER_NM
+           , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_STS_CD) EVT_STS_NM
            , EVT_SURVEY1, EVT_SURVEY2, EVT_SURVEY3, EVT_SURVEY4, EVT_SURVEY5, EVT_SURVEY6, EVT_DESC, EVT_IP
            , DATE_FORMAT(REG_DT, '%Y년 %m월 %d일') REG_DT
            , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') REG_DT_EXCEL
@@ -103,8 +106,8 @@
          EVT_IP,
          REG_DT )
       VALUES (
-         #{clientModal},
-         #{partnerModal},
+      	 CONCAT(#{clientModal}, DATE_FORMAT(NOW(), '%Y%m%d%H%i')),
+      	 CONCAT(#{partnerModal}, DATE_FORMAT(NOW(), '%Y%m%d%H%i')),
          #{evtUserNm},
          #{evtUserAge},
          #{evtUserPhNum},
@@ -124,8 +127,8 @@
    <!-- 데이터 수정하기 -->
    <update id="updateEvt" parameterType="hashMap">
       UPDATE TMB_EVENT
-         SET EVT_CLNT_CODE = #{clientModal}
-           , EVT_PARTNER_CODE = #{partnerModal}
+         SET EVT_CLNT_CODE = CONCAT(#{clientModal}, DATE_FORMAT(NOW(), '%Y%m%d%H%i'))
+           , EVT_PARTNER_CODE = CONCAT(#{partnerModal}, DATE_FORMAT(NOW(), '%Y%m%d%H%i'))
            , EVT_USER_NM = #{evtUserNm}
            , EVT_USER_AGE = #{evtUserAge}
            , EVT_USER_PH_NUM = #{evtUserPhNum}
