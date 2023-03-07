@@ -140,7 +140,7 @@
 			    					<select name="partnerModal" id="partnerModal" class="inputFull">
 										<option value="0">파트너 선택</option>
 										<c:forEach items="${partnerList}" var="partner">
-											<option value="${partner.CODE_VAL }">${partner.USER_ID}</option>
+											<option value="${partner.CODE_VAL }">${partner.USER_NM}(${partner.USER_ID})</option>
 										</c:forEach>
 									</select>
 			    				</td>
@@ -149,7 +149,7 @@
 			    					<select name="clientModal" id="clientModal" class="inputFull">
 										<option value="0">클라이언트 선택</option>
 										<c:forEach items="${clientList}" var="client">
-											<option value="${client.CODE_VAL }">${client.USER_ID}</option>
+											<option value="${client.CODE_VAL }">${partner.USER_NM}(${partner.USER_ID})</option>
 										</c:forEach>
 									</select>
 			    				</td>
