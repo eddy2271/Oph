@@ -8,6 +8,13 @@
   
    <script type="text/javascript">
     
+   function enterkey() {
+		if (window.event.keyCode == 13) {
+	    	// 엔터키가 눌렸을 때
+	    	login();
+	    }
+	}
+   
     function login() {
     	if ($("#inputId").val() == '') {
         	alert('로그인할 사용자 아이디를 입력하지 않으셨습니다.\n\n사용자 아이디를 입력하여 주십시요.');
@@ -95,7 +102,7 @@
                     <i class="fas fa-user"></i>
                  </div>
                  <div class="div">
-                    <input type="text" placeholder="아이디를 입력하세요." class="input" id="inputId">
+                    <input type="text" placeholder="아이디를 입력하세요." onkeyup="enterkey()" class="input" id="inputId">
                  </div>
               </div>
               <div class="input-div pass">
@@ -104,7 +111,7 @@
                  </div>
                  <div class="div">
                    
-                    <input type="password" placeholder="패스워드를 입력하세요." class="input" id="inputPassword">
+                    <input type="password" placeholder="패스워드를 입력하세요." class="input"  onkeyup="enterkey()" id="inputPassword">
                  </div>
               </div>
               <div onclick="login();" style="padding-top:3.5%;" class="btn">로그인</div>

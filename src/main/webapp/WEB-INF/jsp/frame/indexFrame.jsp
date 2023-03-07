@@ -8,6 +8,6 @@
 <frameset rows="16%, 6%, 78%"  frameborder="no" border="0" framespacing="0">
     	<frame style="background:200px;" src="${pageContext.request.contextPath}/topFrame.do" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
     	<frame style="background:200px;" src="${pageContext.request.contextPath}/menuFrame.do" name="topFrame" scrolling="No" noresize="noresize" id="menuFrame" title="menuFrame" />
-        <frame src="${pageContext.request.contextPath}/frame/empty.jsp" style="padding : 1%;" name="mainFrame" scrolling="No" id="mainFrame" title="mainFrame"/>
+      <frame src="${pageContext.request.contextPath}/empty.do" style="padding : 1%;" name="mainFrame" id="mainFrame" title="mainFrame"/>
 </frameset>
 </html>

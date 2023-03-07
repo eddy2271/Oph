@@ -7,8 +7,8 @@
    <!-- 파트너/클라이언트 리스트 가져오기 -->
    <select id="getAthList" resultType="map" parameterType="hashMap">
       SELECT CODE.CODE_VAL, CODE.CODE_VAL_DESC
-        FROM tmb_user USER
-        LEFT OUTER JOIN tmb_code CODE
+        FROM TMB_USER USER
+        LEFT OUTER JOIN TMB_CODE CODE
           ON USER.USER_CODE_VAL = CODE.CODE_VAL
        WHERE USER.USER_CODE_VAL != 'ATH999'
          AND USER.USER_DIV = #{userDiv}
@@ -22,8 +22,8 @@
    <!-- 연관된 클라이언트 리스트 가져오기 -->
    <select id="getClientList" resultType="map" parameterType="hashMap">
        SELECT CODE.CODE_VAL, CODE.CODE_VAL_DESC
-         FROM tmb_event EVT
-         LEFT OUTER JOIN tmb_code CODE
+         FROM TMB_EVENT EVT
+         LEFT OUTER JOIN TMB_CODE CODE
            ON EVT.EVT_CLNT_CODE = CODE.CODE_VAL
         WHERE EVT.EVT_PARTNER_CODE = #{userCodeVal}
         GROUP BY EVT.EVT_CLNT_CODE, CODE.CODE_VAL_DESC
@@ -33,7 +33,7 @@
    <!-- 예약현황 리스트 가져오기 -->
    <select id="getRevList" resultType="map">
       SELECT CODE_VAL, CODE_VAL_DESC
-        FROM tmb_code
+        FROM TMB_CODE
        WHERE CODE_DIV = 'REV'
        ORDER BY CODE_VAL
    </select>
@@ -41,9 +41,9 @@
    <!-- 이벤트 리스트 가져오기 -->
    <select id="getEvtList" resultType="map" parameterType="hashMap">
       SELECT ROW_NUMBER() OVER(ORDER BY EVT_SEQ ASC) NUM, EVT_SEQ, EVT_CLNT_CODE, EVT_USER_NM, EVT_USER_AGE, EVT_USER_PH_NUM, EVT_AR_NM, EVT_STS_CD, EVT_PARTNER_CODE
-          , (SELECT CODE_VAL_DESC FROM tmb_code WHERE CODE_VAL = EVT_CLNT_CODE) EVT_CLNT_NM
-          , (SELECT CODE_VAL_DESC FROM tmb_code WHERE CODE_VAL = EVT_PARTNER_CODE) EVT_PARTNER_NM
-          , (SELECT CODE_VAL_DESC FROM tmb_code WHERE CODE_VAL = EVT_STS_CD) EVT_STS_NM
+          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_CLNT_CODE) EVT_CLNT_NM
+          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_PARTNER_CODE) EVT_PARTNER_NM
+          , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_STS_CD) EVT_STS_NM
            , EVT_SURVEY1, EVT_SURVEY2, EVT_SURVEY3, EVT_SURVEY4, EVT_SURVEY5, EVT_SURVEY6, EVT_DESC, EVT_IP
            , DATE_FORMAT(REG_DT, '%Y년 %m월 %d일') REG_DT
            , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') REG_DT_EXCEL
@@ -53,7 +53,7 @@
                     WHEN EVT_SURVEY5 = '' THEN '4'
                     WHEN EVT_SURVEY6 = '' THEN '5'
               ELSE '6' END SURVEY_CNT
-        FROM tmb_event
+        FROM TMB_EVENT
        WHERE 1=1
       <if test='client != null and client != ""'>
          AND EVT_CLNT_CODE = #{client}
@@ -84,7 +84,7 @@
    
    <!-- 데이터 저장하기 -->
    <insert id="saveEvt" parameterType="hashMap">
-      INSERT INTO tmb_event (
+      INSERT INTO TMB_EVENT (
          EVT_CLNT_CODE,
          EVT_PARTNER_CODE,
          EVT_USER_NM,
@@ -122,7 +122,7 @@
    
    <!-- 데이터 수정하기 -->
    <update id="updateEvt" parameterType="hashMap">
-      UPDATE tmb_event
+      UPDATE TMB_EVENT
          SET EVT_CLNT_CODE = #{clientModal}
            , EVT_PARTNER_CODE = #{partnerModal}
            , EVT_USER_NM = #{evtUserNm}
@@ -144,7 +144,7 @@
    
    <!-- 데이터 삭제하기 -->
    <delete id="removeEvt">
-      DELETE FROM tmb_event
+      DELETE FROM TMB_EVENT
        WHERE EVT_SEQ IN
       <foreach item="item" collection="delList" open="(" separator="," close=")">
           #{item}
