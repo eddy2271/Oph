@@ -59,10 +59,10 @@
         FROM TMB_EVENT ,  (SELECT @ROWNUM:=0) AS R
        WHERE 1=1
       <if test='client != null and client != ""'>
-         AND SUBSTRING(EVT_CLNT_CODE,1,6) = #{client}
+         AND SUBSTRING(EVT_CLNT_CODE, 1 ,6) = #{client}
       </if>
       <if test='partner != null and partner != ""'>
-         AND SUBSTRING(EVT_PARTNER_CODE,1,6) = #{partner}
+         AND SUBSTRING(EVT_PARTNER_CODE, 1, 6) = #{partner}
       </if>
       <if test='rev != null and rev != ""'>
          AND EVT_STS_CD = #{rev}
@@ -83,7 +83,7 @@
       <if test='startDate != null and startDate != "" and endDate != null and endDate != ""'>
          AND DATE_FORMAT(REG_DT, '%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
       </if>
-       ORDER BY EVT_SEQ
+       ORDER BY REG_DT DESC
    </select>
    
    <!-- 데이터 저장하기 -->
