@@ -3,6 +3,7 @@ package com.oph.controller;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,12 +166,16 @@ public class EventController {
 	 * @param request
 	 */
 	@RequestMapping(value="/excelDown.do", method = RequestMethod.GET)
-	public void excelDown(SearchVo searchVo, HttpServletResponse res) {
+	public void excelDown(SearchVo searchVo, HttpServletResponse res, HttpSession session) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		try {
+			LoginVo loginVo = (LoginVo) session.getAttribute("userInfo");
+			String userDiv = loginVo.getUser_div();		// 회원 구분
+			String type = userDiv.equals("ATH001") ? "1" : "2";
 			Workbook wb = new HSSFWorkbook();
 			int rowNo = 0;
+			int num = 0;
 			
 			// Vo to Map
 			Field[] fields = searchVo.getClass().getDeclaredFields();
@@ -219,82 +224,37 @@ public class EventController {
 
 		    // 헤더 데이터 넣기
 		    row = sheet.createRow(rowNo++);
-		    cell = row.createCell(0);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("no.");
-		    cell = row.createCell(1);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("클라이언트");
-		    cell = row.createCell(2);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("파트너사");
-		    cell = row.createCell(3);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("고객명");
-		    cell = row.createCell(4);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("나이");
-		    cell = row.createCell(5);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("연락처");
-		    cell = row.createCell(6);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("지면명");
-		    cell = row.createCell(7);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("신청일자");
-		    cell = row.createCell(8);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("설문1");
-		    cell = row.createCell(9);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("설문2");
-		    cell = row.createCell(10);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("메모");
-		    cell = row.createCell(11);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("예약현황");
+		    
+		    ArrayList<String> headList = new ArrayList<String>(Arrays.asList("no.", "클라이언트", "파트너사", "고객명", "나이", "연락처", "지면명", "신청일자", "설문1", "설문2", "설문3", "설문4", "설문5", "설문6", "메모", "예약현황"));
+		    ArrayList<String> colList = new ArrayList<String>(Arrays.asList("NUM", "EVT_CLNT_NM", "EVT_PARTNER_NM", "EVT_USER_NM", "EVT_USER_AGE", "EVT_USER_PH_NUM", "EVT_AR_NM", "REG_DT_EXCEL", "EVT_SURVEY1", "EVT_SURVEY2", "EVT_SURVEY3", "EVT_SURVEY4", "EVT_SURVEY5", "EVT_SURVEY6", "EVT_DESC", "EVT_STS_NM"));
+		    
+		    for(int i=0; i<headList.size(); i++) {
+		    	if(!(i == 2 && userDiv.equals("ATH002"))) {
+		    		cell = row.createCell(num);
+				    cell.setCellStyle(headStyle);
+				    cell.setCellValue(headList.get(i));
+				    num++;
+		    	}
+		    }
 
 		    // 데이터 부분 생성
 		    for(Map<String, Object> map : list) {
 		        row = sheet.createRow(rowNo++);
-		        cell = row.createCell(0);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("NUM").toString());
-		        cell = row.createCell(1);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_CLNT_NM").toString());
-		        cell = row.createCell(2);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_PARTNER_NM").toString());
-		        cell = row.createCell(3);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_USER_NM").toString());
-		        cell = row.createCell(4);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_USER_AGE").toString());
-		        cell = row.createCell(5);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_USER_PH_NUM").toString());
-		        cell = row.createCell(6);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_AR_NM").toString());
-		        cell = row.createCell(7);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("REG_DT_EXCEL").toString());
-		        cell = row.createCell(8);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_SURVEY1").toString());
-		        cell = row.createCell(9);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_SURVEY2").toString());
-		        cell = row.createCell(10);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_DESC").toString());
-		        cell = row.createCell(11);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(map.get("EVT_STS_NM").toString());
+		        num = 0;
+		        for(int i=0; i<colList.size(); i++) {
+		        	if(!(i == 2 && userDiv.equals("ATH002"))) {
+		        		cell = row.createCell(num);
+				        cell.setCellStyle(bodyStyle);
+				        
+				        if(i==5) {
+				        	cell.setCellValue(changePh(map.get(colList.get(i)).toString(), type));
+				        } else {
+				        	cell.setCellValue(map.get(colList.get(i)).toString());
+				        }
+				        
+					    num++;
+		        	}
+			    }
 		    }
 
 		    // 컨텐츠 타입과 파일명 지정
@@ -308,4 +268,17 @@ public class EventController {
 			
 		}
 	}
+	
+	public static String changePh(String number, String type) {
+		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
+		String str = "";
+		
+		if(number.length() == 10) {
+			str = number.replaceAll(regEx, "$1 - " + (type == "1" ? "***" : "$2") + " - $3"); 
+		} else if(number.length() == 11) {
+			str = number.replaceAll(regEx, "$1 - " + (type == "1" ? "****" : "$2") + " - $3");
+		}
+	    
+		return str;
+    }
 }
