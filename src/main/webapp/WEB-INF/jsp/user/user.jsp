@@ -72,6 +72,7 @@
 		function search() {
 			var params = {
 				userId : $("#userId").val(),
+				userNm : $("#userNm").val(),
 				userDiv : $("#userDiv").val(),
 				userSts : $("#userSts").val()
 			}	
@@ -98,13 +99,37 @@
 				processing: true,
 				pageLength : 10, // 페이징은 10개씩
 				columnDefs: [ { // 요건 컬럼 정의 
-					'searchable' : false,
-					'orderable' : false,
-					'className' : 'dt-body-center chkCenter',
-					'render' : function(data, type, full, meta) {
-						return '<input type="checkbox">';
+						'target' : [0],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [1],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [2],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [3],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [4],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [5],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
 					}
-				} ],
+				],
 				order: [ [ 1, 'asc' ] ],
 				data: data,
 				columns: [
@@ -389,7 +414,8 @@
 			request("./userChange.do", params, function callback(res) {
 				if(res.result > 0) {
 					alert(res.message);
-					location.reload();
+					modal("D");
+					tb.ajax.reload( null, false);;
 				} else {
 					alert(res.message);
 				}
@@ -410,7 +436,7 @@
 			<p>검색조건 총 (<span id="rowCount">0</span>개)</p>
 			<ul>
 				<li>
-					<input name="userId" id="userId" type="text" placeholder="ID로 검색">
+					<input name="userId" id="userId" style="width:300px" type="text" placeholder="ID로 검색">
 				</li>
 				<li>
 					<select name="userDiv" id="userDiv">
@@ -421,6 +447,9 @@
 							</c:forEach>
 						</c:if>
 					</select>
+				</li>
+				<li>
+					<input name="userNm" id="userNm" style="width:300px" type="text" placeholder="회원명으로 검색">
 				</li>
 				<li>
 					<select name="userSts" id="userSts">
