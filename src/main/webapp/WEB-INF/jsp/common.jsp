@@ -11,6 +11,8 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/dataTable_2.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/modal.css" />
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/datapicker.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/evt.css" />
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.6.0.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/dataTables.checkboxes.min.js"></script>

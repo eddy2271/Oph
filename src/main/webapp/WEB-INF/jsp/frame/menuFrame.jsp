@@ -4,28 +4,10 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=9" />
-<!-- CSS Style Sheet import -->
-<title></title>
-
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/top.css" />
-
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/menu.css" />
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
-
-
-	$(document).ready(function(){
-		parent.mainFrame.location = "${pageContext.request.contextPath}/evtFrame.do";
-	});
-	
-	function setLogOut() 
-	{
-		if(confirm('로그아웃 하시겠습니까?')){
-			parent.mainFrame.location = '${pageContext.request.contextPath}/logout.do?';
-		}
-	} 
+$.noConflict();
 	function goMenu(tab){
 		if( tab == '1'){
 			parent.mainFrame.location = "${pageContext.request.contextPath}/evtFrame.do";
