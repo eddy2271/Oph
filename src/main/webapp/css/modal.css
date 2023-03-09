@@ -113,6 +113,10 @@
 	width: 37%;
 }
 
+.singleTd {
+	width: 84% !important;
+}
+
 .top {
 	margin-top: 30px;
 }

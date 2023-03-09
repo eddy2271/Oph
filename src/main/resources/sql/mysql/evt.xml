@@ -136,13 +136,15 @@
    <!-- 데이터 수정하기 -->
    <update id="updateEvt" parameterType="hashMap">
       UPDATE TMB_EVENT
-         SET EVT_CLNT_CODE = CONCAT(#{clientModal}, DATE_FORMAT(NOW(), '%Y%m%d%H%i'))
+         SET EVT_STS_CD = #{revModal}
+           , EVT_IP = #{evtIp}
+		<if test='userDiv == "ATH999"'>
+		   , EVT_CLNT_CODE = CONCAT(#{clientModal}, DATE_FORMAT(NOW(), '%Y%m%d%H%i'))
            , EVT_PARTNER_CODE = CONCAT(#{partnerModal}, DATE_FORMAT(NOW(), '%Y%m%d%H%i'))
            , EVT_USER_NM = #{evtUserNm}
            , EVT_USER_AGE = #{evtUserAge}
            , EVT_USER_PH_NUM = #{evtUserPhNum}
            , EVT_AR_NM = #{evtArNm}
-           , EVT_STS_CD = #{revModal}
            , EVT_SURVEY1 = #{evtSurvey1}
            , EVT_SURVEY2 = #{evtSurvey2}
            , EVT_SURVEY3 = #{evtSurvey3}
@@ -150,7 +152,7 @@
            , EVT_SURVEY5 = #{evtSurvey5}
            , EVT_SURVEY6 = #{evtSurvey6}
            , EVT_DESC = #{evtDesc}
-           , EVT_IP = #{evtIp}
+		</if>
        WHERE EVT_SEQ = #{evtSeq}
    </update>
    

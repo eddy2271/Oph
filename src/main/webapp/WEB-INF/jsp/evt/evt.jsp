@@ -18,6 +18,15 @@
 				<c:set var="classNm" value="totalLine1" />
 			</c:otherwise>
 		</c:choose>
+		<c:choose>
+			<c:when test="${userInfo.user_div ne 'ATH999'}">
+				<c:set var="tdCls" value="singleTd" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="tdCls" value="" />
+			</c:otherwise>
+		</c:choose>		
+		
 		<div class="wrap">
 			<div class="title_box">
 				<h1>이벤트관리</h1>
@@ -87,7 +96,7 @@
 						<th>
 							<div>클라이언트</div>
 						</th>
-						<c:if test="${userInfo.user_div ne 'ATH002'}">
+						<c:if test="${auth eq '1'}">
 							<th>
 								<div>파트너사</div>
 							</th>
@@ -133,7 +142,7 @@
 		    		<table class="modal_tbl">
 		    			<tr>
 		    				<th>신청일</th>
-		    				<td colspan="3"><span id="today"></span></td>
+		    				<td colspan="3" class="${tdCls}"><span id="today"></span></td>
 		    			</tr>
 		    			<c:if test="${userInfo.user_div eq 'ATH999'}">
 		    				<tr>
@@ -221,7 +230,7 @@
 		    				<th>예약현황</th>
 		    				<td>
 		    					<c:choose>
-		    						<c:when test="${userInfo.user_div eq 'ATH999'}">
+		    						<c:when test="${auth eq '1'}">
 		    							<select name="revModal" id="revModal" class="inputFull">
 											<option value="0">예약현황 선택</option>
 											<c:forEach items="${revList}" var="rev">
@@ -313,7 +322,7 @@
 		    			</tr>
 		    		</table>
 		    	</div>
-		    	<c:if test="${userInfo.user_div eq 'ATH999'}">
+		    	<c:if test="${auth eq '1'}">
 		    		<div class="modal-last">
 				    	<button type="button" class="w-btn saveBtn">저장하기</button>
 				    </div>
@@ -418,7 +427,7 @@
 					{data: ''}, // 체크박스
                     {data: 'NUM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 번호
                     {data: 'EVT_CLNT_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 클라이언트
-                    <c:if test="${userInfo.user_div ne 'ATH002'}">
+                    <c:if test="${auth eq '1'}">
                     	{data: 'EVT_PARTNER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 파트너사
 					</c:if>
                     {data: 'EVT_USER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 고객명
@@ -451,29 +460,33 @@
 		function validation() {
 			var msg = "";
 			
-			if($("#partnerModal option:selected").val() == "0") {
-				msg = "파트너를 선택해주세요.";
-			} else if($("#clientModal option:selected").val() == "0") {
-				msg = "클라이언트를 선택해주세요.";
-			} else if($("#evtUserNm").val() == "") {
-				msg = "고객명을 입력해주세요.";
-			} else if($("#evtUserPhNum").val() == "") {
-				msg = "연락처를 입력해주세요.";
-			} else if($("#evtUserAge").val() == "") {
-				msg = "나이를 입력해주세요.";
-			} else if($("#revModal option:selected").val() == "0") {
-				msg = "예약현황을 선택해주세요.";
-			} else if($("#evtArNm").val() == "") {
-				msg = "지면명을 입력해주세요.";
-			} else if($("#evtDesc").val() == "") {
-				msg = "메모를 입력해주세요.";
-			} else { // 설문 입력 체크
-				for(var i=1; i<=surveyCnt[2]; i++) {
-					if($("#evtSurvey" + i).val() == "") {
-						msg = "설문" + i + "를 입력해주세요.";
-						i = surveyCnt[2] + 1;
+			<c:if test="${userInfo.user_div eq 'ATH999'}">
+				if($("#partnerModal option:selected").val() == "0") {
+					msg = "파트너를 선택해주세요.";
+				} else if($("#clientModal option:selected").val() == "0") {
+					msg = "클라이언트를 선택해주세요.";
+				} else if($("#evtUserNm").val() == "") {
+					msg = "고객명을 입력해주세요.";
+				} else if($("#evtUserPhNum").val() == "") {
+					msg = "연락처를 입력해주세요.";
+				} else if($("#evtUserAge").val() == "") {
+					msg = "나이를 입력해주세요.";
+				} else if($("#evtArNm").val() == "") {
+					msg = "지면명을 입력해주세요.";
+				} else if($("#evtDesc").val() == "") {
+					msg = "메모를 입력해주세요.";
+				} else { // 설문 입력 체크
+					for(var i=1; i<=surveyCnt[2]; i++) {
+						if($("#evtSurvey" + i).val() == "") {
+							msg = "설문" + i + "를 입력해주세요.";
+							i = surveyCnt[2] + 1;
+						}
 					}
 				}
+			</c:if>
+			
+			if($("#revModal option:selected").val() == "0") {
+				msg = "예약현황을 선택해주세요.";
 			}
 			
 			return msg;
@@ -513,7 +526,7 @@
 			param += "searchText=" + $("#searchText").val() + "&";
 			param += "rev=" + $("#rev option:selected").val() + "&";
 			
-			<c:if test="${userInfo.user_div ne 'ATH002'}">
+			<c:if test="${auth eq '1'}">
 				param += "partner=" + $("#partner option:selected").val() + "&";
 			</c:if>
 
@@ -658,7 +671,6 @@
 						$("#evtSurvey6").val(row.EVT_SURVEY6);
 					</c:when>
 					<c:otherwise>
-						$("#revModal").text(row.EVT_STS_NM);
 						$("#evtUserNm").text(row.EVT_USER_NM);
 						$("#evtUserAge").text(row.EVT_USER_AGE);	    				
 						$("#evtArNm").text(row.EVT_AR_NM);
@@ -672,9 +684,12 @@
 						
 						<c:choose>
 							<c:when test="${userInfo.user_div eq 'ATH001'}">
+								$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
 								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM, "1"));
+
 							</c:when>
 							<c:otherwise>
+								$("#revModal").text(row.EVT_STS_NM);
 								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM, "2"));
 							</c:otherwise>
 						</c:choose>
@@ -718,41 +733,43 @@
 			var msg = validation();
 			
 			if(msg == "") {
-				var param = {
-					partnerModal: $("#partnerModal option:selected").val(),
-					clientModal: $("#clientModal option:selected").val(),
-					evtUserNm: $("#evtUserNm").val(),
-					evtUserAge: $("#evtUserAge").val(),
-					evtUserPhNum: $("#evtUserPhNum").val().replaceAll('-', ''),
-					evtArNm: $("#evtArNm").val(),
-					revModal: $("#revModal option:selected").val(),
-					evtDesc: $("#evtDesc").val(),
-					state: $("#headerName").text() == "추가 화면" ? "C" : "U",
-					evtSurvey1: "",
-					evtSurvey2: "",
-					evtSurvey3: "",
-					evtSurvey4: "",
-					evtSurvey5: "",
-					evtSurvey6: "",
-				}
+				var param = {};
 				
-				for(var i=1; i<=surveyCnt; i++) {
-					var survey = $("#evtSurvey" + i).val();
+				<c:if test="${userInfo.user_div eq 'ATH999'}">
+					param.partnerModal = $("#partnerModal option:selected").val();
+					param.clientModal = $("#clientModal option:selected").val();
+					param.evtUserNm = $("#evtUserNm").val();
+					param.evtUserAge = $("#evtUserAge").val();
+					param.evtUserPhNum = $("#evtUserPhNum").val().replaceAll('-', '');
+					param.evtArNm = $("#evtArNm").val();
+					param.evtDesc = $("#evtDesc").val();
+					param.evtSurvey1 = "";
+					param.evtSurvey2 = "";
+					param.evtSurvey3 = "";
+					param.evtSurvey4 = "";
+					param.evtSurvey5 = "";
+					param.evtSurvey6 = "";
 					
-					if(i == 1) {
-						param.evtSurvey1 = survey;
-					} else if(i == 2) {
-						param.evtSurvey2 = survey;
-					} else if(i == 3) {
-						param.evtSurvey3 = survey;
-					} else if(i == 4) {
-						param.evtSurvey4 = survey;
-					} else if(i == 5) {
-						param.evtSurvey5 = survey;
-					} else if(i == 6) {
-						param.evtSurvey6 = survey;
+					for(var i=1; i<=surveyCnt; i++) {
+						var survey = $("#evtSurvey" + i).val();
+						
+						if(i == 1) {
+							param.evtSurvey1 = survey;
+						} else if(i == 2) {
+							param.evtSurvey2 = survey;
+						} else if(i == 3) {
+							param.evtSurvey3 = survey;
+						} else if(i == 4) {
+							param.evtSurvey4 = survey;
+						} else if(i == 5) {
+							param.evtSurvey5 = survey;
+						} else if(i == 6) {
+							param.evtSurvey6 = survey;
+						}
 					}
-				}
+				</c:if>
+				param.state = $("#headerName").text() == "추가 화면" ? "C" : "U";
+				param.revModal = $("#revModal option:selected").val();
 				
 				if(param.state == "U") param.evtSeq = selectSeq;
 				
