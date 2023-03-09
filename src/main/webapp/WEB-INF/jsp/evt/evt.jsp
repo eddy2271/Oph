@@ -576,6 +576,7 @@
 			$("#evtUserPhNum").val(v.value.replace(regExp, "").replace(regExp1, "$1-$2-$3").replace("--", "-"));
 		}
 		
+		// 휴대폰번호 * 처리
 		function phAstSet(v, type) {
 			if(v.length == 10) {
 				v = v.replace(/(\d{3})(\d{3})(\d{4})/gi, "$1-" + (type == "1" ? "***" : "$2") + "-$3");
