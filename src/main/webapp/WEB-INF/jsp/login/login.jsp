@@ -28,12 +28,10 @@
         	return;
     	}
 
-//     	var userDiv = document.querySelector('input[name="userDiv"]:checked').value;
     	
     	var params = {
     			userId : $("#inputId").val(),
     			userPw : $("#inputPassword").val()
-//     			userDiv : userDiv
     	}
 
 		request("./loginUser.do",params,
@@ -41,7 +39,7 @@
 				console.log(response);
 					if ("1" == response.result) {
 						//저장 후 아래 로직 수행
-						location.href = "./indexFrame.do";
+						location.href = "./evtFrame.do";
 					} else {
 						alert(response.message);
 					}

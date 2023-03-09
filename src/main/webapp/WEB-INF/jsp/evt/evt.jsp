@@ -2,8 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/datapicker.css" />
-		<link rel="stylesheet" type="text/css" href="css/evt.css" />
 		<%@ include file="/WEB-INF/jsp/common.jsp"%>
 	</head>
 	<body>
@@ -18,6 +16,7 @@
 				<c:set var="classNm" value="totalLine1" />
 			</c:otherwise>
 		</c:choose>
+		<%@ include file="/WEB-INF/jsp/frame/topFrame.jsp" %>	
 		<div class="wrap">
 			<div class="title_box">
 				<h1>이벤트관리</h1>

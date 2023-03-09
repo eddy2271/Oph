@@ -1,4 +1,10 @@
 @CHARSET "UTF-8";
+body {
+	min-height : 100vh;
+	min-width : 50rem;
+	max-width : 160rem;
+	width :100%;
+}
 
 .no_deco{
 	text-decoration:none;
