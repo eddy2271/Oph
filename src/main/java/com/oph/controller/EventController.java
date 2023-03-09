@@ -108,7 +108,7 @@ public class EventController {
 			LoginVo loginVo = (LoginVo) session.getAttribute("userInfo");
 			String userDiv = loginVo.getUser_div();		// 회원 구분
 			
-			if(userDiv.equals("ATH999")) {
+			if(userDiv.equals("ATH999") || userDiv.equals("ATH001")) {
 				InetAddress ipAddress = InetAddress.getLocalHost();
 				param.put("evtIp", ipAddress.getHostAddress());
 				int cnt = 0;
@@ -116,12 +116,13 @@ public class EventController {
 				if(param.get("state").equals("C")) { // 추가
 					cnt = eventService.saveEvt(param);
 				} else { // 수정
+					param.put("userDiv", userDiv);
 					cnt = eventService.updateEvt(param);
 				}
 				
 				if(cnt >= 1) result.put("rsCd", cnt);
 			} else {
-				result.put("rsMsg", "관리자만 이용할 수 있습니다.");
+				result.put("rsMsg", "관리자 및 파트너만 이용할 수 있습니다.");
 			}
 		} catch(Exception e) {
 			System.out.println("saveEvt Error : " + e);
