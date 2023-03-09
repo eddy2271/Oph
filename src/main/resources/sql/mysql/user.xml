@@ -33,7 +33,10 @@
 		FROM TMB_USER B   
 		WHERE 1=1
 			<if test='userId != null and userId != ""'>
-				AND USER_ID = #{userId}
+				AND USER_ID LIKE CONCAT('%', #{userId}, '%')
+			</if>
+			<if test='userNm != null and userNm != ""'>
+				AND USER_NM LIKE CONCAT('%', #{userNm}, '%')
 			</if>
 			<if test='userDiv != null and userDiv != ""'>
 				AND USER_DIV = #{userDiv}			

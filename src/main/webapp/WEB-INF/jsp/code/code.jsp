@@ -82,13 +82,27 @@
 				processing: true,
 				pageLength : 10, // 페이징은 10개씩
 				columnDefs: [ { // 요건 컬럼 정의 
-					'searchable' : false,
-					'orderable' : false,
-					'className' : 'dt-body-center chkCenter',
-					'render' : function(data, type, full, meta) {
-						return '<input type="checkbox">';
+						'target' : [0],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [1],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [2],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
+					},{
+						'target' : [3],
+						'searchable' : false,
+						'orderable' : true,
+						'className' : 'dt-body-left chkCenter',
 					}
-				} ],
+				 ],
 				order: [ [ 1, 'asc' ] ],
 				data: data,
 				columns: [
@@ -257,7 +271,8 @@
 			request("./codeChange.do", params, function callback(res) {
 				if(res.result > 0) {
 					alert(res.message);
-					location.reload();
+					modal("D");
+					tb.ajax.reload( null, false);
 				}  else {
 					alert(res.message);
 				}
