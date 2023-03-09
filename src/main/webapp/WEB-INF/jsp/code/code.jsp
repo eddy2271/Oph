@@ -284,6 +284,7 @@
     </script>
     
 <body> 
+	<%@ include file="/WEB-INF/jsp/frame/topFrame.jsp" %>	
 	<div class="wrap">
 		<div class="title_box">
 			<h1>공통코드관리</h1>

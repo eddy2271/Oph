@@ -427,6 +427,7 @@
     </script>
     
 <body class="wrap scrollDiv"> 
+	<%@ include file="/WEB-INF/jsp/frame/topFrame.jsp" %>	
 	<div>
 		<div class="title_box">
 			<h1>회원관리</h1>

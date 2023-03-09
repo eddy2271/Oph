@@ -71,7 +71,6 @@ public class LoginConteroller {
 		} catch(Exception e) {
 			e.printStackTrace();
 			map.put("result", -1); // 실패
-			map.put("message", "아이디 또는 패스워드가 일치하지 않습니다."); // 실패
 		}
 		
 		return map;
