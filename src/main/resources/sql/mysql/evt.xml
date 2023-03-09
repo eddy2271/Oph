@@ -24,9 +24,9 @@
        SELECT CODE.CODE_VAL, CODE.CODE_VAL_DESC
          FROM TMB_EVENT EVT
          LEFT OUTER JOIN TMB_CODE CODE
-           ON EVT.EVT_CLNT_CODE = CODE.CODE_VAL
-        WHERE EVT.EVT_PARTNER_CODE = #{userCodeVal}
-        GROUP BY EVT.EVT_CLNT_CODE, CODE.CODE_VAL_DESC
+           ON SUBSTRING(EVT.EVT_CLNT_CODE, 1, 6) = CODE.CODE_VAL
+        WHERE SUBSTRING(EVT.EVT_PARTNER_CODE, 1, 6) = #{userCodeVal}
+        GROUP BY SUBSTRING(EVT.EVT_CLNT_CODE, 1, 6), CODE.CODE_VAL_DESC
         ORDER BY CODE.CODE_VAL
    </select>
    
@@ -40,50 +40,59 @@
    
    <!-- 이벤트 리스트 가져오기 -->
    <select id="getEvtList" resultType="map" parameterType="hashMap">
-      SELECT @ROWNUM:=@ROWNUM+1 AS NUM, EVT_SEQ
-      	   , SUBSTRING(EVT_PARTNER_CODE, 1, 6) EVT_PARTNER_CODE
-      	   , SUBSTRING(EVT_CLNT_CODE, 1, 6) EVT_CLNT_CODE
-      	   , EVT_USER_NM, EVT_USER_AGE, EVT_USER_PH_NUM, EVT_AR_NM, EVT_STS_CD
-           , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_CLNT_CODE, 1, 6)) EVT_CLNT_NM
-           , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_PARTNER_CODE, 1, 6)) EVT_PARTNER_NM
-           , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_STS_CD) EVT_STS_NM
-           , EVT_SURVEY1, EVT_SURVEY2, EVT_SURVEY3, EVT_SURVEY4, EVT_SURVEY5, EVT_SURVEY6, EVT_DESC, EVT_IP
-           , DATE_FORMAT(REG_DT, '%Y년 %m월 %d일') REG_DT
-           , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') REG_DT_EXCEL
-           , CASE WHEN EVT_SURVEY2 = '' THEN '1'
-                    WHEN EVT_SURVEY3 = '' THEN '2'
-                    WHEN EVT_SURVEY4 = '' THEN '3'
-                    WHEN EVT_SURVEY5 = '' THEN '4'
-                    WHEN EVT_SURVEY6 = '' THEN '5'
-              ELSE '6' END SURVEY_CNT
-        FROM TMB_EVENT ,  (SELECT @ROWNUM:=0) AS R
-       WHERE 1=1
+      SELECT RE.NUM, RE.EVT_SEQ, RE.EVT_PARTNER_CODE, RE.EVT_CLNT_CODE, RE.EVT_USER_NM, RE.EVT_USER_AGE, RE.EVT_USER_PH_NUM, RE.EVT_AR_NM, RE.EVT_STS_CD
+      	   , RE.EVT_CLNT_NM, RE.EVT_PARTNER_NM, RE.EVT_STS_NM, RE.EVT_SURVEY1, RE.EVT_SURVEY2, RE.EVT_SURVEY3, RE.EVT_SURVEY4, RE.EVT_SURVEY5, RE.EVT_SURVEY6
+      	   , RE.EVT_DESC, RE.EVT_IP, RE.REG_DT, RE.REG_DT_EXCEL, RE.SURVEY_CNT
+        FROM (
+        	  SELECT @ROWNUM:=@ROWNUM+1 AS NUM, EVT_SEQ
+        	  	   , SUBSTRING(EVT_PARTNER_CODE, 1, 6) EVT_PARTNER_CODE
+        	  	   , SUBSTRING(EVT_CLNT_CODE, 1, 6) EVT_CLNT_CODE
+        	  	   , EVT_USER_NM, EVT_USER_AGE, EVT_USER_PH_NUM, EVT_AR_NM, EVT_STS_CD
+        	  	   , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_CLNT_CODE, 1, 6)) EVT_CLNT_NM
+        	  	   , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = SUBSTRING(EVT_PARTNER_CODE, 1, 6)) EVT_PARTNER_NM
+        	  	   , (SELECT CODE_VAL_DESC FROM TMB_CODE WHERE CODE_VAL = EVT_STS_CD) EVT_STS_NM
+        	  	   , EVT_SURVEY1, EVT_SURVEY2, EVT_SURVEY3, EVT_SURVEY4, EVT_SURVEY5, EVT_SURVEY6, EVT_DESC, EVT_IP
+        	  	   , DATE_FORMAT(REG_DT, '%Y년 %m월 %d일') REG_DT
+        	  	   , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i') REG_DT_EXCEL
+        	  	   , CASE WHEN EVT_SURVEY2 = '' THEN '1'
+						  WHEN EVT_SURVEY3 = '' THEN '2'
+						  WHEN EVT_SURVEY4 = '' THEN '3'
+						  WHEN EVT_SURVEY5 = '' THEN '4'
+						  WHEN EVT_SURVEY6 = '' THEN '5'
+						  ELSE '6' END SURVEY_CNT
+                FROM TMB_EVENT ,  (SELECT @ROWNUM:=0) AS R
+       		   WHERE 1=1
       <if test='client != null and client != ""'>
-         AND SUBSTRING(EVT_CLNT_CODE, 1 ,6) = #{client}
+         		 AND SUBSTRING(EVT_CLNT_CODE, 1 ,6) = #{client}
       </if>
       <if test='partner != null and partner != ""'>
-         AND SUBSTRING(EVT_PARTNER_CODE, 1, 6) = #{partner}
+         		 AND SUBSTRING(EVT_PARTNER_CODE, 1, 6) = #{partner}
       </if>
       <if test='rev != null and rev != ""'>
-         AND EVT_STS_CD = #{rev}
+         		 AND EVT_STS_CD = #{rev}
       </if>
       <if test='searchKey != null and searchKey != ""'>
          <choose>
             <when test='searchKey == "name"'>
-               AND EVT_USER_NM LIKE CONCAT('%', #{searchText}, '%')
+         		 AND EVT_USER_NM LIKE CONCAT('%', #{searchText}, '%')
             </when>
             <when test='searchKey == "ph"'>
-               AND EVT_USER_PH_NUM = #{searchText}
+         		 AND EVT_USER_PH_NUM = #{searchText}, 
             </when>
             <when test='searchKey == "arNm"'>
-               AND EVT_AR_NM LIKE CONCAT('%', #{searchText}, '%')
+         		 AND EVT_AR_NM LIKE CONCAT('%', #{searchText}, '%')
             </when>
          </choose>
       </if>
-      <if test='startDate != null and startDate != "" and endDate != null and endDate != ""'>
-         AND DATE_FORMAT(REG_DT, '%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+      <if test='startDate != null and startDate != ""'>
+         		 AND DATE_FORMAT(REG_DT, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
       </if>
-       ORDER BY REG_DT DESC
+      <if test='endDate != null and endDate != ""'>
+         		 AND DATE_FORMAT(REG_DT, '%Y-%m-%d') <![CDATA[<=]]> #{endDate}
+      </if>
+         	   ORDER BY REG_DT_EXCEL
+        	 ) RE
+       ORDER BY RE.NUM DESC
    </select>
    
    <!-- 데이터 저장하기 -->
@@ -142,7 +151,6 @@
            , EVT_SURVEY6 = #{evtSurvey6}
            , EVT_DESC = #{evtDesc}
            , EVT_IP = #{evtIp}
-           , REG_DT = NOW()
        WHERE EVT_SEQ = #{evtSeq}
    </update>
    

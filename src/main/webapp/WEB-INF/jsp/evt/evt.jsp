@@ -87,9 +87,11 @@
 						<th>
 							<div>클라이언트</div>
 						</th>
-						<th>
-							<div>파트너사</div>
-						</th>
+						<c:if test="${userInfo.user_div ne 'ATH002'}">
+							<th>
+								<div>파트너사</div>
+							</th>
+						</c:if>
 						<th>
 							<div>고객명</div>
 						</th>
@@ -137,19 +139,19 @@
 		    				<tr>
 			    				<th>클라이언트</th>
 			    				<td>
-			    					<select name="partnerModal" id="partnerModal" class="inputFull">
-										<option value="0">파트너 선택</option>
-										<c:forEach items="${partnerList}" var="partner">
-											<option value="${partner.CODE_VAL }">${partner.USER_NM}(${partner.USER_ID})</option>
+			    					<select name="clientModal" id="clientModal" class="inputFull">
+										<option value="0">클라이언트 선택</option>
+										<c:forEach items="${clientList}" var="client">
+											<option value="${client.CODE_VAL }">${client.USER_NM}(${client.USER_ID})</option>
 										</c:forEach>
 									</select>
 			    				</td>
 			    				<th>파트너</th>
 			    				<td>
-			    					<select name="clientModal" id="clientModal" class="inputFull">
-										<option value="0">클라이언트 선택</option>
-										<c:forEach items="${clientList}" var="client">
-											<option value="${client.CODE_VAL }">${partner.USER_NM}(${partner.USER_ID})</option>
+			    					<select name="partnerModal" id="partnerModal" class="inputFull">
+										<option value="0">파트너 선택</option>
+										<c:forEach items="${partnerList}" var="partner">
+											<option value="${partner.CODE_VAL }">${partner.USER_NM}(${partner.USER_ID})</option>
 										</c:forEach>
 									</select>
 			    				</td>
@@ -174,7 +176,7 @@
 		    				<td>
 		    					<c:choose>
 		    						<c:when test="${userInfo.user_div eq 'ATH999'}">
-		    							<input type="text" id="evtUserPhNum" name ="evtUserPhNum" class="inputFull"/>
+		    							<input type="text" id="evtUserPhNum" name ="evtUserPhNum" class="inputFull" maxlength="13" onkeyup="phNumSet(this)" placeholder="'-' 없이 입력해주세요."/>
 		    						</c:when>
 		    						<c:otherwise>
 		    							<span id="evtUserPhNum"></span>
@@ -329,6 +331,10 @@
 		var delList = [];
 		
 		$(document).ready(function() {
+			var date = new Date();
+			var nowDate = date.getFullYear() + "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + (date.getDate())).slice(-2);
+			
+			// datepicker Setting
 			$("#startDate, #endDate").datepicker({
 				dateFormat: 'yy-mm-dd',
 				changeYear: true,
@@ -343,6 +349,9 @@
 				buttonImage: "/image/calImg.png"*/
 			});
 			
+			// 오늘날짜 Setting			
+			$('#startDate, #endDate').datepicker('setDate', nowDate);
+			
 			$("#evtTable").DataTable().destroy(); // 데이터테이블 초기화
 			
 			// dataTable Setting
@@ -356,13 +365,20 @@
 	    				startDate: function() { return $("#startDate").val() },
 	    				endDate: function() { return $("#endDate").val() },
 	    				searchKey: function() { return $("#searchKey option:selected").val() },
-	    				searchText: function() { return $("#searchText").val() },
+	    				searchText: function() {
+	    					var text = $("#searchText").val();
+	    					if($("#searchKey option:selected").val() == "ph") {
+	    						text = text.replaceAll("-", "");
+	    					}
+	    					return text;
+	    				},
 	    				rev: function() { return $("#rev option:selected").val() }
 	                },
 	                dataType: "JSON"
 	            },
 				dom: 'Bfrtip',
 				destroy: true,
+				order: [[1, 'desc']],
 				bFilter: false, // 검색란 제어
 				pageLength : 10, // 페이징은 10개씩
 				columnDefs: [{ 
@@ -402,10 +418,21 @@
 					{data: ''}, // 체크박스
                     {data: 'NUM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 번호
                     {data: 'EVT_CLNT_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 클라이언트
-                    {data: 'EVT_PARTNER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 파트너사
+                    <c:if test="${userInfo.user_div ne 'ATH002'}">
+                    	{data: 'EVT_PARTNER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 파트너사
+					</c:if>
                     {data: 'EVT_USER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 고객명
                     {data: 'EVT_USER_AGE', render: $.fn.dataTable.render.text(), className: 'touch'}, // 나이
-                    {data: 'EVT_USER_PH_NUM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 연락처
+                    {data: 'EVT_USER_PH_NUM', render: function(data) {
+                    	<c:choose>
+	    					<c:when test="${userInfo.user_div eq 'ATH001'}">
+	    						return phAstSet(data, "1");
+	    					</c:when>
+	    					<c:otherwise>
+	    					return phAstSet(data, "2");
+	    					</c:otherwise>
+	    				</c:choose>
+                    }, className: 'touch'}, // 연락처
                     {data: 'EVT_AR_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 지면명
                     {data: 'REG_DT', render: $.fn.dataTable.render.text(), className: 'touch'}, // 신청일자
                     {data: 'EVT_SURVEY1', render: $.fn.dataTable.render.text(), className: 'touch'}, // 설문1
@@ -454,7 +481,7 @@
 		
 		// 검색 클릭
 		$(".search_btn").on("click", function() {
-			evtTable.ajax.reload();
+			evtTable.ajax.reload(null, false);
 		});
 		
 		// 삭제하기 버튼 클릭 
@@ -465,7 +492,7 @@
 				request("./removeEvt.do", {"delList": delList}, function callback(res) {
 					if(res.rsCd != 0) {
 						alert(res.rsCd + "건 삭제 완료되었습니다.");
-						evtTable.ajax.reload();
+						evtTable.ajax.reload(null, false);
 					} else {
 						alert(res.rsMsg);
 					}
@@ -479,13 +506,16 @@
 		
 		// 엑셀 다운로드 버튼 클릭
 		function fnExcelDown() {
-			var param = "partner=" + $("#partner option:selected").val() + "&";
-			param += "client=" + $("#client option:selected").val() + "&";
+			var param = "client=" + $("#client option:selected").val() + "&";
 			param += "startDate=" + $("#startDate").val() + "&";
 			param += "endDate=" + $("#endDate").val() + "&";
 			param += "searchKey=" + $("#searchKey option:selected").val() + "&";
 			param += "searchText=" + $("#searchText").val() + "&";
 			param += "rev=" + $("#rev option:selected").val() + "&";
+			
+			<c:if test="${userInfo.user_div ne 'ATH002'}">
+				param += "partner=" + $("#partner option:selected").val() + "&";
+			</c:if>
 
 			location.href = "./excelDown.do?" + param;
 		}
@@ -524,9 +554,26 @@
 				$("#evtDesc").val("")
 				
 				// 데이터 리로드
-				evtTable.ajax.reload();
+				evtTable.ajax.reload(null, false);
 			}
 		}
+		
+		// 휴대폰번호 '-' 넣기
+		function phNumSet(v) {
+			var regExp = /[^0-9]/g;
+			var regExp1 = /(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})/;
+			$("#evtUserPhNum").val(v.value.replace(regExp, "").replace(regExp1, "$1-$2-$3").replace("--", "-"));
+		}
+		
+		function phAstSet(v, type) {
+			if(v.length == 10) {
+				v = v.replace(/(\d{3})(\d{3})(\d{4})/gi, "$1-" + (type == "1" ? "***" : "$2") + "-$3");
+			} else if(v.length == 11) {
+				v = v.replace(/(\d{3})(\d{4})(\d{4})/gi, "$1-" + (type == "1" ? "****" : "$2") + "-$3");
+            }
+			
+			return v;
+	      }
 		
 		// 날짜 선택 시
 		$("#startDate, #endDate").on("change", function() {
@@ -597,10 +644,9 @@
 						$("#partnerModal").val(row.EVT_PARTNER_CODE).prop("selected", true);
 						$("#clientModal").val(row.EVT_CLNT_CODE).prop("selected", true);
 						$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
-						
 						$("#evtUserNm").val(row.EVT_USER_NM);
 						$("#evtUserAge").val(row.EVT_USER_AGE);
-						$("#evtUserPhNum").val(row.EVT_USER_PH_NUM);
+						$("#evtUserPhNum").val(phAstSet(row.EVT_USER_PH_NUM, "2"));
 						$("#evtArNm").val(row.EVT_AR_NM);
 						
 						// 설문항목 데이터 넣기
@@ -614,8 +660,7 @@
 					<c:otherwise>
 						$("#revModal").text(row.EVT_STS_NM);
 						$("#evtUserNm").text(row.EVT_USER_NM);
-						$("#evtUserAge").text(row.EVT_USER_AGE);
-						$("#evtUserPhNum").text(row.EVT_USER_PH_NUM);
+						$("#evtUserAge").text(row.EVT_USER_AGE);	    				
 						$("#evtArNm").text(row.EVT_AR_NM);
 						$("#evtDesc").text(row.EVT_DESC);
 						$("#evtSurvey1").text(row.EVT_SURVEY1);
@@ -624,6 +669,15 @@
 						$("#evtSurvey4").text(row.EVT_SURVEY4);
 						$("#evtSurvey5").text(row.EVT_SURVEY5);
 						$("#evtSurvey6").text(row.EVT_SURVEY6);
+						
+						<c:choose>
+							<c:when test="${userInfo.user_div eq 'ATH001'}">
+								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM, "1"));
+							</c:when>
+							<c:otherwise>
+								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM, "2"));
+							</c:otherwise>
+						</c:choose>
 					</c:otherwise>
 				</c:choose>
 				$("#evtDesc").val(row.EVT_DESC);
@@ -669,7 +723,7 @@
 					clientModal: $("#clientModal option:selected").val(),
 					evtUserNm: $("#evtUserNm").val(),
 					evtUserAge: $("#evtUserAge").val(),
-					evtUserPhNum: $("#evtUserPhNum").val(),
+					evtUserPhNum: $("#evtUserPhNum").val().replaceAll('-', ''),
 					evtArNm: $("#evtArNm").val(),
 					revModal: $("#revModal option:selected").val(),
 					evtDesc: $("#evtDesc").val(),
@@ -706,7 +760,7 @@
 					if(res.rsCd != 0) {
 						alert(res.rsCd + "건 저장 완료되었습니다.");
 						modalCtrl("D");
-						evtTable.ajax.reload();
+						evtTable.ajax.reload(null, false);
 					} else {
 						alert(res.rsMsg);
 					}
