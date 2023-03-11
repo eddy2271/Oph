@@ -392,10 +392,14 @@
 					'targets' : 0,
 					'searchable' : false,
 					'orderable' : false,
-					'className' : 'dt-body-center chkCenter',
+					'className' : 'chkCenter',
 					'render' : function(data, type, full, meta) {
 						return '<input type="checkbox">';
 					}
+				},
+				{
+					'targets' : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+					'className' : 'dt-center'
 				}],
 				buttons: [
 				<c:if test="${userInfo.user_div eq 'ATH999'}">
