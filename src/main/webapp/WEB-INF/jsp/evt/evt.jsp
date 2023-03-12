@@ -392,10 +392,18 @@
 					'targets' : 0,
 					'searchable' : false,
 					'orderable' : false,
-					'className' : 'dt-body-center chkCenter',
+					'className' : 'chkCenter',
 					'render' : function(data, type, full, meta) {
 						return '<input type="checkbox">';
 					}
+				},
+				{
+					'targets' : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+						<c:if test="${auth eq '1'}">
+						, 11
+						</c:if>
+					],
+					'className' : 'dt-center'
 				}],
 				buttons: [
 				<c:if test="${userInfo.user_div eq 'ATH999'}">
@@ -576,6 +584,7 @@
 			$("#evtUserPhNum").val(v.value.replace(regExp, "").replace(regExp1, "$1-$2-$3").replace("--", "-"));
 		}
 		
+		// 휴대폰번호 * 처리
 		function phAstSet(v, type) {
 			if(v.length == 10) {
 				v = v.replace(/(\d{3})(\d{3})(\d{4})/gi, "$1-" + (type == "1" ? "***" : "$2") + "-$3");
