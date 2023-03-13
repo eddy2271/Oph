@@ -428,7 +428,8 @@
     
 <body class="wrap scrollDiv"> 
 	<%@ include file="/WEB-INF/jsp/frame/topFrame.jsp" %>	
-	<div>
+	<!-- 20230313지선수정 class="wrap" -->
+	<div class="wrap">
 		<div class="title_box">
 			<h1>회원관리</h1>
 			<p>홈 > 회원관리</p>
