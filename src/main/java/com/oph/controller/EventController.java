@@ -250,7 +250,10 @@ public class EventController {
 				        if(i==5) {
 				        	cell.setCellValue(changePh(map.get(colList.get(i)).toString(), type));
 				        } else {
-				        	cell.setCellValue(map.get(colList.get(i)).toString());
+				        	String cellData = map.get(colList.get(i)).toString();
+				        	cellData = i == 0 ? cellData.replaceAll("\\.0", "") : cellData;
+				        	
+				        	cell.setCellValue(cellData);
 				        }
 				        
 					    num++;
