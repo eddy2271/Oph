@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=9" />
-<title></title>
+<title>투엘컴퍼니</title>
 
 <!-- tag lib -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
