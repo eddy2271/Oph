@@ -118,10 +118,7 @@
 							<div>설문1</div>
 						</th>
 						<th>
-							<div>설문2</div>
-						</th>
-						<th>
-							<div>메모</div>
+							<div>예약현황</div>
 						</th>
 					</tr>
 				</thead>
@@ -351,13 +348,16 @@
 				nextText: '>',
 				prevText: '<',
 				dayNamesMin: ['월', '화', '수', '목', '금', '토', '일'], // 요일의 한글 형식.
-				monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] // 월의 한글 형식.
+				monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'], // 월의 한글 형식.
+				timeFormat:'HH:mm:ss',
+		        controlType:'select',
+		        oneLine:true
 				/*showOn: "button",
 				buttonImage: "/image/calImg.png"*/
 			});
 			
 			// 오늘날짜 Setting			
-			$('#startDate, #endDate').datepicker('setDate', nowDate);
+			$('#endDate').datepicker('setDate', nowDate);
 			
 			$("#evtTable").DataTable().destroy(); // 데이터테이블 초기화
 			
@@ -388,22 +388,23 @@
 				order: [[1, 'desc']],
 				bFilter: false, // 검색란 제어
 				pageLength : 10, // 페이징은 10개씩
+				scrollX: "100%",
+				scrollXInner: "2000px",
 				columnDefs: [{ 
 					'targets' : 0,
 					'searchable' : false,
 					'orderable' : false,
-					'className' : 'chkCenter',
 					'render' : function(data, type, full, meta) {
 						return '<input type="checkbox">';
 					}
 				},
 				{
-					'targets' : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+					'targets' : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 						<c:if test="${auth eq '1'}">
-						, 11
+						, 10
 						</c:if>
 					],
-					'className' : 'dt-center'
+					'className' : 'dt-center chkCenter'
 				}],
 				buttons: [
 				<c:if test="${userInfo.user_div eq 'ATH999'}">
@@ -430,29 +431,28 @@
 					}
 				}],
 				columns: [
-					{data: ''}, // 체크박스
-                    {data: 'NUM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 번호
-                    {data: 'EVT_CLNT_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 클라이언트
+					{data: '', width: '4%'}, // 체크박스
+                    {data: 'NUM', render: $.fn.dataTable.render.text(), className: 'touch', width: '5%'}, // 번호
+                    {data: 'EVT_CLNT_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '13%'}, // 클라이언트
                     <c:if test="${auth eq '1'}">
-                    	{data: 'EVT_PARTNER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 파트너사
+                    	{data: 'EVT_PARTNER_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '13%'}, // 파트너사
 					</c:if>
-                    {data: 'EVT_USER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 고객명
-                    {data: 'EVT_USER_AGE', render: $.fn.dataTable.render.text(), className: 'touch'}, // 나이
+                    {data: 'EVT_USER_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '7%'}, // 고객명
+                    {data: 'EVT_USER_AGE', render: $.fn.dataTable.render.text(), className: 'touch', width: '5%'}, // 나이
                     {data: 'EVT_USER_PH_NUM', render: function(data) {
                     	<c:choose>
 	    					<c:when test="${userInfo.user_div eq 'ATH001'}">
 	    						return phAstSet(data, "1");
 	    					</c:when>
 	    					<c:otherwise>
-	    					return phAstSet(data, "2");
+	    						return phAstSet(data, "2");
 	    					</c:otherwise>
 	    				</c:choose>
-                    }, className: 'touch'}, // 연락처
-                    {data: 'EVT_AR_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 지면명
-                    {data: 'REG_DT', render: $.fn.dataTable.render.text(), className: 'touch'}, // 신청일자
-                    {data: 'EVT_SURVEY1', render: $.fn.dataTable.render.text(), className: 'touch'}, // 설문1
-                    {data: 'EVT_SURVEY2', render: $.fn.dataTable.render.text(), className: 'touch'}, // 설문2
-                    {data: 'EVT_DESC', render: $.fn.dataTable.render.text(), className: 'touch'}, // 메모
+                    }, className: 'touch', width: '10%'}, // 연락처
+                    {data: 'EVT_AR_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '17%'}, // 지면명
+                    {data: 'REG_DT', render: $.fn.dataTable.render.text(), className: 'touch', width: '10%'}, // 신청일자
+                    {data: 'EVT_SURVEY1', render: $.fn.dataTable.render.text(), className: 'touch', width: '10%'}, // 설문1
+                    {data: 'EVT_STS_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '6%'} // 예약현황
 			  	],
 			  	drawCallback: function() {
 			  		if($.isFunction(evtTable.data)) {

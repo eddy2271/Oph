@@ -217,7 +217,7 @@ public class EventController {
 		    bodyStyle.setBorderRight(BorderStyle.THIN);
 		    
 		    // 바디 배경색 = 연보라
-		    bodyStyle.setFillForegroundColor(HSSFColorPredefined.LIGHT_CORNFLOWER_BLUE.getIndex());
+		    bodyStyle.setFillForegroundColor(HSSFColorPredefined.WHITE.getIndex());
 		    bodyStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		    
 		    // 바디 데이터정렬 = 가운데 정렬
