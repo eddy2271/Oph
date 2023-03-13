@@ -63,60 +63,65 @@
 	margin-right: 10px;
 }
 
+/*20230313지선수정 width: 150px;box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
 .w-btn {
 	position: relative;
 	border: none;
 	display: inline-block;
+	width: 150px;
 	padding: 15px 30px;
-	border-radius: 15px;
+	border-radius: 5px;
 	font-family: "paybooc-Light", sans-serif;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 	text-decoration: none;
 	font-weight: 600;
 	transition: 0.25s;
 }
 
+/*20230313지선수정 box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
 .w-btn-1 {
 	position: relative;
 	border: none;
 	display: inline-block;
 	padding: 5px 13px;
-	border-radius: 15px;
+	border-radius: 5px;
 	font-family: "paybooc-Light", sans-serif;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 	text-decoration: none;
 	font-weight: 600;
 	transition: 0.25s;
 }
 
+/*20230313지선수정 width: 100px;border-radius: 3px; */
 .w-btn-2 {
 	position: relative;
 	border: none;
 	display: inline-block;
+	width: 100px;
 	padding: 5px 13px;
-	border-radius: 10px;
+	border-radius: 3px;
 	font-family: "paybooc-Light", sans-serif;
-	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 	text-decoration: none;
 	font-weight: 600;
 	transition: 0.25s;
 }
 
+/*20230313지선수정 color */
 .w-btn-blue {
-    background-color: #6aafe6;
-    color: #d4dfe6;
+    background-color: #485fc7;
+    color: #fff;
     cursor:pointer;
 }
 
+/*20230313지선수정 color */
 .w-btn-gray {
-    background-color: #a3a1a1;
-    color: #e3dede;
+    background-color: #34495e;
+    color: #fff;
     cursor:pointer;
 }
 
+/*20230313지선수정 color */
 .w-btn-green {
-    background-color: #77af9c;
-    color: #d7fff1;
+    background-color: #3498db;
+    color: #fff;
     cursor:pointer;
 }
 
@@ -142,10 +147,13 @@
 	vertical-align: middle !important;
 }
 
+/*20230313지선수정 border: 0;border-radius: 3px; */
 .search_btn {
 	margin-top: auto;
 	width: 270px;
 	height: 30px;
-	background: #553c7d;
+	border: 0;
+	border-radius: 3px;
+	background: #3498db;
 	color: #fff;
 }
