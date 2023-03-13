@@ -143,6 +143,11 @@ form{
   font-family: 'poppins', sans-serif;
 }
 
+/*20230313지선수정 font-size: 1.2rem; */
+.input-div > div > input::placeholder {
+  font-size: 0.8rem;
+}
+
 .input-div.pass{
   margin-bottom: 4px;
 }
