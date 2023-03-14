@@ -83,22 +83,22 @@
 						'target' : [0],
 						'searchable' : false,
 						'orderable' : true,
-						'className' : 'dt-center chkCenter',
+						'className' : 'chkCenter',
 					},{
 						'target' : [1],
 						'searchable' : false,
 						'orderable' : true,
-						'className' : 'dt-center chkCenter',
+						'className' : 'chkCenter',
 					},{
 						'target' : [2],
 						'searchable' : false,
 						'orderable' : true,
-						'className' : 'dt-center chkCenter',
+						'className' : 'chkCenter',
 					},{
 						'target' : [3],
 						'searchable' : false,
 						'orderable' : true,
-						'className' : 'dt-center chkCenter',
+						'className' : 'chkCenter',
 					}
 				 ],
 				order: [ [ 1, 'asc' ] ],
