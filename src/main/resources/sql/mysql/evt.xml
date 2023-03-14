@@ -77,7 +77,7 @@
          		 AND EVT_USER_NM LIKE CONCAT('%', #{searchText}, '%')
             </when>
             <when test='searchKey == "ph"'>
-         		 AND EVT_USER_PH_NUM = #{searchText}, 
+         		 AND EVT_USER_PH_NUM LIKE CONCAT('%', #{searchText}, '%')
             </when>
             <when test='searchKey == "arNm"'>
          		 AND EVT_AR_NM LIKE CONCAT('%', #{searchText}, '%')
