@@ -26,8 +26,8 @@ public class CodeServiceImpl implements CodeServiceI{
 	}
 	
 	@Override
-	public List<Map<String, Object>> selectCodeList(CodeVo codeVo) {
-		return codeDao.selectCodeList(codeVo);
+	public List<Map<String, Object>> selectCodeList(Map<String, Object> param) {
+		return codeDao.selectCodeList(param);
 	}
 	
 	@Override

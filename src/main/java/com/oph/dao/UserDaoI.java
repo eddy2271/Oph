@@ -12,7 +12,7 @@ public interface UserDaoI {
 	 * @param userVo
 	 * @return
 	 */
-	public List<Map<String, Object>> selectUserList(UserVo userVo);
+	public List<Map<String, Object>> selectUserList(Map<String, Object> param);
 
 	/**
 	 * 등록회원 코드목록 조회

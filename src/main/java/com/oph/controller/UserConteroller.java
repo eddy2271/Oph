@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -97,24 +99,20 @@ public class UserConteroller {
 		return map;
 	}
 	
+	/**
+	 * 회원 목록 조회 - dataTable용
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(value="/userList.do")
-	public Object userList(HttpServletRequest request, HttpServletResponse response, @RequestBody UserVo userVo) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	@RequestMapping(value="/userList.do", method = RequestMethod.POST)
+	public Map<String, Object> getEvtList(@RequestParam Map<String, Object> param) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("data", userService.selectUserList(param)); // 이벤트 리스트 가져오기
 		
-		try {
-			List<Map<String, Object>> userList = new ArrayList<Map<String,Object>>();
-			
-			userList = userService.selectUserList(userVo);
-			map.put("userList", userList);
-			map.put("result", 1); // 성공
-		} catch(Exception e) {
-			map.put("reulst", -1); // 실패
-			map.put("message", "회원목록 조회에 실패했습니다."); // 실패
-		}
-		
-		return map;
+		return result;
 	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value="/idCheck.do")

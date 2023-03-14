@@ -16,8 +16,8 @@ public class UserDaoImpl implements UserDaoI{
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<Map<String, Object>> selectUserList(UserVo userVo) {
-		return sqlSession.selectList("user.selectUserList", userVo);
+	public List<Map<String, Object>> selectUserList(Map<String, Object> param) {
+		return sqlSession.selectList("user.selectUserList", param);
 	}
 	
 	@Override

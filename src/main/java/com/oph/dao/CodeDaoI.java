@@ -25,7 +25,7 @@ public interface CodeDaoI {
 	 * @param codeVo
 	 * @return
 	 */
-	public List<Map<String, Object>> selectCodeList(CodeVo codeVo);
+	public List<Map<String, Object>> selectCodeList(Map<String, Object> param);
 	
 	/**
 	 * code 중복 조회
