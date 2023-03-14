@@ -23,7 +23,7 @@
 			<c:otherwise>
 				<c:set var="tdCls" value="" />
 			</c:otherwise>
-		</c:choose>		
+		</c:choose>
 		<%@ include file="/WEB-INF/jsp/frame/topFrame.jsp" %>	
 		<div class="wrap">
 			<div class="title_box">
@@ -119,6 +119,9 @@
 						</th>
 						<th>
 							<div>예약현황</div>
+						</th>
+						<th>
+							<div>메모</div>
 						</th>
 					</tr>
 				</thead>
@@ -225,7 +228,7 @@
 		    				<th>예약현황</th>
 		    				<td>
 		    					<c:choose>
-		    						<c:when test="${auth eq '1'}">
+		    						<c:when test="${userInfo.user_div eq 'ATH999' || userInfo.user_div eq 'ATH002'}">
 		    							<select name="revModal" id="revModal" class="inputFull">
 											<option value="0">예약현황 선택</option>
 											<c:forEach items="${revList}" var="rev">
@@ -317,7 +320,7 @@
 		    			</tr>
 		    		</table>
 		    	</div>
-		    	<c:if test="${auth eq '1'}">
+		    	<c:if test="${userInfo.user_div eq 'ATH999' || userInfo.user_div eq 'ATH002'}">
 		    		<div class="modal-last">
 				    	<button type="button" class="w-btn saveBtn">저장하기</button>
 				    </div>
@@ -388,8 +391,6 @@
 				order: [[1, 'desc']],
 				bFilter: false, // 검색란 제어
 				pageLength : 10, // 페이징은 10개씩
-				scrollX: "100%",
-				scrollXInner: "2000px",
 				columnDefs: [{ 
 					'targets' : 0,
 					'searchable' : false,
@@ -399,12 +400,12 @@
 					}
 				},
 				{
-					'targets' : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+					'targets' : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 						<c:if test="${auth eq '1'}">
-						, 10
+						, 11
 						</c:if>
 					],
-					'className' : 'dt-center chkCenter'
+					'className' : 'chkCenter'
 				}],
 				buttons: [
 				<c:if test="${userInfo.user_div eq 'ATH999'}">
@@ -431,14 +432,14 @@
 					}
 				}],
 				columns: [
-					{data: '', width: '4%'}, // 체크박스
-                    {data: 'NUM', render: $.fn.dataTable.render.text(), className: 'touch', width: '5%'}, // 번호
-                    {data: 'EVT_CLNT_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '13%'}, // 클라이언트
+					{data: ''}, // 체크박스
+                    {data: 'NUM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 번호
+                    {data: 'EVT_CLNT_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 클라이언트
                     <c:if test="${auth eq '1'}">
-                    	{data: 'EVT_PARTNER_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '13%'}, // 파트너사
+                    	{data: 'EVT_PARTNER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 파트너사
 					</c:if>
-                    {data: 'EVT_USER_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '7%'}, // 고객명
-                    {data: 'EVT_USER_AGE', render: $.fn.dataTable.render.text(), className: 'touch', width: '5%'}, // 나이
+                    {data: 'EVT_USER_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 고객명
+                    {data: 'EVT_USER_AGE', render: $.fn.dataTable.render.text(), className: 'touch'}, // 나이
                     {data: 'EVT_USER_PH_NUM', render: function(data) {
                     	<c:choose>
 	    					<c:when test="${userInfo.user_div eq 'ATH001'}">
@@ -448,11 +449,12 @@
 	    						return phAstSet(data, "2");
 	    					</c:otherwise>
 	    				</c:choose>
-                    }, className: 'touch', width: '10%'}, // 연락처
-                    {data: 'EVT_AR_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '17%'}, // 지면명
-                    {data: 'REG_DT', render: $.fn.dataTable.render.text(), className: 'touch', width: '10%'}, // 신청일자
-                    {data: 'EVT_SURVEY1', render: $.fn.dataTable.render.text(), className: 'touch', width: '10%'}, // 설문1
-                    {data: 'EVT_STS_NM', render: $.fn.dataTable.render.text(), className: 'touch', width: '6%'} // 예약현황
+                    }, className: 'touch'}, // 연락처
+                    {data: 'EVT_AR_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 지면명
+                    {data: 'REG_DT', render: $.fn.dataTable.render.text(), className: 'touch'}, // 신청일자
+                    {data: 'EVT_SURVEY1', render: $.fn.dataTable.render.text(), className: 'touch'}, // 설문1
+                    {data: 'EVT_STS_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 예약현황
+                    {data: 'EVT_DESC', render: $.fn.dataTable.render.text(), className: 'touch'} // 메모
 			  	],
 			  	drawCallback: function() {
 			  		if($.isFunction(evtTable.data)) {
@@ -525,11 +527,17 @@
 		
 		// 엑셀 다운로드 버튼 클릭
 		function fnExcelDown() {
+			var searchKey = $("#searchKey option:selected").val();
+			var searchText = $("#searchText").val();
+			if(searchKey == "ph") {
+				searchText = searchText.replaceAll("-", "");
+			}
+			
 			var param = "client=" + $("#client option:selected").val() + "&";
 			param += "startDate=" + $("#startDate").val() + "&";
 			param += "endDate=" + $("#endDate").val() + "&";
-			param += "searchKey=" + $("#searchKey option:selected").val() + "&";
-			param += "searchText=" + $("#searchText").val() + "&";
+			param += "searchKey=" + searchKey + "&";
+			param += "searchText=" + searchText + "&";
 			param += "rev=" + $("#rev option:selected").val() + "&";
 			
 			<c:if test="${auth eq '1'}">
@@ -690,7 +698,7 @@
 						$("#evtSurvey6").text(row.EVT_SURVEY6);
 						
 						<c:choose>
-							<c:when test="${userInfo.user_div eq 'ATH001'}">
+							<c:when test="${userInfo.user_div eq 'ATH002'}">
 								$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
 								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM, "1"));
 
