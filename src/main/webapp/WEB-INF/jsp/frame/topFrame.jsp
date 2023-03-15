@@ -38,7 +38,7 @@ $.noConflict();
 		style="height : 10vh; width: 100%; margin-top: 2%; padding: 0 30px;">
 		<div style="width: 80%; float: left;">
 			<div class="two" style="height : 10vh;">
-				<div style="width :auto; float : left;">
+				<div style="width :auto; float : left; cursor:pointer;" onClick="javascript:goMenu('1')">
 				<h1 class="top_h1">
 					투엘 컴퍼니 <span>TWO.L COMPANY</span>
 				</h1>
