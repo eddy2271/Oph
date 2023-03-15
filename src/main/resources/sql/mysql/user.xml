@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="user">
-    <select id="selectUserList" parameterType="userVo" resultType="map">
+    <select id="selectUserList" resultType="map" parameterType="hashMap">
     	SELECT 
 			USER_ID,
 			USER_PW,

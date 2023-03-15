@@ -48,32 +48,26 @@
 		function init() {
 			// 선택된 구분에 대한 값 세팅
 			selectValList();
-			search();
 			setDataTable();
 		}
 		
 		function search() {
-			var params = {
-				codeDiv : $("#codeDiv").val(),
-				codeVal : $("#codeVal").val(),
-				codeValDesc : $("#codeValDesc").val()
-			}	
-			
-			request("./codeList.do",params, function callback(res) {
-				if(res.result > 0) {
-					setDataTable(res.codeList);
-				} else {
-					alert(res.message);
-				}
-			},
-			function error(request,status) {
-				alert(status);
-			});
+			tb.ajax.reload( null, false);
 		}
 		
-		function setDataTable(data) {
+		function setDataTable() {
 			$('#codeTable').DataTable().destroy();
 			tb = $("#codeTable").DataTable({
+				ajax: {
+					type: 'POST',
+	                url: './codeList.do',
+	                data: {
+	                	codeDiv: function() { return $("#codeDiv").val() },
+	                	codeVal: function() { return $("#codeVal").val() },
+	                	codeValDesc: function() { return $("#codeValDesc").val() }
+	                },
+	                dataType: "JSON"
+	            },
 				dom: 'Bfrtip',
 				destroy: true,
 				bFilter: false, // 검색란 제어
@@ -102,7 +96,6 @@
 					}
 				 ],
 				order: [ [ 1, 'asc' ] ],
-				data: data,
 				columns: [
                     {data: 'CODE_DIV', render: $.fn.dataTable.render.text()}, //코드구분
                     {data: 'CODE_DIV_DESC', render: $.fn.dataTable.render.text()}, //코드구분
@@ -115,10 +108,13 @@
 					action: function(e, dt, node, config) {
 						modal("C");
 					}
-				}]
+				}],
+			  	drawCallback: function() {
+			  		if($.isFunction(tb.data)) {
+			  			$("#rowCount").text(tb.data().length);
+			  		}
+			  	}
 			});
-			// 조회된 count 세팅			
-			$("#rowCount").text(tb.page.info().recordsTotal);
 			
 			tb.rows({selected:true}).data();
 		}

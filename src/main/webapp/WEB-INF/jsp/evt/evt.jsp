@@ -71,7 +71,6 @@
 					</li>
 					<li>
 						<select name="searchKey" id="searchKey">
-							<option value="">선택</option>
 							<option value="name">고객명</option>
 							<option value="ph">전화번호</option>
 							<option value="arNm">지면명</option>

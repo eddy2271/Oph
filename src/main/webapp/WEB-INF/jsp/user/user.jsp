@@ -63,38 +63,31 @@
 		
 		function init() {
 			// 선택된 구분에 대한 값 세팅
-			search();
 			setDataTable();
 		}
 		
 		function search() {
-			var params = {
-				userId : $("#userId").val(),
-				userNm : $("#userNm").val(),
-				userDiv : $("#userDiv").val(),
-				userSts : $("#userSts").val()
-			}	
-			
-			request("./userList.do",params, function callback(res) {
-				if(res.result > 0) {
-					setDataTable(res.userList);
-				} else {
-					alert(res.message);
-				}
-			},
-			function error(request,status) {
-				alert(status);
-			});
+			tb.ajax.reload(null, false);
 		}
 		
-		function setDataTable(data) {
-			$('#userTable').DataTable().destroy();
+		function setDataTable() {
+			$("#userTable").DataTable().destroy();
 			
 			tb = $("#userTable").DataTable({
+				ajax: {
+					type: 'POST',
+	                url: './userList.do',
+	                data: {
+	                	userId: function() { return $("#userId").val() },
+	                	userNm: function() { return $("#userNm").val() },
+	                	userDiv: function() { return $("#userDiv").val() },
+	                	userSts: function() { return $("#userSts").val() }
+	                },
+	                dataType: "JSON"
+	            },
 				dom: 'Bfrtip',
 				destroy: true,
 				bFilter: false, // 검색란 제어
-				processing: true,
 				pageLength : 10, // 페이징은 10개씩
 				columnDefs: [ { // 요건 컬럼 정의 
 						'target' : [0],
@@ -129,7 +122,6 @@
 					}
 				],
 				order: [ [ 1, 'asc' ] ],
-				data: data,
 				columns: [
                     {data: 'USER_ID', render: $.fn.dataTable.render.text()}, //코드구분
                     {data: 'USER_NM', render: $.fn.dataTable.render.text()}, //코드구분
@@ -144,10 +136,15 @@
 					action: function(e, dt, node, config) {
 						modal("C");
 					}
-				}]
+				}],
+			  	drawCallback: function() {
+			  		if($.isFunction(tb.data)) {
+			  			$("#rowCount").text(tb.data().length);
+			  		}
+			  	}
 			});
 			// 조회된 count 세팅			
-			$("#rowCount").text(tb.page.info().recordsTotal);
+// 			$("#rowCount").text(tb.page.info().recordsTotal);
 			
 			tb.rows({selected:true}).data();
 		}
