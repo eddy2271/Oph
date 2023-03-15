@@ -480,8 +480,6 @@
 					msg = "나이를 입력해주세요.";
 				} else if($("#evtArNm").val() == "") {
 					msg = "지면명을 입력해주세요.";
-				} else if($("#evtDesc").val() == "") {
-					msg = "메모를 입력해주세요.";
 				} else { // 설문 입력 체크
 					for(var i=1; i<=surveyCnt[2]; i++) {
 						if($("#evtSurvey" + i).val() == "") {
