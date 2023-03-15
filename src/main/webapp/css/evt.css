@@ -41,9 +41,6 @@
 	margin-top: 10px;
 }
 
-#evtTable th {
-	text-align: center;
-}
 
 .search_box ul li input {
 	border: 1px solid #ddd;
@@ -67,7 +64,7 @@
 	margin-right: 10px;
 }
 
-/*20230313지선수정 width: 150px;box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
+/*20230313吏������� width: 150px;box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
 .w-btn {
 	position: relative;
 	border: none;
@@ -81,7 +78,7 @@
 	transition: 0.25s;
 }
 
-/*20230313지선수정 box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
+/*20230313吏������� box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
 .w-btn-1 {
 	position: relative;
 	border: none;
@@ -94,7 +91,7 @@
 	transition: 0.25s;
 }
 
-/*20230313지선수정 width: 100px;border-radius: 3px; */
+/*20230313吏������� width: 100px;border-radius: 3px; */
 .w-btn-2 {
 	position: relative;
 	border: none;
@@ -108,21 +105,21 @@
 	transition: 0.25s;
 }
 
-/*20230313지선수정 color */
+/*20230313吏������� color */
 .w-btn-blue {
     background-color: #485fc7;
     color: #fff;
     cursor:pointer;
 }
 
-/*20230313지선수정 color */
+/*20230313吏������� color */
 .w-btn-gray {
     background-color: #34495e;
     color: #fff;
     cursor:pointer;
 }
 
-/*20230313지선수정 color */
+/*20230313吏������� color */
 .w-btn-green {
     background-color: #3498db;
     color: #fff;
@@ -151,7 +148,7 @@
 	vertical-align: middle !important;
 }
 
-/*20230313지선수정 border: 0;border-radius: 3px; */
+/*20230313吏������� border: 0;border-radius: 3px; */
 .search_btn {
 	margin-top: auto;
 	width: 270px;

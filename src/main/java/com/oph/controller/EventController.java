@@ -278,9 +278,9 @@ public class EventController {
 		String str = "";
 		
 		if(number.length() == 10) {
-			str = number.replaceAll(regEx, "$1 - " + (type == "1" ? "***" : "$2") + " - $3"); 
+			str = number.replaceAll(regEx, "$1-" + (type == "1" ? "***" : "$2") + "-$3"); 
 		} else if(number.length() == 11) {
-			str = number.replaceAll(regEx, "$1 - " + (type == "1" ? "****" : "$2") + " - $3");
+			str = number.replaceAll(regEx, "$1-" + (type == "1" ? "****" : "$2") + "-$3");
 		}
 	    
 		return str;

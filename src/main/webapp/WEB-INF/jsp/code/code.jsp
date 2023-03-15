@@ -118,7 +118,16 @@
 			
 			tb.rows({selected:true}).data();
 		}
-		
+	  	$.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+		        console.log(message);
+		        console.log(helpPage);
+		        // 응답값이 json이 아닐 경우
+		        if (helpPage === 1) {
+		         	alert("세션이 만료됐습니다.확인 클릭 시 로그인 화면으로 이동합니다.");
+		         	location.replace("./login.do");
+		            return false;
+		        }
+		    };
 		function modal(type) {
 			if(type == "C") {
 				$("#headerName").text("코드 등록");
