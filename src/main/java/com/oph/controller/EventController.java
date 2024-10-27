@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -226,11 +229,47 @@ public class EventController {
 		    // 헤더 데이터 넣기
 		    row = sheet.createRow(rowNo++);
 		    
-		    ArrayList<String> headList = new ArrayList<String>(Arrays.asList("no.", "클라이언트", "파트너사", "고객명", "나이", "연락처", "지면명", "신청일자", "설문1", "설문2", "설문3", "설문4", "설문5", "설문6", "메모", "예약현황"));
-		    ArrayList<String> colList = new ArrayList<String>(Arrays.asList("NUM", "EVT_CLNT_NM", "EVT_PARTNER_NM", "EVT_USER_NM", "EVT_USER_AGE", "EVT_USER_PH_NUM", "EVT_AR_NM", "REG_DT_EXCEL", "EVT_SURVEY1", "EVT_SURVEY2", "EVT_SURVEY3", "EVT_SURVEY4", "EVT_SURVEY5", "EVT_SURVEY6", "EVT_DESC", "EVT_STS_NM"));
+		    ArrayList<String> headList = new ArrayList<String>(
+	    		Arrays.asList(
+    				"no.", 
+		    		"클라이언트", 
+		    		"파트너사", 
+		    		"고객명", 
+		    		"나이", 
+		    		"연락처", 
+		    		"지면명", 
+		    		"신청일자", 
+		    		"설문1", 
+		    		"설문2", 
+		    		"설문3", 
+		    		"설문4", 
+		    		"설문5", 
+		    		"설문6", 
+		    		"메모", 
+		    		"예약현황"
+		    	));
+		    ArrayList<String> colList = new ArrayList<String>(
+	    		Arrays.asList(
+    				"NUM", 
+    				"EVT_CLNT_NM", 
+    				"EVT_PARTNER_NM", 
+    				"EVT_USER_NM", 
+    				"EVT_USER_AGE", 
+    				"EVT_USER_PH_NUM", 
+    				"EVT_AR_NM", 
+    				"REG_DT_EXCEL", 
+    				"EVT_SURVEY1", 
+    				"EVT_SURVEY2", 
+    				"EVT_SURVEY3", 
+    				"EVT_SURVEY4", 
+    				"EVT_SURVEY5", 
+    				"EVT_SURVEY6", 
+    				"EVT_DESC", 
+    				"EVT_STS_NM"
+    			));
 		    
 		    for(int i=0; i<headList.size(); i++) {
-		    	if(!(i == 2 && userDiv.equals("ATH002"))) {
+		    	if(!(i == 2)) {
 		    		cell = row.createCell(num);
 				    cell.setCellStyle(headStyle);
 				    cell.setCellValue(headList.get(i));
@@ -243,12 +282,16 @@ public class EventController {
 		        row = sheet.createRow(rowNo++);
 		        num = 0;
 		        for(int i=0; i<colList.size(); i++) {
-		        	if(!(i == 2 && userDiv.equals("ATH002"))) {
+		        	if(!(i == 2)) {
 		        		cell = row.createCell(num);
 				        cell.setCellStyle(bodyStyle);
 				        
 				        if(i==5) {
-				        	cell.setCellValue(changePh(map.get(colList.get(i)).toString(), type));
+				        	if(userDiv.equals("ATH001")) {
+				        		cell.setCellValue(phoneMasking(map.get(colList.get(i)).toString()));
+				        	} else {
+				        		cell.setCellValue(phoneHypon(map.get(colList.get(i)).toString()));
+				        	}
 				        } else {
 				        	String cellData = map.get(colList.get(i)).toString();
 				        	cellData = i == 0 ? cellData.replaceAll("\\.0", "") : cellData;
@@ -263,7 +306,7 @@ public class EventController {
 
 		    // 컨텐츠 타입과 파일명 지정
 		    res.setContentType("ms-vnd/excel");
-		    res.setHeader("Content-Disposition", "attachment;filename=eventList.xls");
+		    res.setHeader("Content-Disposition", "attachment;filename=event.xls");
 		    
 		    // 엑셀 출력
 		    wb.write(res.getOutputStream());
@@ -273,16 +316,16 @@ public class EventController {
 		}
 	}
 	
-	public static String changePh(String number, String type) {
-		String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
-		String str = "";
+	public static String phoneMasking(String phoneNo) throws Exception {
+		phoneNo= phoneNo.replaceAll("-", "");
+		String regex = "(\\d{3})(\\d{3,4})(\\d{4})";
+		return phoneNo.replaceAll(regex, "$1-$2-****");
+	}
+	
+	public static String phoneHypon(String phoneNo) throws Exception {
+		phoneNo= phoneNo.replaceAll("-", "");
+		String regex = "(\\d{3})(\\d{3,4})(\\d{4})";
 		
-		if(number.length() == 10) {
-			str = number.replaceAll(regEx, "$1 - " + (type == "1" ? "***" : "$2") + " - $3"); 
-		} else if(number.length() == 11) {
-			str = number.replaceAll(regEx, "$1 - " + (type == "1" ? "****" : "$2") + " - $3");
-		}
-	    
-		return str;
-    }
+		return phoneNo.replaceAll(regex, "$1-$2-$3");
+	}
 }

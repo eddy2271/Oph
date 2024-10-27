@@ -44,6 +44,7 @@ public class LoginConteroller {
 			valList = loginService.selectUserInfo(param);
 			if(valList != null){
 				session.setAttribute("userInfo", valList);
+				session.setMaxInactiveInterval(-1);
 				map.put("result", 1); // 실패
 			}else {
 				map.put("result", 2); // 실패

@@ -24,6 +24,9 @@
 				<c:set var="tdCls" value="" />
 			</c:otherwise>
 		</c:choose>
+		
+		
+		
 		<%@ include file="/WEB-INF/jsp/frame/topFrame.jsp" %>	
 		<div class="wrap">
 			<div class="title_box">
@@ -86,7 +89,9 @@
 			<table id="evtTable" class="table is-striped" style="width: 100%">
 				<thead>
 					<tr>
-						<th></th>
+						<th>
+							<input type="checkbox" id="checkall">
+						</th>
 						<th>
 							<div>번호</div>
 						</th>
@@ -117,11 +122,19 @@
 							<div>설문1</div>
 						</th>
 						<th>
-							<div>예약현황</div>
+							<div>설문2</div>
+						</th>
+							<th>
+							<div>설문3</div>
 						</th>
 						<th>
-							<div>메모</div>
+							<div>예약현황</div>
 						</th>
+						<c:if test="${userInfo.user_div eq 'ATH002'}">
+							<th>
+								<div>메모</div>
+							</th>
+						</c:if>
 					</tr>
 				</thead>
 			</table>
@@ -373,7 +386,9 @@
 	    				client: function() { return $("#client option:selected").val() },
 	    				startDate: function() { return $("#startDate").val() },
 	    				endDate: function() { return $("#endDate").val() },
-	    				searchKey: function() { return $("#searchKey option:selected").val() },
+	    				searchKey: function() { 
+	    					return $("#searchKey option:selected").val() 
+	    				},
 	    				searchText: function() {
 	    					var text = $("#searchText").val();
 	    					if($("#searchKey option:selected").val() == "ph") {
@@ -395,7 +410,7 @@
 					'searchable' : false,
 					'orderable' : false,
 					'render' : function(data, type, full, meta) {
-						return '<input type="checkbox">';
+						return '<input type="checkbox" name="check">';
 					}
 				},
 				{
@@ -405,7 +420,37 @@
 						</c:if>
 					],
 					'className' : 'chkCenter'
-				}],
+				}
+				,
+				{
+					'width' : '30px' , 'targets' : 1
+				}
+				,
+				{
+					'width' : '90px' , 'targets' : [2
+						<c:if test="${auth eq '1'}">
+						, 3
+						</c:if>
+					]
+				}
+				,
+				{
+					'width' : '60px' , 'targets' : 4
+				}
+				<c:if test="${userInfo.user_div eq 'ATH002'}">
+				,{
+					'width' : '90px' , 'targets' : 11
+				}
+				,{
+					'width' : '140px' , 'targets' : 12
+				}
+				</c:if>
+			
+				
+				
+				
+				
+				],
 				buttons: [
 				<c:if test="${userInfo.user_div eq 'ATH999'}">
 					{
@@ -431,7 +476,7 @@
 					}
 				}],
 				columns: [
-					{data: ''}, // 체크박스
+					{data: null}, // 체크박스
                     {data: 'NUM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 번호
                     {data: 'EVT_CLNT_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 클라이언트
                     <c:if test="${auth eq '1'}">
@@ -442,18 +487,22 @@
                     {data: 'EVT_USER_PH_NUM', render: function(data) {
                     	<c:choose>
 	    					<c:when test="${userInfo.user_div eq 'ATH001'}">
-	    						return phAstSet(data, "1");
+	    						return phAstSet(data);
 	    					</c:when>
 	    					<c:otherwise>
-	    						return phAstSet(data, "2");
+	    						return hyponSet(data);
 	    					</c:otherwise>
 	    				</c:choose>
                     }, className: 'touch'}, // 연락처
                     {data: 'EVT_AR_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 지면명
                     {data: 'REG_DT', render: $.fn.dataTable.render.text(), className: 'touch'}, // 신청일자
                     {data: 'EVT_SURVEY1', render: $.fn.dataTable.render.text(), className: 'touch'}, // 설문1
-                    {data: 'EVT_STS_NM', render: $.fn.dataTable.render.text(), className: 'touch'}, // 예약현황
-                    {data: 'EVT_DESC', render: $.fn.dataTable.render.text(), className: 'touch'} // 메모
+                    {data: 'EVT_SURVEY2', render: $.fn.dataTable.render.text(), className: 'touch'}, // 설문2
+                    {data: 'EVT_SURVEY3', render: $.fn.dataTable.render.text(), className: 'touch'}, // 설문3
+                    {data: 'EVT_STS_NM', render: $.fn.dataTable.render.text(), className: 'touch'} // 예약현황
+                    <c:if test="${userInfo.user_div eq 'ATH002'}">
+                		,{data: 'EVT_DESC', render: $.fn.dataTable.render.text(), className: 'touch'} //메
+					</c:if>
 			  	],
 			  	drawCallback: function() {
 			  		if($.isFunction(evtTable.data)) {
@@ -461,7 +510,16 @@
 			  		}
 			  	}
 			});
+			
 		});
+	    $.fn.dataTable.ext.errMode = function (settings, helpPage, message) {
+	        // 응답값이 json이 아닐 경우
+	        if (helpPage === 1) {
+	         	alert("세션이 만료됐습니다.확인 클릭 시 로그인 화면으로 이동합니다.");
+	         	location.replace("./login.do");
+	            return false;
+	        }
+	    };
 		
 		// validation
 		function validation() {
@@ -507,18 +565,21 @@
 			if(delList.length == 0) {
 				alert("선택된 이벤트가 없습니다.");
 			} else {
-				request("./removeEvt.do", {"delList": delList}, function callback(res) {
-					if(res.rsCd != 0) {
-						alert(res.rsCd + "건 삭제 완료되었습니다.");
-						evtTable.ajax.reload(null, false);
-					} else {
-						alert(res.rsMsg);
-					}
-				},
-				function error(request, status) {
-					console.log(status);
-					alert("처리 중 문제가 발생하였습니다.");
-				});
+				if(confirm("이벤트를 삭제하시겠습니까?")) {
+					request("./removeEvt.do", {"delList": delList}, function callback(res) {
+						if(res.rsCd != 0) {
+							alert(res.rsCd + "건 삭제 완료되었습니다.");
+							$("#checkall").prop("checked", false);
+							evtTable.ajax.reload(null, false);
+						} else {
+							alert(res.rsMsg);
+						}
+					},
+					function error(request, status) {
+						console.log(status);
+						alert("처리 중 문제가 발생하였습니다.");
+					});
+				} 
 			}
 		}
 		
@@ -590,15 +651,28 @@
 		}
 		
 		// 휴대폰번호 * 처리
-		function phAstSet(v, type) {
-			if(v.length == 10) {
-				v = v.replace(/(\d{3})(\d{3})(\d{4})/gi, "$1-" + (type == "1" ? "***" : "$2") + "-$3");
-			} else if(v.length == 11) {
-				v = v.replace(/(\d{3})(\d{4})(\d{4})/gi, "$1-" + (type == "1" ? "****" : "$2") + "-$3");
-            }
+		function phAstSet(v) {
+			if(v.indexOf('-') > -1) {
+				v = v.replace(/(\d{3})-(\d{3,4})-(\d{4})/g, "$1-$2-****");
+			} else {
+				if(v.length == 10) {
+					v = v.replace(/(\d{3})(\d{3})(\d{4})/g, "$1-$2-****");
+				} else if(v.length == 11) {
+					v = v.replace(/(\d{3})(\d{4})(\d{4})/g, "$1-$2-****");
+	            }
+			}
 			
 			return v;
-	      }
+		}
+		
+		// 데이터 하이픈
+		function hyponSet(v) {
+			if(v.indexOf('-') == -1) {
+				v = v.replace(/(\d{3})(\d{3,4})(\d{4})/g, "$1-$2-$3");
+			}
+			
+			return v;
+		}
 		
 		// 날짜 선택 시
 		$("#startDate, #endDate").on("change", function() {
@@ -656,11 +730,23 @@
 			}
 		});
 		
+		$("#checkall").on("click", function (e){
+			var all_chked = $(this).is(':checked');
+			$('#evtTable tbody :checkbox').prop('checked', $(this).is(':checked'));
+			delList = [];
+			if(all_chked) {
+				$("input:checkbox[name=check]:checked").each(function(index, EVT_SEQ){
+					var row = $("#evtTable").DataTable().row(index).data();
+					
+	 				if(delList.indexOf(row.EVT_SEQ) == -1) delList.push(row.EVT_SEQ);
+				});
+			}		
+		});
+		
 		// row 선택 시 상세/수정 창 열기
 		$("#evtTable").on("click", "tbody tr", function (e) {
 			var row = $("#evtTable").DataTable().row($(this)).data();
 			selectSeq = row.EVT_SEQ;
-			
 			// 체크박스 영역 클릭 판단
 			if($(e.target).hasClass("touch")) {
 				// 데이터 넣기
@@ -671,7 +757,7 @@
 						$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
 						$("#evtUserNm").val(row.EVT_USER_NM);
 						$("#evtUserAge").val(row.EVT_USER_AGE);
-						$("#evtUserPhNum").val(phAstSet(row.EVT_USER_PH_NUM, "2"));
+						$("#evtUserPhNum").val(row.EVT_USER_PH_NUM);
 						$("#evtArNm").val(row.EVT_AR_NM);
 						
 						// 설문항목 데이터 넣기
@@ -695,14 +781,13 @@
 						$("#evtSurvey6").text(row.EVT_SURVEY6);
 						
 						<c:choose>
-							<c:when test="${userInfo.user_div eq 'ATH002'}">
-								$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
-								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM, "1"));
-
+							<c:when test="${userInfo.user_div eq 'ATH001'}">
+								$("#revModal").text(row.EVT_STS_NM);
+								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM));
 							</c:when>
 							<c:otherwise>
-								$("#revModal").text(row.EVT_STS_NM);
-								$("#evtUserPhNum").text(phAstSet(row.EVT_USER_PH_NUM, "2"));
+								$("#revModal").val(row.EVT_STS_CD).prop("selected", true);
+								$("#evtUserPhNum").text(hyponSet(row.EVT_USER_PH_NUM));
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
@@ -726,16 +811,22 @@
 			} else {
 				var chkbox = $(this).find('td:first-child :checkbox');
 				
-				if(chkbox.hasClass("checked")) { // 체크 된 상태
-					chkbox.removeClass("checked");
-					chkbox.attr("checked", false);
-					
-					if(delList.indexOf(row.EVT_SEQ) != -1) delList.pop(row.EVT_SEQ);
-				} else { // 체크 해제 상태
-					chkbox.addClass("checked");
-					chkbox.attr("checked", true);
-					
+				if(chkbox.prop("checked")) { // 체크
 					if(delList.indexOf(row.EVT_SEQ) == -1) delList.push(row.EVT_SEQ);
+					var chkListLength = $("input:checkbox[name=check]").length;
+					if(chkListLength == delList.length) {
+						$("#checkall").prop("checked", true);	
+					}
+				} else { // 체크 해제
+					$("#checkall").prop("checked", false);
+					if(delList.length > 0) {
+						for(var i=0; i<delList.length; i++) {
+							if(delList[i] == row.EVT_SEQ) {
+								delList.splice(i, 1);
+								i--;
+							}
+						}
+					}
 				}
 			}
 	    });
@@ -780,6 +871,13 @@
 						}
 					}
 				</c:if>
+				
+				
+				<c:if test="${userInfo.user_div eq 'ATH002'}">
+					param.evtDesc = $("#evtDesc").val();
+				</c:if>
+				
+				
 				param.state = $("#headerName").text() == "추가 화면" ? "C" : "U";
 				param.revModal = $("#revModal option:selected").val();
 				
